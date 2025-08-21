@@ -1,17 +1,10 @@
 USE PROYECTO_WYK;
-
--- 1. Crear usuario para el Administrador
--- Se recomienda usar un nombre de usuario descriptivo y una contraseña segura.
--- Reemplaza 'tu_contraseña_admin_segura' con una contraseña fuerte.
+-- Usuario de Administrador
 DROP USER IF EXISTS 'admin_wyk'@'localhost';
 CREATE USER 'admin_wyk'@'localhost' IDENTIFIED BY 'contraseña_admin';
-
--- Otorgar todos los privilegios al administrador sobre la base de datos PROYECTO_WYK
--- Esto incluye SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP, GRANT OPTION, etc.
 GRANT ALL PRIVILEGES ON PROYECTO_WYK.* TO 'admin_wyk'@'localhost';
 
--- 2. Crear usuario para Empleados
--- Reemplaza 'tu_contraseña_empleado_segura' con una contraseña fuerte.
+-- Usuarios de Empleados
 CREATE USER 'empleado_wyk'@'localhost' IDENTIFIED BY 'contraseña_empleado';
 
 -- Otorgar permisos específicos a los empleados:

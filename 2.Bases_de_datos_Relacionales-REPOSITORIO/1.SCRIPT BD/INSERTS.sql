@@ -6,42 +6,30 @@ INSERT INTO CARGO (NOMBRE_CARGO, ESTADO_CARGO) VALUES
 ('Cajero', 1),
 ('Mesero', 1);
 
-INSERT INTO EMPLEADO (CC_EMPLEADO, NOMBRE_EMPLEADO, RH_EMPLEADO, TEL_EMPLEADO, EMAIL_EMPLEADO, ID_CARGO_FK_EMPLEADO, ESTADO_EMPLEADO) VALUES
-(1001001001, 'Carlos Ramirez', 'O+', 3101234567, 'carlos.ramirez@wyk.com', 1, 1),
-(1002002002, 'Sofia Gomez', 'A+', 3111234567, 'sofia.gomez@wyk.com', 2, 1),
-(1003003003, 'Luis Fernandez', 'B+', 3121234567, 'luis.fernandez@wyk.com', 3, 1),
-(1004004004, 'Ana Martinez', 'AB+', 3131234567, 'ana.martinez@wyk.com', 4, 1);
+INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA_SESION,ROL,ESTADO_USUARIO) VALUES
+-- Usuarios para Empleados Y Admin
+('carlos.admin', SHA2('admin123', 256), NOW(), NOW(),'ADMINISTRADOR', 1),
+('sofia.panadera', SHA2('empleado123', 256), NOW(), NOW(),'EMPLEADO', 1),
+('luis.cajero', SHA2('cajero789', 256), NOW(), NOW(),'EMPLEADO', 1),
+('ana.mesera', SHA2('mesera101', 256), NOW(), NOW(),'EMPLEADO', 1),
+-- Usuarios para Cliente
+('javier.cliente', SHA2('cliente123', 256), NOW(), NOW(),'CLIENTE', 1),
+('maria.cliente', SHA2('cliente456', 256), NOW(), NOW(),'CLIENTE', 1),
+('pedro.cliente', SHA2('cliente789', 256), NOW(), NOW(),'CLIENTE', 1),
+('laura.cliente', SHA2('cliente101', 256), NOW(), NOW(),'CLIENTE', 1);
 
-INSERT INTO CLIENTE (NUM_DOCUMENTO_CLIENTE, TIPO_DOCUMENTO_CLIENTE, NOMBRE_CLIENTE, TEL_CLIENTE, EMAIL_CLIENTE, ID_EMPLEADO_FK_CLIENTE, ESTADO_CLIENTE) VALUES
-(2001001001, 'CC', 'Javier Torres', 3209876543, 'javier.torres@email.com', 1, 1),
-(2002002002, 'CE', 'Maria Rodriguez', 3219876543, 'maria.rodriguez@email.com', 2, 1),
-(99010112345, 'TI', 'Pedro Infante', 3229876543, 'pedro.infante@email.com', 3, 1),
-(2004004004, 'CC', 'Laura Sanchez', 3239876543, 'laura.sanchez@email.com', 4, 1);
 
-INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO, FECHA_REGISTRO, FECHA_ULTIMA_SESION, ESTADO_USUARIO) VALUES
--- Usuarios para Empleados
-('carlos.admin', SHA2('admin123', 256), NOW(), NOW(), 1),
-('sofia.panadera', SHA2('empleado123', 256), NOW(), NOW(), 1),
-('luis.cajero', SHA2('cajero789', 256), NOW(), NOW(), 1),
-('ana.mesera', SHA2('mesera101', 256), NOW(), NOW(), 1);
+INSERT INTO EMPLEADO (CC_EMPLEADO, NOMBRE_EMPLEADO, RH_EMPLEADO, TEL_EMPLEADO, EMAIL_EMPLEADO, ID_CARGO_FK_EMPLEADO,ID_USUARIO_FK_EMPLEADO, ESTADO_EMPLEADO) VALUES
+(1001001001, 'Carlos Ramirez', 'O+', 3101234567, 'carlos.ramirez@wyk.com', 1, 1, 1),
+(1002002002, 'Sofia Gomez', 'A+', 3111234567, 'sofia.gomez@wyk.com', 2, 2, 1),
+(1003003003, 'Luis Fernandez', 'B+', 3121234567, 'luis.fernandez@wyk.com', 3, 3, 1),
+(1004004004, 'Ana Martinez', 'AB+', 3131234567, 'ana.martinez@wyk.com', 4, 4, 1);
 
-INSERT INTO USUARIO_EMPLEADO (TIPO_ACCESO, ID_USUARIO_FK_US_EMPLE, ID_EMPLEADO_FK_US_EMPLE) VALUES
-('ADMINISTRADOR',1,1 ),
-('EMPLEADO',2, 2),
-('EMPLEADO',3, 3),
-('EMPLEADO',4, 4);
-
-INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO, FECHA_REGISTRO, FECHA_ULTIMA_SESION, ESTADO_USUARIO) VALUES
-('javier.cliente', SHA2('cliente123', 256), NOW(), NOW(), 1),
-('maria.cliente', SHA2('cliente456', 256), NOW(), NOW(), 1),
-('pedro.cliente', SHA2('cliente789', 256), NOW(), NOW(), 1),
-('laura.cliente', SHA2('cliente101', 256), NOW(), NOW(), 1);
-
-INSERT INTO USUARIO_CLIENTE (ID_USUARIO_FK_US_CLIENTE, ID_CLIENTE_FK_US_CLIENTE) VALUES
-(5, 1),
-(6, 2),
-(7, 3),
-(8, 4);
+INSERT INTO CLIENTE (NUM_DOCUMENTO_CLIENTE, TIPO_DOCUMENTO_CLIENTE, NOMBRE_CLIENTE, TEL_CLIENTE, EMAIL_CLIENTE, ID_EMPLEADO_FK_CLIENTE,ID_USUARIO_FK_CLIENTE, ESTADO_CLIENTE) VALUES
+(2001001001, 'CC', 'Javier Torres', 3209876543, 'javier.torres@email.com', 1, 5, 1),
+(2002002002, 'CE', 'Maria Rodriguez', 3219876543, 'maria.rodriguez@email.com', 2, 6, 1),
+(99010112345, 'TI', 'Pedro Infante', 3229876543, 'pedro.infante@email.com', 3, 7, 1),
+(2004004004, 'CC', 'Laura Sanchez', 3239876543, 'laura.sanchez@email.com', 4, 8, 1);
 
 INSERT INTO PEDIDO (FECHA_HORA_PEDIDO, NUMERO_MESA, ID_EMPLEADO_FK_PEDIDO, ID_CLIENTE_FK_PEDIDO, ESTADO_PEDIDO) VALUES
 (NOW(), 5, 4, 1, 'EN PREPARACION'),
@@ -49,11 +37,11 @@ INSERT INTO PEDIDO (FECHA_HORA_PEDIDO, NUMERO_MESA, ID_EMPLEADO_FK_PEDIDO, ID_CL
 (NOW(), 8, 4, 3, 'ENTREGADO'),
 (NOW(), 1, 4, 4, 'CANCELADO');
 
-INSERT INTO PRODUCTO (ID_PRODUCTO, NOMBRE_PRODUCTO, VALOR_UNITARIO_PRODUCTO, CANT_MINI_PRODUCTO, CANT_MAX_PRODUCTO, CANT_EXIST_PRODUCTO, FECHA_VENCIMIENTO_PRODUCTO, TIPO_PRODUCTO_GENERAL, TIPO_PRODUCTO_ESPECIFICO, MARCA_PRODUCTO, ID_EMPLEADO_FK_PRODUCTO, ESTADO_PRODUCTO) VALUES
-(770001, 'Pan Frances', 1500, 20, 100, 50, '2025-07-15', 'PANADERIA', 'Baguette', 'Wyk Pan', 2, 1),
-(770002, 'Torta de Chocolate', 35000, 5, 20, 10, '2025-07-20', 'PASTELERIA', 'Torta humeda', 'Wyk Pasteles', 2, 1),
-(770003, 'Leche Deslactosada', 4000, 10, 50, 30, '2025-10-01', 'VIBERES', 'Lacteo', 'Lala', 1, 1),
-(770004, 'Croissant de Almendras', 4500, 15, 80, 40, '2025-07-10', 'PANADERIA', 'Hojaldre', 'Wyk Pan', 2, 1);
+INSERT INTO PRODUCTO (ID_PRODUCTO, NOMBRE_PRODUCTO, VALOR_UNITARIO_PRODUCTO, CANT_EXIST_PRODUCTO, FECHA_VENCIMIENTO_PRODUCTO, TIPO_PRODUCTO_GENERAL, TIPO_PRODUCTO_ESPECIFICO, MARCA_PRODUCTO, ID_EMPLEADO_FK_PRODUCTO, ESTADO_PRODUCTO) VALUES
+(770001, 'Pan Frances', 1500, 50, '2025-07-15', 'PANADERIA', 'Baguette', 'Wyk Pan', 2, 1),
+(770002, 'Torta de Chocolate', 35000, 10, '2025-07-20', 'PASTELERIA', 'Torta humeda', 'Wyk Pasteles', 2, 1),
+(770003, 'Leche Deslactosada', 4000, 30, '2025-10-01', 'VIBERES', 'Lacteo', 'Lala', 1, 1),
+(770004, 'Croissant de Almendras', 4500, 40, '2025-07-10', 'PANADERIA', 'Hojaldre', 'Wyk Pan', 2, 1);
 
 INSERT INTO DETALLE_PEDIDO (ID_DETALLE_PEDIDO, DESCRIPCION_DETALLE_PEDIDO, ID_PEDIDO_FK_DETALLE_PEDIDO, ID_PRODUCTO_FK_DETALLE_PEDIDO, ESTADO_DETALLE_PEDIDO_PRODUCTO) VALUES
 (1, 'Pedido de Pan Frances para la mesa 5', 1, 770001, 1),
@@ -79,11 +67,11 @@ INSERT INTO PROVEEDOR (CC_PROVEEDOR, NOMBRE_PROVEEDOR, TEL_PROVEEDOR, EMAIL_PROV
 (800300400, 'Distribuidora de Azucar', 6013456789, 'info@azucardist.com', 1, 1),
 (800400500, 'Frutas y Verduras Frescas', 6014567890, 'pedidos@frutasfrescas.com', 1, 1);
 
-INSERT INTO MATERIA_PRIMA (NOMBRE_MATERIA_PRIMA, FECHA_VENCIMIENTO_MATERIA_PRIMA, TIPO_DE_MEDIDA, CANTIDAD_MINI_MATERIA_PRIMA, CANTIDAD_MAX_MATERIA_PRIMA, CANTIDAD_EXIST_MATERIA_PRIMA, MARCA_MATERIA_PRIMA, PRESENTACION_MATERIA_PRIMA, DESCRIPCION_MATERIA_PRIMA, ID_EMPLEADO_FK_MATERIA_PRIMA, ESTADO_MATERIA_PRIMA) VALUES
-('Harina de Trigo', '2026-01-15', 'Kilogramos', 50, 200, 100, 'Harinas del Valle', 'Bulto 50kg', 'Harina para panaderia', 1, 1),
-('Azucar Blanca', '2026-05-20', 'Kilogramos', 40, 150, 80, 'Incauca', 'Bulto 50kg', 'Azucar refinada para pasteleria', 1, 1),
-('Mantequilla', '2025-09-01', 'Kilogramos', 20, 80, 40, 'La Pradera', 'Bloque 5kg', 'Mantequilla sin sal', 1, 1),
-('Levadura Fresca', '2025-08-10', 'Gramos', 500, 2000, 1000, 'Fleischmann', 'Paquete 500g', 'Levadura para panificacion', 1, 1);
+INSERT INTO MATERIA_PRIMA (NOMBRE_MATERIA_PRIMA, FECHA_VENCIMIENTO_MATERIA_PRIMA, TIPO_DE_MEDIDA, CANTIDAD_EXIST_MATERIA_PRIMA, MARCA_MATERIA_PRIMA, PRESENTACION_MATERIA_PRIMA, DESCRIPCION_MATERIA_PRIMA, ID_EMPLEADO_FK_MATERIA_PRIMA, ESTADO_MATERIA_PRIMA) VALUES
+('Harina de Trigo', '2026-01-15', 'Kilogramos', 100, 'Harinas del Valle', 'Bulto 50kg', 'Harina para panaderia', 1, 1),
+('Azucar Blanca', '2026-05-20', 'Kilogramos', 80, 'Incauca', 'Bulto 50kg', 'Azucar refinada para pasteleria', 1, 1),
+('Mantequilla', '2025-09-01', 'Kilogramos', 40, 'La Pradera', 'Bloque 5kg', 'Mantequilla sin sal', 1, 1),
+('Levadura Fresca', '2025-08-10', 'Gramos', 1000, 'Fleischmann', 'Paquete 500g', 'Levadura para panificacion', 1, 1);
 
 INSERT INTO FACTURA_COMPRA (TOTAL_FACTURA_COMPRA, FECHA_HORA_FACTURA_COMPRA, DESCRIPCION_FACTURA_COMPRA, ID_EMPLEADO_FK_FACTURA_COMPRA, ID_PROVEEDOR_FK_FACTURA_COMPRA, ESTADO_FACTURA_COMPRA) VALUES
 (250000, NOW(), 'Compra de Harina de Trigo', 1, 1, 'PAGADA'),

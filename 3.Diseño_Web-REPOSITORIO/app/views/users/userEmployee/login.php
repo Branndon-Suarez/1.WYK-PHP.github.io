@@ -37,12 +37,9 @@
     </header>
     <main>
         <div class="container">
-
             <div class="forms-container">
                 <div class="signin-signup">
-
-                    <form action="../DASHBOARD/DASBOARD3.html" class="sign-in-form" method="post">
-
+                    <form action="../../../controllers/UserController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -145,28 +142,15 @@
     <script src="JS/JS-INTERFAZ-LOGIN_REGISTRO.js"></script>
     <script>
         document.getElementById('formulario-registrarse').addEventListener('submit', function(event) {
-            /**Aqui la función "preventDefault" funciona para que el formulario obtenido no se envie al recargar la página */
             event.preventDefault();
 
             const obtener_datos = new FormData(this);
-            
-            /**Fetch envía los datos obtenidos del formulario. Los envía al php que se encarga de registrar.*/
-            fetch('registrar_datos.php', {
+                fetch('registrar_datos.php', {
                 method: 'POST',
                 body: obtener_datos
             })
-            /*Operaciones asincrónicas: Son aquellos procesos que se ejecutan en segundo plano. No se bloquea la ejecución del código mientras se espera a que se complete*/
-           /*PROMESAS EN JS: Una promesa en js es un objeto para representar el valor con que se termina o fracasa una OPERACÓN ASINCRÓNICA.
-            Estas promesas puede estar disponibles en:
-                1.Pendientes: Está en proceso la operación.
-                2.Cumplido: La operación se cumple y devuelve un valor.
-                3. Rechazado: La operación No se cumple debido a un ERROR y rechaza la promesa/operación.*/
-            /*MÉTODOS PRINCIPALES PARA MANEJAR PROMESAS EN JS:
-                1. .then(): Acepta y se ejecuta cuando una promesa es cumplida o rechazada para ejercer una acción (como analizarla como JSON).
-                2. .catch(): Acepta el rechazo de las promesas.*/
-            .then(objeto_respuesta => objeto_respuesta.json())/*respuesta de la solicitud del archivo 'registrar_Cliente.php'.
-                                                                Convierte la operación cumplida de un texto plano a un objeto JSON*/
-            .then(data => {// Este .then() optiene el resultado del "objeto_respuesta" en json del anterior .then()
+            .then(objeto_respuesta => objeto_respuesta.json())
+            .then(data => {
 
                 const obtener_mensaje_del_span = document.getElementById('mensaje-resultado');
                 if (data.estado_fk === 'Confirmado') {

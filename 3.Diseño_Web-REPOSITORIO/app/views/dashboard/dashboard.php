@@ -27,7 +27,7 @@
       <div class="opcion activa"><i class="fas fa-home"></i><span class="texto">Inicio</span></div>
       <div class="opcion"><i class="fas fa-user"></i><span class="texto">Usuarios</span></div>
       <div class="opcion"><i class="fas fa-comment-alt"></i><span class="texto">Mensajes</span></div>
-      <div class="opcion"><i class="fas fa-question"></i><span class="texto">Ayuda</span><a href="FORMULARIOS.html"></a></div>
+      <div class="opcion"><i class="fas fa-question"></i><span class="texto">Ayuda</span></div>
       <div class="opcion"><i class="fas fa-cog"></i><span class="texto">Configuración</span></div>
       <div class="opcion"><i class="fas fa-lock"></i><span class="texto">Seguridad</span></div>
       <div class="opcion"><i class="fas fa-sign-out-alt"></i><span class="texto">Salir</span></div>

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     if (empty($username) || empty($password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
-        header('Location: ../../views/users/userEmployee/login.php');
+        header('Location: ../../views/users/userLogin/login.php');
         exit();
     }
 
@@ -29,21 +29,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
                 exit();
             } else {
                 $_SESSION['error_message'] = 'Tu cuenta ha sido desactivada. Contacta al administrador.';
-                header('Location: ../../views/users/userEmployee/login.php');
+                header('Location: ../../views/users/userLogin/login.php');
                 exit();
             }
         } else {
             $_SESSION['error_message'] = 'Usuario o contraseña incorrectos.';
-            header('Location: ../../views/users/userEmployee/login.php');
+            header('Location: ../../views/users/userLogin/login.php');
             exit();
         }
 
     } catch (Exception $e) {
         $_SESSION['error_message'] = 'Ocurrió un error. Por favor, inténtalo de nuevo.';
-        header('Location: ../../views/users/userEmployee/login.php');
+        header('Location: ../../views/users/userLogin/login.php');
         exit();
     }
 } else {
-    header('Location: ../../views/users/userEmployee/login.php');
+    header('Location: ../../views/users/userLogin/login.php');
     exit();
 }

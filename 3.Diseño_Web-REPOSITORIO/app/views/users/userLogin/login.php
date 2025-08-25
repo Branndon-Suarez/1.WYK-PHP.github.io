@@ -58,8 +58,7 @@ if (isset($_SESSION['error_message'])) {
                         </tr><br>
                     </form>
 
-                    <form action="<!-- registrar_datos.php -->" id="formulario-registrarse" class="sign-up-form" method="post">
-
+                    <form action="../../../controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="POST">
                         <h2 class="title">Registrarse</h2>
                         <div class="input-field">
                             <lord-icon
@@ -70,7 +69,7 @@ if (isset($_SESSION['error_message'])) {
                                 style="width:50px;height:50px"
                                 id="icon_2-candado">
                             </lord-icon>
-                            <input type="text" name="id_emple_fk" placeholder="Digite su cédula" required>
+                            <input type="text" name="name_usuario" placeholder="Digite su nombre de usuario" required>
                         </div>
 
                         <div class="input-field">

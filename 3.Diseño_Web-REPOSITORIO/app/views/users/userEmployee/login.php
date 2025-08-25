@@ -101,7 +101,7 @@ if (isset($_SESSION['error_message'])) {
                             Registrarse
                         </button>
                     </div>
-                    <img src="../IMG/ilustraciones_login/iniciar_sesion_ilustracion.svg" class="image" alt="">
+                    <img src="../../../../public/images/imgLogin/login-1.svg" class="image" alt="">
                 </div>
 
                 <div class="panel right-panel">
@@ -114,7 +114,7 @@ if (isset($_SESSION['error_message'])) {
                             Iniciar Sesión
                         </button>
                     </div>
-                    <img src="../IMG/ilustraciones_login/registrarse_ilustracion.svg" class="image" alt="">
+                    <img src="../../../../public/images/imgLogin/login-2.svg" class="image" alt="">
                 </div>
             </div>
         </div>
@@ -135,5 +135,4 @@ if (isset($_SESSION['error_message'])) {
         });
     </script>
 </body>
-
 </html>

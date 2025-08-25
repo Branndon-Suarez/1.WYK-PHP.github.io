@@ -1,45 +1,29 @@
+<?php
+session_start();
+
+$error_message = '';
+if (isset($_SESSION['error_message'])) {
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
-  <link rel="stylesheet" href="../../../../public/css/login.css">
-  <title>Login Empleado</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../../../public/css/login.css">
+    <title>Login Empleado</title>
 </head>
 
 <body>
-    <header id="SELECCIONAR-LOGIN-ROL">
-        <div class="empleado-seleccionado">
-            <lord-icon
-                src="https://cdn.lordicon.com/pbihtexz.json"
-                trigger="hover"
-                colors="primary:#000000,secondary:#b26836,tertiary:#eeca66,quaternary:#ebe6ef"
-                style="width:50px;height:50px">
-            </lord-icon>
-            <span>Estas ingresando como un empleado</span>
-            <button class="btn transparent">EMPLEADO</button>
-        </div>
-
-        <div class="cliente">
-            <button class="btn transparent">
-                <a href="LOGIN_CLIENTE/Index-LOGIN_CLIENTE.php">CLIENTE</a>
-            </button>
-            <span>¿Quieres ingresar como cliente?</span>
-            <lord-icon
-                src="https://cdn.lordicon.com/kiynvdns.json"
-                trigger="hover"
-                colors="primary:#0000,secondary:#a63754,tertiary:#eeca66,quaternary:#3080e8,quinary:#ebe6ef"
-                style="width:50px;height:50px">
-            </lord-icon>
-        </div>
-    </header>
     <main>
         <div class="container">
             <div class="forms-container">
                 <div class="signin-signup">
-                    <form action="../../../controllers/UserController.php" class="sign-in-form" method="post">
+                    <form action="../../../controllers/LoginEmployee/LoginController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -51,7 +35,7 @@
                                 style="width:50px;height:50px"
                                 id="icon_2-candado">
                             </lord-icon>
-                            <input type="text" name="Cedula_fk" placeholder="Digite su cédula" required>
+                            <input type="text" name="name_usuario" placeholder="Digite su nombre de usuario" required>
                         </div>
 
                         <div class="input-field">
@@ -61,19 +45,17 @@
                                 style="width:50px;height:50px"
                                 id="icon_2-candado">
                             </lord-icon>
-                            <input type="password" name="contrasena" placeholder="Digite su contraseña" required>
+                            <input type="password" name="password" placeholder="Digite su contraseña" required>
                         </div>
                         <button type="submit" name="boton_login" class="btn solid">Iniciar Sesión</button>
 
                         <tr>
-                            <td colspan="2" align="center"
-                                <?php if(isset($_GET['errorusuario_empleado']) && $_GET['errorusuario_empleado']=="existe_error"){?>>
-                                    <span id="Mensaje-Login-error"><b>⚠️ Datos incorrectos. <br> Los datos del empleado no coinciden o no se encuentran registrados.</b></span>
-                                <?php }else{?>
-                                <?php }?>
-                            </td>
-                        </tr>
-
+                            <td colspan="2"></td>
+                            <?php if (!empty($error_message)): ?>
+                                <span id="Mensaje-Login-error"><b><?php echo $error_message; ?></b></span>
+                            <?php endif; ?>
+                            </td><br>
+                        </tr><br>
                     </form>
 
                     <form action="<!-- registrar_datos.php -->" id="formulario-registrarse" class="sign-up-form" method="post">
@@ -139,33 +121,19 @@
     </main>
 
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="JS/JS-INTERFAZ-LOGIN_REGISTRO.js"></script>
     <script>
-        document.getElementById('formulario-registrarse').addEventListener('submit', function(event) {
-            event.preventDefault();
+        const sign_in_btn = document.querySelector("#sign-in-btn");
+        const sign_up_btn = document.querySelector("#sign-up-btn");
+        const container = document.querySelector(".container");
 
-            const obtener_datos = new FormData(this);
-                fetch('registrar_datos.php', {
-                method: 'POST',
-                body: obtener_datos
-            })
-            .then(objeto_respuesta => objeto_respuesta.json())
-            .then(data => {
+        sign_up_btn.addEventListener("click", () => {
+            container.classList.add("sign-up-mode");
+        });
 
-                const obtener_mensaje_del_span = document.getElementById('mensaje-resultado');
-                if (data.estado_fk === 'Confirmado') {
-                    obtener_mensaje_del_span.textContent = data.mensaje;
-                    obtener_mensaje_del_span.style.color = '#d2c8c8'; // Mensaje de éxito
-                    obtener_mensaje_del_span.style.background = 'rgba(59, 187, 59, 0.449)';
-                    document.getElementById('formulario-registrarse').reset(); // Limpiar formulario
-                } else {
-                    obtener_mensaje_del_span.textContent = data.mensaje;
-                    obtener_mensaje_del_span.style.color = '#d2c8c8'; // Mensaje de error
-                    obtener_mensaje_del_span.style.background = '#893048b2';
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        sign_in_btn.addEventListener("click", () => {
+            container.classList.remove("sign-up-mode");
         });
     </script>
 </body>
+
 </html>

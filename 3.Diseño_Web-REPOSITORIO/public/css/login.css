@@ -12,10 +12,6 @@ input {
   sans-serif;
 }
 
-main{
-    margin-top: 3.5rem;
-}
-
 #Mensaje-Login-error{
     display: flex;
     justify-content: center;

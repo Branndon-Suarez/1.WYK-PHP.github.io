@@ -166,4 +166,3 @@ SELECT*FROM PRODUCCION;
 END	$	
 
 CALL CONSULTAR_PRODUCCION();													
-                                                    

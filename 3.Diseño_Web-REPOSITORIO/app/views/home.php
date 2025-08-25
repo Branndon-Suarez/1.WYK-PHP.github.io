@@ -1,5 +1,6 @@
 <?php
 include_once "layouts/headers/headerHome.php";
+include_once "layouts/footers/footerHome.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -58,12 +59,10 @@ include_once "layouts/headers/headerHome.php";
     <!-- Inicio-PANADERIA Y CAFETERIA WYK -->
     <section id="INICIO-PAGINA" class="carrusel-videos">
       <video autoplay muted loop class="video-fondo">
-        <source src="mi-video.mp4" type="video/mp4">
+        <source src="../../public/videos/home_background.mp4" type="video/mp4">
       </video>
       <div class="texto-video">
         <h1>PANADERIA Y CAFETERIA WYK</h1>
-        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p> -->
-        <!-- <button class="boton-leer">Leer más</button> -->
       </div>
       <aside class="redes-sociales">
         <a href="roto.html"><i class="fab fa-facebook"></i></a>
@@ -101,28 +100,28 @@ include_once "layouts/headers/headerHome.php";
       <div class="carrusel-container">
         <div class="carrusel" id="carrusel">
           <div class="slide activo">
-            <img src="IMAGENES/panaderia.jpg" alt="Imagen 1">
+            <img src="../../public/images/imgHome/carruselPanaderia.jpg" alt="Panaderia">
             <div class="texto-carrusel">Panaderia</div>
           </div>
           <div class="slide">
-            <img src="IMAGENES/desayunos.jpg" alt="Imagen 2">
+            <img src="../../public/images/imgHome/carruselDesayuno.jpg" alt="Desayunos">
             <div class="texto-carrusel">Desayunos</div>
           </div>
           <div class="slide">
-            <img src="IMAGENES/reposteria.jpg" alt="Imagen 3">
+            <img src="../../public/images/imgHome/carruselReposteria.jpg" alt="Reposteria">
             <div class="texto-carrusel">Reposteria</div>
           </div>
           <div class="slide">
-            <img src="IMAGENES/bebidas.jpg" alt="Imagen 4">
+            <img src="../../public/images/imgHome/carruselBebidas.jpg" alt="Bebidas">
             <div class="texto-carrusel">Bebidas</div>
           </div>
           <div class="slide">
-            <img src="IMAGENES/onces.jpg" alt="Imagen 5">
+            <img src="../../public/images/imgHome/carruselOnces.jpg" alt="Onces">
             <div class="texto-carrusel">Onces</div>
           </div>
           <div class="slide">
-            <img src="IMAGENES/viveres.jpeg" alt="Imagen 6">
-            <div class="texto-carrusel">viveres</div>
+            <img src="../../public/images/imgHome/carruselViveres.jpg" alt="Viveres">
+            <div class="texto-carrusel">Viveres</div>
           </div>
         </div>
         <button class="prev" onclick="moverSlide(-1)">❮</button>
@@ -270,7 +269,7 @@ include_once "layouts/headers/headerHome.php";
     <section class="seccion-video-logo">
       <div class="columna-video">
         <video autoplay muted loop>
-          <source src="mi-video.mp4" type="video/mp4">
+          <source src="../../public/videos/home_background.mp4" type="video/mp4">
           Tu navegador no soporta el video.
         </video>
       </div>
@@ -283,9 +282,7 @@ include_once "layouts/headers/headerHome.php";
     <!-- Formulario y mapa -->
     <section class="seccion-formulario">
       <div class="lado-mapa">
-        <iframe
-          src="https://www.google.com/maps/place/Panaderia+Cafeter%C3%ADa+WYK/@4.621699,-74.1437241,20z/data=!4m15!1m8!3m7!1s0x8e3f9ea3b98eab0d:0x154d1d17d94d7254!2zQ2wuIDI2IFN1ciAjIDczLTc4LCBLZW5uZWR5LCBCb2dvdMOhLCBELkMuLCBCb2dvdMOhLCBCb2dvdMOhLCBELkMu!3b1!8m2!3d4.621838!4d-74.143699!16s%2Fg%2F11x05l_n45!3m5!1s0x8e3f9ea3ba1f15e1:0x723822705661cdae!8m2!3d4.621774!4d-74.1436537!16s%2Fg%2F1pv09bc0n?entry=ttu&g_ep=EgoyMDI1MDYyMy4wIKXMDSoASAFQAw%3D%3D"
-          frameborder="0" allowfullscreen></iframe>
+        <iframe title="Ubicación de Panadería WYK" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d497.10564540214904!2d-74.1437241!3d4.621699!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9ea3ba1f15e1%3A0x723822705661cdae!2sPanaderia%20Cafeter%C3%ADa%20WYK!5e0!3m2!1ses-419!2sco!4v1756089950478!5m2!1ses-419!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="lado-formulario">
         <form>
@@ -301,50 +298,7 @@ include_once "layouts/headers/headerHome.php";
     </section>
   </main>
 
-  <!-- Pie de página -->
-  <footer id="FOOTER" class="footer">
-    <div class="footer-container">
-      <div class="footer-col">
-        <a href="#INICIO-PAGINA"><img src="IMAGENES/LOGO.png" alt="Logo WYK" class="footer-logo"></a>
-        <h1 class="brand-name">WYK</h1>
-        <p class="tagline">
-        <h1>"Un pan para cada mesa, un momento para cada familia."</h1>
-        </p>
-      </div>
-
-
-      <div class="footer-col">
-        <h3>Más sobre WYK</h3>
-        <ul>
-          <li><a href="#">Nosotros</a></li>
-          <li><a href="#">Servicios</a></li>
-          <li><a href="#">Contáctanos</a></li>
-          <li><a href="#">WYK</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3>Síguenos</h3>
-        <ul class="social-links">
-          <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-          <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-          <li><a href="#"><i class="fab fa-tiktok"></i> Tiktok</a></li>
-        </ul>
-        <div class="search-box">
-          <input type="text" placeholder="Buscar..." id="search-input">
-          <button id="search-btn"><i class="fas fa-search"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>
-      <h2>@ 2025 WYK proyecto SENA</h2>
-      </p>
-    </div>
-  </footer>
-
-  <script src="Pagina_Inicio.js"></script>
+  <script src="../../public/js/home.js"></script>
 
 </body>
 </html>

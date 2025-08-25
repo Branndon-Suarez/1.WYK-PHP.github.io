@@ -426,7 +426,7 @@ button:active {
     align-items: center;
     text-align: center;
     flex-direction: column;
-    background-image: url(IMAGENES/fondo_quienes_somos.jpg);
+    background-image: url(../../public/images/imgHome/quienesSomos.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 100px 20px;
@@ -661,7 +661,7 @@ button:active {
 .seccion-categorias {
     padding: 60px 20px;
     text-align: center;
-    background-image: url(IMAGENES/fondo_main.jpg);
+    background-image: url(../images/imgHome/contactanosBackground.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -721,7 +721,7 @@ button:active {
 }
 
 .seccion-contacto {
-    background-image: url(IMAGENES/contactanos.jpg);
+    background-image: url(../images/imgHome/contactanos.jpg);
     background-size: cover;
     background-position: center;
     padding: 150px 20px;
@@ -737,7 +737,7 @@ button:active {
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* Seccion contáctanos video*/
+/* Seccion contáctanos*/
 
 .seccion-video-logo {
     height: 800px;
@@ -746,7 +746,7 @@ button:active {
     align-items: center;
     justify-content: center;
     padding: 60px 20px;
-    background-image: url(IMAGENES/fondo_main.jpg);
+    background-image: url(../images/imgHome/contactanosBackground.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -789,7 +789,7 @@ button:active {
     padding: 50px 20px;
     gap: 50px;
     justify-content: center;
-    background-image: url(IMAGENES/fondo_main.jpg);
+    background-image: url(../images/imgHome/contactanosBackground.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -842,7 +842,7 @@ button:active {
 }
 
 .footer {
-    background-image: url(IMAGENES/footer.jpg);
+    background-image: url(../../public/images/imgHome/footerBackground.jpg);
     background-size: cover;
     background-position: center;
     color: #ffffff;

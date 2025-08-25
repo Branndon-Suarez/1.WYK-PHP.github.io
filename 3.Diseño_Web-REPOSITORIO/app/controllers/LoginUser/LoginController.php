@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../models/LoginEmployee/User.php';
+require_once '../../models/LoginUser/User.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 

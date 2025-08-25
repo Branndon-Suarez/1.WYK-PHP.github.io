@@ -23,7 +23,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="container">
             <div class="forms-container">
                 <div class="signin-signup">
-                    <form action="../../../controllers/LoginEmployee/LoginController.php" class="sign-in-form" method="post">
+                    <form action="../../../controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">

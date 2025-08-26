@@ -58,7 +58,7 @@ if (isset($_SESSION['error_message'])) {
                         </tr><br>
                     </form>
 
-                    <form action="../../../controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="POST">
+                    <form action="../../../controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="post">
                         <h2 class="title">Registrarse</h2>
                         <div class="input-field">
                             <lord-icon

@@ -15,4 +15,16 @@ class Register extends Connection {
             return false;
         }
     }
+
+    public function registerUser ($getUserName, $getPassword) {
+        $stmt = $this->db->prepare(
+            "INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA_SESION,ROL,ESTADO_USUARIO)
+            VALUES (:1_nameUser, :2_passwordUser, NOW(), NOW(), 'usuario', 1)"
+        );
+        $stmt->bindParam(':1_nameUser', $getUserName);
+        $stmt->bindParam(':2_passwordUser', $getPassword);
+        $stmt->execute();
+    }
+
+    }
 }

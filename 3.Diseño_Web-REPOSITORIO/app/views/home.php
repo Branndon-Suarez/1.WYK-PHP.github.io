@@ -1,7 +1,3 @@
-<?php
-include_once "layouts/headers/headerHome.php";
-include_once "layouts/footers/footerHome.php";
-?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,6 +10,7 @@ include_once "layouts/footers/footerHome.php";
 </head>
 
 <body>
+  <?php include_once "layouts/headers/headerHome.php"; ?>
   <nav id="menu-pagina-inicio" class="menu-pagina-inicio">
     <ul>
       <li style="--bg:#ffa117;" class="Color_Desplazar">
@@ -296,8 +293,8 @@ include_once "layouts/footers/footerHome.php";
         </form>
       </div>
     </section>
+    <?php include_once "layouts/footers/footerHome.php"; ?>
   </main>
-
   <script src="../../public/js/home.js"></script>
 
 </body>

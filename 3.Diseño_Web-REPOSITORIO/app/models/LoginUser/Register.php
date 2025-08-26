@@ -25,6 +25,4 @@ class Register extends Connection {
         $stmt->bindParam(':2_passwordUser', $getPassword);
         $stmt->execute();
     }
-
-    }
 }

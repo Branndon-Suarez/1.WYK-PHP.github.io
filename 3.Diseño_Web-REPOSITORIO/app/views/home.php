@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página Principal</title>
-  <link rel="stylesheet" href="../../public/css/home.css">
+  <title><?php echo APP_NAME; ?></title>
+  <link rel="stylesheet" href="<?php echo APP_URL; ?>public/css/home.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-  <?php include_once "layouts/headers/headerHome.php"; ?>
+  <?php include_once "layouts/headers/headerHome.php";?>
   <nav id="menu-pagina-inicio" class="menu-pagina-inicio">
     <ul>
       <li style="--bg:#ffa117;" class="Color_Desplazar">
@@ -56,7 +56,7 @@
     <!-- Inicio-PANADERIA Y CAFETERIA WYK -->
     <section id="INICIO-PAGINA" class="carrusel-videos">
       <video autoplay muted loop class="video-fondo">
-        <source src="../../public/videos/home_background.mp4" type="video/mp4">
+        <source src="<?php echo APP_URL; ?>public/videos/home_background.mp4" type="video/mp4">
       </video>
       <div class="texto-video">
         <h1>PANADERIA Y CAFETERIA WYK</h1>
@@ -97,27 +97,27 @@
       <div class="carrusel-container">
         <div class="carrusel" id="carrusel">
           <div class="slide activo">
-            <img src="../../public/images/imgHome/carruselPanaderia.jpg" alt="Panaderia">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselPanaderia.jpg" alt="Panaderia">
             <div class="texto-carrusel">Panaderia</div>
           </div>
           <div class="slide">
-            <img src="../../public/images/imgHome/carruselDesayuno.jpg" alt="Desayunos">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselDesayuno.jpg" alt="Desayunos">
             <div class="texto-carrusel">Desayunos</div>
           </div>
           <div class="slide">
-            <img src="../../public/images/imgHome/carruselReposteria.jpg" alt="Reposteria">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselReposteria.jpg" alt="Reposteria">
             <div class="texto-carrusel">Reposteria</div>
           </div>
           <div class="slide">
-            <img src="../../public/images/imgHome/carruselBebidas.jpg" alt="Bebidas">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselBebidas.jpg" alt="Bebidas">
             <div class="texto-carrusel">Bebidas</div>
           </div>
           <div class="slide">
-            <img src="../../public/images/imgHome/carruselOnces.jpg" alt="Onces">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselOnces.jpg" alt="Onces">
             <div class="texto-carrusel">Onces</div>
           </div>
           <div class="slide">
-            <img src="../../public/images/imgHome/carruselViveres.jpg" alt="Viveres">
+            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselViveres.jpg" alt="Viveres">
             <div class="texto-carrusel">Viveres</div>
           </div>
         </div>
@@ -295,7 +295,7 @@
     </section>
     <?php include_once "layouts/footers/footerHome.php"; ?>
   </main>
-  <script src="../../public/js/home.js"></script>
+  <script src="../public/js/home.js"></script>
 
 </body>
 </html>

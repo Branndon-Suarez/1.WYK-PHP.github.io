@@ -9,4 +9,3 @@ spl_autoload_register(function($className) {
         error_log("Error autocargador: Clase $className no encontrada en: $archivo");
     }
 });
-echo "hola";

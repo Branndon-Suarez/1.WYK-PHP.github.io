@@ -1,6 +1,11 @@
-# Editar la escritura de las reglas del servidor
 RewriteEngine On
-# No mostrar el listado de archivos o carpetas
-Options All -Indexes
-# URL amigables. Mostrar en el navegador una URL más comoda en vez de la URL literal
-RewriteRule ^([a-zA-Z0-9/ñÑ-]+)$ index.php?views=$1
+
+# Si la solicitud no es para un archivo existente
+RewriteCond %{REQUEST_FILENAME} !-f
+# Si la solicitud no es para un directorio existente  
+RewriteCond %{REQUEST_FILENAME} !-d
+# Redirigir todo a index.php
+RewriteRule ^(.*)$ index.php?views=$1 [L,QSA]
+
+# Redirigir la raíz (/) a home
+RewriteRule ^$ index.php?views=home [L]

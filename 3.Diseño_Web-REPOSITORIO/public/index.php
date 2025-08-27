@@ -1,18 +1,28 @@
 <?php
-echo "<!-- Iniciando index.php -->";
-
-echo "Ruta actual: " . __DIR__ . "<br>";
-echo "Buscando autoload en: " . __DIR__ . '/../app/autoload.php' . "<br>";
 $autoloadPath = __DIR__ . '/../app/autoload.php';
-// Verificar si el archivo existe
+
 if (file_exists($autoloadPath)) {
-    echo "<!-- autoload.php ENCONTRADO -->";
     require_once $autoloadPath;
-    echo "<!-- autoload.php CARGADO -->";
 } else {
-    echo "<!-- ERROR: autoload.php NO ENCONTRADO -->";
-    // Listar archivos en el directorio para debug
-    $files = scandir(__DIR__ . '/../');
-    echo "<!-- Archivos en app/: " . implode(', ', $files) . " -->";
     die("Error: No se puede encontrar autoload.php");
+}
+
+if (isset($_GET['views'])) {
+    $vista = $_GET['views'];
+} else {
+    $vista = 'home';
+}
+
+// Cargar la vista correspondiente
+if ($vista === 'login') {
+    // Cargar login.php desde la carpeta users
+    require_once __DIR__ . '/../app/views/users/login.php';
+} elseif ($vista === 'home') {
+    // Cargar home.php desde la carpeta views
+    require_once __DIR__ . '/../app/views/home.php';
+} else {
+    // Vista no encontrada - error 404
+    http_response_code(404);
+    echo "Página no encontrada";
+    exit;
 }

@@ -1,0 +1,6 @@
+# Editar la escritura de las reglas del servidor
+RewriteEngine On
+# No mostrar el listado de archivos o carpetas
+Options All -Indexes
+# URL amigables. Mostrar en el navegador una URL más comoda en vez de la URL literal
+RewriteRule ^([a-zA-Z0-9/ñÑ-]+)$ index.php?views=$1

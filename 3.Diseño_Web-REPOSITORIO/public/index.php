@@ -1,4 +1,5 @@
 <?php
+use app\controllers\viewsController;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1); // Para mostrar errores de inicio
 error_reporting(E_ALL); // Muestra todos los errores
@@ -10,24 +11,21 @@ try {
     $baseDirectory = __DIR__;
     $request = str_replace($baseDirectory, '', $request);
 
-    // Enrutamiento simple
-    switch ($request) {
-        case '/':
-        case '':
-        case '/home':
-            require_once __DIR__ . '/../app/views/home.php';
-            break;
-        case '/login':
-            require_once __DIR__ . '/../app/controllers/LoginController.php';
-            break;
-        default:
-            // Manejar otras rutas
-            http_response_code(404);
-            echo "Página no encontrada";
-            break;
+    $url = isset($_GET['views']) ? explode("/", $_GET['views']) : ['login'];
+    $vistaSolicitada = $url[0];
+
+    $viewsController = new viewsController();
+    $vista = $viewsController->obtenerVistasControlador($vistaSolicitada);
+
+    // Cargar la vista correspondiente
+    if ($vista == "login" || $vista == "404") {
+        require_once __DIR__ . "/../app/views/users/{$vista}.php";
+    } else {
+        require_once __DIR__ . "/../app/views/inc/navbar.php";
+        require_once __DIR__ . "/../app/views/content/{$vista}.php";
     }
+
+    require_once __DIR__ . "/app/views/inc/script.php";
 } catch (Exception $e) {
-    // Manejo de errores
-    http_response_code(500);
     echo "Error: " . $e->getMessage();
 }

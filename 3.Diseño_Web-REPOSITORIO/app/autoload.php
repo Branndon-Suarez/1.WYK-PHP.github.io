@@ -1,11 +1,12 @@
 <?php
-spl_autoload_register(function ($className) {
-    $baseDirectory = __DIR__.'/';
-
-    $className = str_replace('App\\', '', $className);
-    $file = $baseDirectory . str_replace('\\', '/', $className) . '.php';
+spl_autoload_register(function($className) {
+    $classPath = str_replace('\\', '/', $className);
+        $archivo = __DIR__ . '/' . $classPath . '.php';
     
-    if (file_exists($file)) {
-        require_once $file;
+    if (is_file($archivo)) {
+        require_once $archivo;
+    } else {
+        error_log("Error autocargador: Clase $className no encontrada en: $archivo");
     }
 });
+echo "hola";

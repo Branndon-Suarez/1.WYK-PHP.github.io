@@ -1,25 +1,22 @@
 <?php
-    namespace app\models;
-    class viewsModel{
-        protected function obtenerVistasModelo($vista){
-            $listaBlanca = ["dashboard"];//Obtener todas las palabras de la URL.
+namespace app\models;
 
-            /*'in_array()' : Función pred. php que verifica si un valor específico existe dentro de un array.
-                Sintaxis: in_array('valor_encontrar',$array);
-                Uso en el código: si el nombre de la vista existe en el array $listaBlanca*/
-            if (in_array($vista,$listaBlanca)){
-                /*'is_file() : Función pred. php que verifica si un archivo existe o no es un directorio'*/
-                if (is_file("./app/views/content/".$vista."-view.php")){
-                    $contenido = "./app/views/content/".$vista."-view.php";
-                }else{
-                    $contenido = "404";
-                }
-            }elseif ($vista=="login" || $vista=="index"){
-                $contenido = "login";
-            }else {
-                $contenido = "404";
+class viewsModel {
+    protected function obtenerVistasModelo($vista) {
+        $listaBlanca = ["home", "login"]; // Vistas permitidas
+        
+        if (in_array($vista, $listaBlanca)) {
+            if ($vista == "home" && is_file(__DIR__ . '/../views/home.php')) {
+                return "home";
+            } elseif ($vista == "login" && is_file(__DIR__ . '/../views/users/userLogin/login.php')) {
+                return "login";
+            } else {
+                return "404"; // Vista no encontrada
             }
-
-            return $contenido;
+        } elseif ($vista == "index") {
+            return "home"; // Redirigir index a home
+        } else {
+            return "404"; // Vista no permitida
         }
     }
+}

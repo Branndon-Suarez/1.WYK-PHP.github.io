@@ -23,6 +23,7 @@ $validViews = ['home', 'login', 'dashboard'];
 if (in_array($vista, $validViews)) {
     switch ($vista) {
         case 'login':
+            require_once __DIR__ . '/app/views/layouts/heads/headLogin.php';
             require_once __DIR__ . '/app/views/users/userLogin/login.php';
             break;
         case 'home':

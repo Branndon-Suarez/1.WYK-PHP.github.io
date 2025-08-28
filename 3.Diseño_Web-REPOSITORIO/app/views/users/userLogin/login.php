@@ -9,21 +9,12 @@ if (isset($_SESSION['error_message'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../../../public/css/login.css">
-    <title>Login Empleado</title>
-</head>
-
 <body>
     <main>
         <div class="container">
             <div class="forms-container">
                 <div class="signin-signup">
-                    <form action="../../../controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
+                    <form action="<?php APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -58,7 +49,7 @@ if (isset($_SESSION['error_message'])) {
                         </tr><br>
                     </form>
 
-                    <form action="../../../controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="post">
+                    <form action="<?php APP_URL; ?>app/controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="post">
                         <h2 class="title">Registrarse</h2>
                         <div class="input-field">
                             <lord-icon
@@ -100,7 +91,7 @@ if (isset($_SESSION['error_message'])) {
                             Registrarse
                         </button>
                     </div>
-                    <img src="../../../../public/images/imgLogin/login-1.svg" class="image" alt="">
+                    <img src="<?php APP_URL; ?>public/images/imgLogin/login-1.svg" class="image" alt="">
                 </div>
 
                 <div class="panel right-panel">
@@ -113,7 +104,7 @@ if (isset($_SESSION['error_message'])) {
                             Iniciar Sesión
                         </button>
                     </div>
-                    <img src="../../../../public/images/imgLogin/login-2.svg" class="image" alt="">
+                    <img src="<?php APP_URL; ?>public/images/imgLogin/login-2.svg" class="image" alt="">
                 </div>
             </div>
         </div>

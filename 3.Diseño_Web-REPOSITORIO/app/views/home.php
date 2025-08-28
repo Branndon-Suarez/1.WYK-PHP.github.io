@@ -295,7 +295,7 @@
     </section>
     <?php include_once "layouts/footers/footerHome.php"; ?>
   </main>
-  <script src="../public/js/home.js"></script>
+  <script src="<?php echo APP_URL; ?>/public/js/home.js"></script>
 
 </body>
 </html>

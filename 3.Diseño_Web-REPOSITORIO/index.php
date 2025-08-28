@@ -35,8 +35,8 @@ if (in_array($vista, $validViews)) {
 } else {
     http_response_code(404);
     
-    if (file_exists(__DIR__ . '/config/error_404-500/404.html')) {
-        require_once __DIR__ . '/config/error_404-500/404.html';
+    if (file_exists(__DIR__ . '/config/error_404-500/404.php')) {
+        require_once __DIR__ . '/config/error_404-500/404.php';
     } else {
         echo "<h1>404 - Página No Encontrada</h1>";
         echo "<p>La página '$vista' no existe en nuestra aplicación.</p>";

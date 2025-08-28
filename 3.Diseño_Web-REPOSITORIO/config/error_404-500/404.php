@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 Error</title>
-    <link rel="stylesheet" href="/ERROR_404-500/404.css">
+    <link rel="stylesheet" href="<?php echo APP_URL; ?>public/css/error404.css">
     <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -15,18 +15,18 @@
 <body class="grid-container">
     <header class="grid-header">
         <div class="logo-container">
-            <a href="/1.REPOSITORIO-WYK-PANADERIA.github.io/3.Diseño_Web-REPOSITORIO/PAGINA_WEB/SECCIONES/Pagina_Inicio.html"><img src="/ERROR_404-500/LOGO.png" alt="Logo" class="logo"></a>
+            <a href="<?php echo APP_URL; ?>"><img src="<?php echo APP_URL; ?>public/images/error404/logo.png" alt="Logo" class="logo"></a>
         </div>
     </header>
     <article>
-        <img src="/ERROR_404-500/Error_404_Gato.png" alt="404 Error">
+        <img src="<?php echo APP_URL; ?>public/images/error404/error404Gato.png" alt="404 Error">
     </article>
     <main class="sub-grid-container">
         <h1>¡Lo sentimos. Algo salió mal!</h1>
         <h3>La página que solicitaste no puede ser encontrada...</h3>
         <p class="p-1">Esto puede deberse a que intentas acceder a una página que no existe o ha sido movida.</p>
 
-        <button type="button" class="btn btn-primary"><a href="/1.REPOSITORIO-WYK-PANADERIA.github.io/3.Diseño_Web-REPOSITORIO/PAGINA_WEB/SECCIONES/Pagina_Inicio.html">Ir a página principal</a></button>
+        <a href="<?php echo APP_URL; ?>"><button type="button" class="btn btn-primary">Ir a página principal</button></a>
 
         <p class="p-2">Puedes hacer uso de nuestro buscador:</p>
         <nav id="busqueda" class="navbar navbar-light bg-transparent">

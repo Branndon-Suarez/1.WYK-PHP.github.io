@@ -26,8 +26,9 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/users/userLogin/login.php';
             break;
         case 'home':
-            require_once __DIR__ . '/app/views/home.php';
             require_once __DIR__ . '/app/views/layouts/headers/headerHome.php';
+            require_once __DIR__ . '/app/views/layouts/heads/headHome.php';
+            require_once __DIR__ . '/app/views/home.php';
             break;
         case 'dashboard':
             require_once __DIR__ . '/app/views/dashboard.php';

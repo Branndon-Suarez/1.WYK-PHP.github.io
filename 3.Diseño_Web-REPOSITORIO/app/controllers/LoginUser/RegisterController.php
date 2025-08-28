@@ -1,5 +1,5 @@
 <?php
-require_once '../../models/LoginUser/Register.php';
+namespace app\controllers\LoginUser;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = htmlspecialchars(trim($_POST['name_usuario']));

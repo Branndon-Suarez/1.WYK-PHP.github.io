@@ -1,4 +1,7 @@
 <?php
+namespace config;
+use PDO;
+use PDOException;
 
 class Connection {
     protected $db;

@@ -18,6 +18,16 @@ if (isset($_GET['views'])) {
     $vista = 'home';
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['boton_login'])) {
+        require_once __DIR__ . '/app/controllers/LoginUser/LoginController.php';
+        exit;
+    } elseif (isset($_POST['boton_register'])) {
+        require_once __DIR__ . '/app/controllers/LoginUser/RegisterController.php';
+        exit;
+    }
+}
+
 $validViews = ['home', 'login', 'dashboard'];
 
 if (in_array($vista, $validViews)) {
@@ -27,8 +37,8 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/users/userLogin/login.php';
             break;
         case 'home':
-            require_once __DIR__ . '/app/views/layouts/headers/headerHome.php';
             require_once __DIR__ . '/app/views/layouts/heads/headHome.php';
+            require_once __DIR__ . '/app/views/layouts/headers/headerHome.php';
             require_once __DIR__ . '/app/views/home.php';
             break;
         case 'dashboard':

@@ -1,5 +1,9 @@
 <?php
-require_once "../../../config/Connection.php";
+namespace app\models\LoginUser;
+/**Nota: La clase PDO de PHP de conexion a BD ya tiene namespace por defecto, lo que me permite usarlo cocn 'use'*/
+use PDO;
+use PDOException;
+use config\Connection;
 
 class User extends Connection {
     public function findUserByUsername($getUserName)

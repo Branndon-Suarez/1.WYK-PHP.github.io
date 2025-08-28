@@ -1,5 +1,5 @@
 <?php
-require_once "../../../config/Connection.php";
+namespace app\models\LoginUser\LoginUser;
 
 class Register extends Connection {
     public function findExistenceUser($getUserName) {

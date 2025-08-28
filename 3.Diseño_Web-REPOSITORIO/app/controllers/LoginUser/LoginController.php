@@ -1,6 +1,10 @@
 <?php
+namespace app\controllers\LoginUser;
+
 session_start();
-require_once '../../models/LoginUser/User.php';
+
+use Exception;
+use app\models\LoginUser\User;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
@@ -9,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     if (empty($username) || empty($password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
-        header('Location: ../../views/users/userLogin/login.php');
+        header('Location: ' . APP_URL . 'login');
         exit();
     }
 
@@ -20,30 +24,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
         if ($user && $user_model->verifyPassword($password, $user['PASSWORD_USUARIO'])) {
             if ($user['ESTADO_USUARIO']) {
-                // Guarda los datos importantes del usuario en la sesión.
                 $_SESSION['user_id'] = $user['ID_USUARIO'];
                 $_SESSION['username'] = $user['NOMBRE_USUARIO'];
                 $_SESSION['rol'] = $user['ROL'];
 
-                header('Location: ../../views/dashboard/dashboard.php');
+                header('Location: ' . APP_URL . 'dashboard');
                 exit();
             } else {
                 $_SESSION['error_message'] = 'Tu cuenta ha sido desactivada. Contacta al administrador.';
-                header('Location: ../../views/users/userLogin/login.php');
+                header('Location: ' . APP_URL . 'login');
                 exit();
             }
         } else {
             $_SESSION['error_message'] = 'Usuario o contraseña incorrectos.';
-            header('Location: ../../views/users/userLogin/login.php');
+            header('Location: ' . APP_URL . 'login');
             exit();
         }
 
     } catch (Exception $e) {
         $_SESSION['error_message'] = 'Ocurrió un error. Por favor, inténtalo de nuevo.';
-        header('Location: ../../views/users/userLogin/login.php');
+        header('Location: ' . APP_URL . 'login');
         exit();
     }
 } else {
-    header('Location: ../../views/users/userLogin/login.php');
+    header('Location: ' . APP_URL . 'login');
     exit();
 }

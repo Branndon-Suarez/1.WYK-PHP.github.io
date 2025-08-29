@@ -67,6 +67,6 @@
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="../../../public/js/dashboard.js"></script>
+  <script src="<?php echo \Config\APP_URL; ?>public/js/dashboard.js"></script>
 </body>
 </html>

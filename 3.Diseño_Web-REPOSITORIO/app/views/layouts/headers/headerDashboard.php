@@ -1,7 +1,7 @@
 <header class="encabezado-panel">
     <div class="icono-menu" id="btnMenu"><i class="fas fa-bars"></i></div>
     <div class="buscador">
-        <input type="text" placeholder="Buscar productos, pedidos...">
+        <input type="text" placeholder="¿Qué deseas buscar?">
         <i class="fas fa-search"></i>
     </div>
     <div class="iconos-derecha">

@@ -1,3 +1,10 @@
+:root {
+    --color-primary: #332717;
+    --color-secondary: #45341fd8;
+    --color-background: #210e04;
+    --color-border: rgb(84, 37, 6);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,15 +15,86 @@
 body {
     display: flex;
     height: 100vh;
-    background-image: url(../images/imgDashboard/dashboardBackground.jpg);
+    background-color: var(--color-background);
     background-size: cover;
     background-repeat: no-repeat;
     color: white;
 }
 
+.encabezado-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.icono-menu {
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icono-menu.abierto {
+    transform: rotate(90deg);
+}
+
+.buscador {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 5px 10px;
+    gap: 8px;
+}
+
+.buscador input {
+    border: 2px solid transparent;
+    width: 15em;
+    height: 2.5em;
+    padding-left: 4px;
+    outline: none;
+    background-color: #fff7f7f6;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
+
+.buscador i {
+    margin-left: 8px;
+    font-size: 20px;
+}
+
+.iconos-derecha i {
+    margin-left: 15px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.iconos-derecha i:hover {
+    font-size: 31px;
+    cursor: pointer;
+    border-radius: 50%;
+    margin: 20px;
+    padding: 20px;
+    background-color: #d97706;
+}
+
+.buscador input:hover,
+.buscador input:focus {
+    border: 2px solid #803b04;
+    box-shadow: 0px 0px 0px 7px rgba(179, 82, 26, 0.336);
+    background-color: white;
+}
+
 .menu_lateral {
     width: 70px;
-    background-color: #4b1d06;
+    background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,7 +125,7 @@ body {
 }
 
 .opcion {
-    color: #ffffff;
+    color: #EAE7DD;
     font-size: 20px;
     width: 100%;
     height: 50px;
@@ -115,12 +193,12 @@ body {
 }
 
 .tarjeta {
-    background-color: #4b1d06d7;
+    background-color: var(--color-secondary);
     padding: 20px;
     border-radius: 30px;
-    border: 2px solid rgb(101, 47, 9);
+    border: 2px solid var(--color-border);
     height: 100px;
-    box-shadow: 0 2px 5px rgb(154, 66, 7);
+    box-shadow: 0 2px 6px var(--color-border);
 }
 
 .graficas_panel {
@@ -132,80 +210,9 @@ body {
 .grafico {
     flex: 1;
     min-width: 150px;
-    background-color: #4b1d06;
+    background-color: var(--color-secondary);
     padding: 20px;
     border-radius: 30px;
-    box-shadow: 0 2px 8px rgba(160, 55, 6, 0.938);
+    box-shadow: 0 2px 6px var(--color-border);
     width: 200px;
-}
-
-.encabezado-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background-color: #4b1d06;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    z-index: 1000;
-}
-
-.icono-menu {
-    color: white;
-    font-size: 30px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.icono-menu.abierto {
-    transform: rotate(90deg);
-}
-
-.buscador {
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    padding: 5px 10px;
-    gap: 8px;
-}
-
-.buscador input {
-    border: 2px solid transparent;
-    width: 15em;
-    height: 2.5em;
-    padding-left: 4px;
-    outline: none;
-    background-color: #fff7f7f6;
-    border-radius: 10px;
-    transition: all 0.5s;
-}
-
-.buscador i {
-    margin-left: 8px;
-    font-size: 20px;
-}
-
-.iconos-derecha i {
-    margin-left: 15px;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-.iconos-derecha i:hover {
-    font-size: 31px;
-    cursor: pointer;
-    border-radius: 50%;
-    margin: 20px;
-    padding: 20px;
-    background-color: #d97706;
-}
-
-.buscador input:hover,
-.buscador input:focus {
-    border: 2px solid #803b04;
-    box-shadow: 0px 0px 0px 7px rgba(179, 82, 26, 0.336);
-    background-color: white;
 }

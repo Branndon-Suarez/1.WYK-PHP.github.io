@@ -32,7 +32,7 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/home.php';
             break;
         case 'dashboard':
-            require_once __DIR__ . '/app/views/dashboard.php';
+            require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             break;
     }
 } else {

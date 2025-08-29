@@ -4,6 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
+require_once __DIR__ . '/../../../config/app.php';
+require_once __DIR__ . '/../../autoload.php';
+
 use Exception;
 use app\models\LoginUser\User;
 
@@ -14,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     if (empty($username) || empty($password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
-        header('Location: ' . \Config\APP_URL . 'login');
+    header('Location: ' . \Config\APP_URL . 'login');
         exit();
     }
 
@@ -44,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     } catch (Exception $e) {
         $_SESSION['error_message'] = 'Ocurrió un error. Por favor, inténtalo de nuevo.';
-        header('Location: ' . \Config\APP_URL . 'login');
+    header('Location: ' . \Config\APP_URL . 'login');
         exit();
     }
 } else {

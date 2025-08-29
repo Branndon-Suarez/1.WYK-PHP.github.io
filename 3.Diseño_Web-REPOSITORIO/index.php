@@ -53,7 +53,7 @@ if (in_array($vista, $validViews)) {
     } else {
         echo "<h1>404 - Página No Encontrada</h1>";
         echo "<p>La página '$vista' no existe en nuestra aplicación.</p>";
-        echo "<a href='" . APP_URL . "'>Volver al inicio</a>";
+        echo "<a href='" . \Config\APP_URL . "'>Volver al inicio</a>";
     }
     exit;
 }

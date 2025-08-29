@@ -1,7 +1,7 @@
 <footer id="FOOTER" class="footer">
     <div class="footer-container">
         <div class="footer-col">
-            <a href="#INICIO-PAGINA"><img src="../../public/images/imgHome/logo.png" alt="Logo WYK" class="footer-logo"></a>
+            <a href="#INICIO-PAGINA"><img src="<?php echo \Config\APP_URL; ?>/public/images/imgHome/logo.png" alt="Logo WYK" class="footer-logo"></a>
             <h1 class="brand-name">WYK</h1>
             <p class="tagline">
             <h1>"Un pan para cada mesa, un momento para cada familia."</h1>

@@ -48,7 +48,7 @@
     <!-- Inicio-PANADERIA Y CAFETERIA WYK -->
     <section id="INICIO-PAGINA" class="carrusel-videos">
       <video autoplay muted loop class="video-fondo">
-        <source src="<?php echo APP_URL; ?>public/videos/home_background.mp4" type="video/mp4">
+        <source src="<?php echo \Config\APP_URL; ?>public/videos/home_background.mp4" type="video/mp4">
       </video>
       <div class="texto-video">
         <h1>PANADERIA Y CAFETERIA WYK</h1>
@@ -89,27 +89,27 @@
       <div class="carrusel-container">
         <div class="carrusel" id="carrusel">
           <div class="slide activo">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselPanaderia.jpg" alt="Panaderia">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselPanaderia.jpg" alt="Panaderia">
             <div class="texto-carrusel">Panaderia</div>
           </div>
           <div class="slide">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselDesayuno.jpg" alt="Desayunos">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselDesayuno.jpg" alt="Desayunos">
             <div class="texto-carrusel">Desayunos</div>
           </div>
           <div class="slide">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselReposteria.jpg" alt="Reposteria">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselReposteria.jpg" alt="Reposteria">
             <div class="texto-carrusel">Reposteria</div>
           </div>
           <div class="slide">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselBebidas.jpg" alt="Bebidas">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselBebidas.jpg" alt="Bebidas">
             <div class="texto-carrusel">Bebidas</div>
           </div>
           <div class="slide">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselOnces.jpg" alt="Onces">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselOnces.jpg" alt="Onces">
             <div class="texto-carrusel">Onces</div>
           </div>
           <div class="slide">
-            <img src="<?php echo APP_URL; ?>public/images/imgHome/carruselViveres.jpg" alt="Viveres">
+            <img src="<?php echo \Config\APP_URL; ?>public/images/imgHome/carruselViveres.jpg" alt="Viveres">
             <div class="texto-carrusel">Viveres</div>
           </div>
         </div>
@@ -287,7 +287,7 @@
     </section>
     <?php include_once "layouts/footers/footerHome.php"; ?>
   </main>
-  <script src="<?php echo APP_URL; ?>/public/js/home.js"></script>
+  <script src="<?php echo \Config\APP_URL; ?>/public/js/home.js"></script>
 
 </body>
 </html>

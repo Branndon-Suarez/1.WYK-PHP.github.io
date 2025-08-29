@@ -14,7 +14,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="container">
             <div class="forms-container">
                 <div class="signin-signup">
-                    <form action="<?php echo APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
+                    <form action="<?php echo \Config\APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -49,7 +49,7 @@ if (isset($_SESSION['error_message'])) {
                         </tr><br>
                     </form>
 
-                    <form action="<?php echo APP_URL; ?>app/controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="post">
+                    <form action="<?php echo \Config\APP_URL; ?>app/controllers/LoginUser/RegisterController.php" id="formulario-registrarse" class="sign-up-form" method="post">
                         <h2 class="title">Registrarse</h2>
                         <div class="input-field">
                             <lord-icon
@@ -91,7 +91,7 @@ if (isset($_SESSION['error_message'])) {
                             Registrarse
                         </button>
                     </div>
-                    <img src="<?php echo APP_URL; ?>public/images/imgLogin/login-1.svg" class="image" alt="">
+                    <img src="<?php echo \Config\APP_URL; ?>public/images/imgLogin/login-1.svg" class="image" alt="">
                 </div>
 
                 <div class="panel right-panel">
@@ -104,7 +104,7 @@ if (isset($_SESSION['error_message'])) {
                             Iniciar Sesión
                         </button>
                     </div>
-                    <img src="<?php echo APP_URL; ?>public/images/imgLogin/login-2.svg" class="image" alt="">
+                    <img src="<?php echo \Config\APP_URL; ?>public/images/imgLogin/login-2.svg" class="image" alt="">
                 </div>
             </div>
         </div>

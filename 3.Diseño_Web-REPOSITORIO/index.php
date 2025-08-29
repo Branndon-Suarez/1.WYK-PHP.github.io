@@ -18,7 +18,7 @@ if (isset($_GET['views'])) {
     $vista = 'home';
 }
 
-$validViews = ['home', 'login', 'dashboard'];
+$validViews = ['home', 'login', 'dashboard', 'logout'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -32,7 +32,19 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/home.php';
             break;
         case 'dashboard':
-            require_once __DIR__ . '/app/views/dashboard/dashboard.php';
+            if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
+                require_once __DIR__ . '/app/views/dashboard/dashboard.php';
+            } else {
+                header('Location: ' . \Config\APP_URL . 'login');
+                exit();
+            }
+            break;
+        case 'logout':
+            session_start();
+            session_unset();
+            session_destroy();
+            header('Location: ' . \Config\APP_URL . 'login');
+            exit();
             break;
     }
 } else {

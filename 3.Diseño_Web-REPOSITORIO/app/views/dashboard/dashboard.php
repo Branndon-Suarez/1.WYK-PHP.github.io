@@ -30,7 +30,9 @@
       <div class="opcion"><i class="fas fa-question"></i><span class="texto">Ayuda</span></div>
       <div class="opcion"><i class="fas fa-cog"></i><span class="texto">Configuración</span></div>
       <div class="opcion"><i class="fas fa-lock"></i><span class="texto">Seguridad</span></div>
-      <div class="opcion"><i class="fas fa-sign-out-alt"></i><span class="texto">Salir</span></div>
+      <div class="opcion"><i class="fas fa-sign-out-alt"></i><span class="texto">
+        <a href="<?php echo \Config\APP_URL . 'logout'; ?>">Salir</a>
+      </span></div>
     </nav>
   </aside>
 

@@ -1,27 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Panadería</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="../../../public/css/dashboard.css"/>
-</head>
 <body>
-  <header class="encabezado-panel">
-    <div class="icono-menu" id="btnMenu"><i class="fas fa-bars"></i></div>
-    <div class="buscador">
-      <input type="text" placeholder="Buscar productos, pedidos...">
-      <i class="fas fa-search"></i>
-    </div>
-    <div class="iconos-derecha">
-      <i class="fas fa-bell"></i>
-      <i class="fas fa-shopping-cart"></i>
-      <i class="fas fa-user"></i>
-      <i class="fas fa-cog"></i>
-    </div>
-  </header>
-
   <aside class="menu_lateral" id="menuLateral">
     <nav class="opciones_menu">
       <div class="opcion activa"><i class="fas fa-home"></i><span class="texto">Inicio</span></div>

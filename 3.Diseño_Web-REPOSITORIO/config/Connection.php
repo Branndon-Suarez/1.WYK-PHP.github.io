@@ -15,7 +15,7 @@ class Connection {
     private $dbType = 'mysql';
     private $host = 'sql306.infinityfree.com';
     private $dbName = 'if0_39799237_proyecto_wyk';
-    private $user = 'if0_39799237_proyecto_wyk';
+    private $user = 'if0_39799237';
     private $pass = 'Q2Ffn9gQHt7aZrH';
 
     public function __construct() {

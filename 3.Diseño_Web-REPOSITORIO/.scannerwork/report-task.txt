@@ -2,5 +2,5 @@ projectKey=scanner-panaderia-web
 serverUrl=http://localhost:9000
 serverVersion=25.7.0.110598
 dashboardUrl=http://localhost:9000/dashboard?id=scanner-panaderia-web
-ceTaskId=47dd64c0-6b6c-4a79-b31c-92a09764ebb6
-ceTaskUrl=http://localhost:9000/api/ce/task?id=47dd64c0-6b6c-4a79-b31c-92a09764ebb6
+ceTaskId=e4c3da37-ec7a-4981-a46d-1e0ed10244bc
+ceTaskUrl=http://localhost:9000/api/ce/task?id=e4c3da37-ec7a-4981-a46d-1e0ed10244bc

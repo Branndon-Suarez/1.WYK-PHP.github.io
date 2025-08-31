@@ -34,7 +34,17 @@ if (isset($_SESSION['error_message'])) {
                                 style="width:50px;height:50px"
                                 id="icon_2-candado">
                             </lord-icon>
-                            <input type="password" name="password" placeholder="Digite su contraseña" required>
+                            <input type="password" name="password" placeholder="Digite su contraseña" onpaste="return false;" oncopy="return false;" oncut="return false;" required>
+                        </div>
+
+                        <div class="input-field">
+                            <lord-icon
+                                src="https://cdn.lordicon.com/zbbefawl.json"
+                                trigger="hover"
+                                style="width:50px;height:50px"
+                                id="icon_2-candado">
+                            </lord-icon>
+                            <input type="password" name="confirm_password" placeholder="Verificar contraseña" onpaste="return false;" oncopy="return false;" oncut="return false;" required>
                         </div>
                         <button type="submit" name="boton_login" class="btn solid">Iniciar Sesión</button>
 

@@ -14,10 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     $username = htmlspecialchars(trim($_POST['name_usuario']));
     $password = htmlspecialchars(trim($_POST['password']));
+    $confirm_password = htmlspecialchars(trim($_POST['confirm_password']));
 
-    if (empty($username) || empty($password)) {
+    if (empty($username) || empty($password) || empty($confirm_password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
     header('Location: ' . \Config\APP_URL . 'login');
+        exit();
+    } elseif ($password !== $confirm_password) {
+        $_SESSION['error_message'] = 'Las contraseñas no coinciden.';
+        header('Location: ' . \Config\APP_URL . 'login');
         exit();
     }
 

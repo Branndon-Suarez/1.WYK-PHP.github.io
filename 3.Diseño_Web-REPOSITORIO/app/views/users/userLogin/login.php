@@ -118,7 +118,7 @@ if (isset($_SESSION['error_message'])) {
         </div>
     </main>
 
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js" integrity="sha256-1C3IZn03j9193YxLyK8PoFh0a0rfXzXk5KhS3OiN53s=" crossorigin="anonymous"></script>
     <script>
         const sign_in_btn = document.querySelector("#sign-in-btn");
         const sign_up_btn = document.querySelector("#sign-up-btn");

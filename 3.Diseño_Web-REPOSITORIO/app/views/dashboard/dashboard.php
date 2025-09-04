@@ -66,7 +66,10 @@
       </div>
     </section>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" 
+    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA=" 
+    crossorigin="anonymous">
+  </script>
   <script src="<?php echo \Config\APP_URL; ?>public/js/dashboard.js"></script>
 </body>
 </html>

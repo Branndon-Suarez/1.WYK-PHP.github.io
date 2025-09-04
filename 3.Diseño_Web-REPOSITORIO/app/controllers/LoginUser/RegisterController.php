@@ -1,5 +1,7 @@
 <?php
 namespace app\controllers\LoginUser;
+use Exception;
+use app\models\LoginUser\LoginUser\Register;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = htmlspecialchars(trim($_POST['name_usuario']));

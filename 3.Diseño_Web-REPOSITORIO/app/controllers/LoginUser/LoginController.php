@@ -10,6 +10,8 @@ require_once __DIR__ . '/../../autoload.php';
 use Exception;
 use app\models\LoginUser\User;
 
+define('URL_LOGIN', \Config\APP_URL . 'login');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     $username = htmlspecialchars(trim($_POST['name_usuario']));
@@ -22,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
         exit();
     } elseif ($password !== $confirm_password) {
         $_SESSION['error_message'] = 'Las contraseñas no coinciden.';
-        header('Location: ' . \Config\APP_URL . 'login');
+        header('Location: ' . URL_LOGIN);
         exit();
     }
 
@@ -41,21 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
                 exit();
             } else {
                 $_SESSION['error_message'] = 'Tu cuenta ha sido desactivada. Contacta al administrador.';
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . URL_LOGIN);
                 exit();
             }
         } else {
             $_SESSION['error_message'] = 'Usuario o contraseña incorrectos.';
-            header('Location: ' . \Config\APP_URL . 'login');
+            header('Location: ' . URL_LOGIN);
             exit();
         }
 
     } catch (Exception $e) {
         $_SESSION['error_message'] = 'Ocurrió un error. Por favor, inténtalo de nuevo.';
-    header('Location: ' . \Config\APP_URL . 'login');
+    header('Location: ' . URL_LOGIN);
         exit();
     }
 } else {
-    header('Location: ' . \Config\APP_URL . 'login');
+    header('Location: ' . URL_LOGIN);
     exit();
 }

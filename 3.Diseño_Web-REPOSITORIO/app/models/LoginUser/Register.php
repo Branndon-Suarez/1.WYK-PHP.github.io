@@ -1,5 +1,8 @@
 <?php
 namespace app\models\LoginUser\LoginUser;
+use PDO;
+use PDOException;
+use config\Connection;
 
 class Register extends Connection {
     public function findExistenceUser($getUserName) {

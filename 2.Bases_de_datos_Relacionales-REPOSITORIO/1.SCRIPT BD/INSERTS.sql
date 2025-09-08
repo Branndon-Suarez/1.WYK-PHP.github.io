@@ -10,7 +10,7 @@ INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA
 -- Usuarios para Empleados Y Admin
 ('carlos.admin', SHA2('admin123', 256), NOW(), NOW(),'ADMINISTRADOR', 1),
 ('sofia.panadera', SHA2('empleado123', 256), NOW(), NOW(),'EMPLEADO', 1),
-('luis.cajero', SHA2('cajero789', 256), NOW(), NOW(),'EMPLEADO', 1),
+('luis.cajero', SHA2('cajero789', 256), NOW(), NOW(),'EMPLEADO', 0),
 ('ana.mesera', SHA2('mesera101', 256), NOW(), NOW(),'EMPLEADO', 1),
 -- Usuarios para Cliente
 ('javier.cliente', SHA2('cliente123', 256), NOW(), NOW(),'CLIENTE', 1),
@@ -20,6 +20,7 @@ INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA
 
 
 INSERT INTO EMPLEADO (CC_EMPLEADO, NOMBRE_EMPLEADO, RH_EMPLEADO, TEL_EMPLEADO, EMAIL_EMPLEADO, ID_CARGO_FK_EMPLEADO,ID_USUARIO_FK_EMPLEADO, ESTADO_EMPLEADO) VALUES
+(999999999, 'Sistema', 'N/A', 0, 'N/A', 1, 1, 1),
 (1001001001, 'Carlos Ramirez', 'O+', 3101234567, 'carlos.ramirez@wyk.com', 1, 1, 1),
 (1002002002, 'Sofia Gomez', 'A+', 3111234567, 'sofia.gomez@wyk.com', 2, 2, 1),
 (1003003003, 'Luis Fernandez', 'B+', 3121234567, 'luis.fernandez@wyk.com', 3, 3, 1),

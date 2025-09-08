@@ -1,37 +1,59 @@
 <?php
-namespace app\controllers\LoginUser;
-use Exception;
-use app\models\LoginUser\LoginUser\Register;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = htmlspecialchars(trim($_POST['name_usuario']));
-    $password = htmlspecialchars(trim($_POST['password']));
+require_once __DIR__ . '/../../../config/app.php';
+require_once __DIR__ . '/../../autoload.php';
 
-    if (empty($username) || empty($password)) {
-        $_SESSION['message_register'] = "Por favor, complete todos los campos.";
-        header('Location: ../../views/users/userLogin/login.php');
-        exit();
-    }
+use app\models\LoginUser\UserClientModel;
 
-    try {
-        $register_Model = new Register();
-        $userRegister = $register_Model->findExistenceUser($username);
+class RegisterController {
 
-        if(isset($userRegister)) {
-            $_SESSION['message_register'] = "El usuario ya existe.";
-            header('Location: ../../views/users/userLogin/login.php');
-            exit();
-        } else {
-            $register_Model->registerUser($username, $password);
-            $_SESSION['message_register'] = "Registro exitoso.";
+    public function register() {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+            if ($_POST["password"] !== $_POST["confirm_password"]) {
+                $_SESSION['error_message'] = "Las contraseñas no coinciden.";
+                header('Location: ' . \Config\APP_URL . 'login');
+                exit;
+            }
+
+            if (strlen($_POST["password"]) < 8) {
+                $_SESSION['error_message'] = "La contraseña debe tener al menos 8 caracteres.";
+                header('Location: ' . \Config\APP_URL . 'login');
+                exit;
+            }
+
+            $userData = [
+                "nombre_usuario" => $_POST["name_usuario"],
+                "password"       => hash('sha256', $_POST["password"])
+            ];
+
+            $clientData = [
+                "documento"          => $_POST["num_documento"],
+                "tipo_documento"     => $_POST["tipo_documento"],
+                "nombre_completo"    => $_POST["nombre_completo"],
+                "telefono"           => $_POST["telefono"],
+                "email"              => $_POST["email"],
+                "id_empleado_sistema"=> 1 // el ID del empleado "sistema"
+            ];
+
+            $model = new UserClientModel();
+            try {
+                $model->createUserAndClient($userData, $clientData);
+                $_SESSION['success_message'] = 'Cuenta creada exitosamente. Por favor, inicia sesión.';
+                header('Location: ' . \Config\APP_URL . 'login');
+                exit;
+            } catch (\Exception $e) {
+                echo "Error: " . $e->getMessage();
+                $_SESSION['error_message'] = 'Error al crear cuenta.';
+                header('Location: ' . \Config\APP_URL . 'login');
+            }
         }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        $_SESSION['message_register'] = "Error en el registro. Intente más tarde.";
-        header('Location: ../../views/users/userLogin/login.php');
-        exit();
     }
-} else {
-    header('Location: ../../views/users/userLogin/login.php');
-    exit();
 }
+
+$controller = new RegisterController();
+$controller->register();

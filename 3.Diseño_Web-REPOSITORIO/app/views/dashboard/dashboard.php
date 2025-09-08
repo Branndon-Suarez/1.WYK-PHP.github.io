@@ -1,3 +1,17 @@
+<?php
+$success_message = '';
+if (isset($_SESSION['success_message'])) {
+    $success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
+$error_message = '';
+if (isset($_SESSION['error_message'])) {
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <body>
@@ -66,10 +80,16 @@
       </div>
     </section>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" 
-    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA=" 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"
+    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
     crossorigin="anonymous">
   </script>
   <script src="<?php echo \Config\APP_URL; ?>public/js/dashboard.js"></script>
+  <script src="<?php echo \Config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+  <script>
+    const successMessage = "<?php echo $success_message; ?>";
+    const errorMessage = "<?php echo $error_message; ?>";
+  </script>
+  <script src="<?php echo \Config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 </body>
 </html>

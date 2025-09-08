@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     if (empty($username) || empty($password) || empty($confirm_password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
-    header('Location: ' . \Config\APP_URL . 'login');
+        header('Location: ' . \Config\APP_URL . 'login');
         exit();
     } elseif ($password !== $confirm_password) {
         $_SESSION['error_message'] = 'Las contraseñas no coinciden.';
@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
                 $_SESSION['user_id'] = $user['ID_USUARIO'];
                 $_SESSION['username'] = $user['NOMBRE_USUARIO'];
                 $_SESSION['rol'] = $user['ROL'];
+                $_SESSION['success_message'] = '¡Inicio de sesión exitoso!' . ' Bienvenido, ' . $_SESSION['username'] . '.';
 
                 header('Location: ' . \Config\APP_URL . 'dashboard');
                 exit();

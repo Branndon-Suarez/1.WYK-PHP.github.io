@@ -1,7 +1,0 @@
-RewriteEngine On
-# Si la solicitud no es para un archivo existente
-RewriteCond %{REQUEST_FILENAME} !-f
-# Si la solicitud no es para un directorio existente  
-RewriteCond %{REQUEST_FILENAME} !-d
-# URL amigables. Mostrar en el navegador una URL más comoda en vez de la URL literal
-RewriteRule ^([a-zA-Z0-9/ñÑ-]+)$ index.php?views=$1 [L,QSA]

@@ -1,0 +1,896 @@
+/*@font-face {
+    font-family: 'Outfit';
+    src: url('tipografía/Outfit-Black.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('tipografía/Outfit-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}los dos archivos, "Outfit-Black" y "Outfit-Medium" a la vez se juntan para dar un grosor intermedio*/
+
+/*-------------------------------------------------------- 🚀 COLORES ------------------------------------------------------- */
+/*#F2F2F2 	#93BBBF 	#374342 	#899B9F 	#0D0D0D     #EA4961*/
+/*#CCCFD9 	#A69B03 	#A68B03 	#61460F 	#23201B     #A63754*/
+/*#E0B6F2 	#CB91F2 	#A150F2 	#40591B 	#24483A*/
+/*-------------------------------------------------------- 🏁 COLORES ------------------------------------------------------- */
+
+
+
+
+/*--------------------------------------------------- 🚀 AJUSTES GENERALES -------------------------------------------------- */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Work Sans', 
+    sans-serif;
+    cursor: url(../IMG/cursor.png), auto;
+}
+
+:root{
+    --clr:#202023; 
+}
+
+html, body{
+    height: 100%; /*No tener problema para que el body se cambie segun el contenido, donde sea independiente y 
+                    siempre con un valor que ocupe todo el fondo del contenido*/
+}
+
+body{
+    display: flex;/*BODY se ajuste*/
+    background-color: var(--clr) !important;
+    height: 100%;
+}
+
+main{
+    flex: 1;
+    margin-left: 80px;
+    overflow-x: auto;
+    padding: 20px;
+    background: var(--clr);
+    transition: margin-left 0.4s linear; /* Linear para que sea constante */
+}
+
+
+main.min-main{
+    margin: 80px;
+}
+
+button, b{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+#cerrar{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+a, lord-icon{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+a{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+select{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+option{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+input{
+    cursor: url(../IMG/cursor_escribir.png), auto;
+}
+
+.profile:hover{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+#icon_vista:hover{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+.icon_vista_tabla:hover{
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+/*--------------------------------------------------- 🏁 AJUSTES GENERALES -------------------------------------------------- */
+
+
+
+
+
+/*PERSONALZIACIÓN aviso alerta*/
+.aviso_alerta{
+    border: solid 3px #202023;
+    border-radius: 5%;
+    background-color: #BEBDBF;
+}
+
+.titulo_personalizado{
+    color: #e11a1a;
+}
+
+.t{
+    color: #f06e1160,#a6375568;
+}
+/**/
+
+
+
+
+
+/*----------------------------------------------- 🚀 BARRA NAVEGACIÓN SUPERIOR ---------------------------------------------- */
+.menu-superior{
+    background-color: #a63755c1;
+    border-bottom: 2px solid #0F1D26;
+    height: 80px;
+    position: fixed;/*QUEDE FIJA E INDEPENDIENTE AL CONTENIDO*/
+    width: 100%;
+    padding-right: -20px;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;/*Hace que el logo quede a la izquierda y las opciones a la derecha*/
+    flex-wrap: wrap;
+}
+
+.nav-link{
+    color: white;
+    text-decoration: none;
+}
+
+.imagen_logo{
+    width: 100px !important;
+    height: 70px !important;
+    padding: 10px 10px;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 80px;/*Para centrar horizontal según el "height 80 de header"*/
+    transition: 0.5s;
+}
+
+.nav-menu{
+    display: flex;
+    margin: 10px 10px;/*como es un "li" y no boton, el tamaño se define por su margen*/
+    list-style: none;
+}
+
+#boton-usuario{
+    align-items: center;
+    border-width: 2px;
+    border-color: #276a7c;
+}
+
+#boton-usuario:hover{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    background-color: #93BBBF;
+    transition: 0.3s;
+}
+/*----------------------------------------------- 🏁 BARRA NAVEGACIÓN SUPERIOR ----------------------------------------------*/
+
+
+
+
+/*--------------------------------------------------- 🚀 BARRA BÚSQUEDA -----------------------------------------------------*/
+
+#container_busqueda{
+    text-align: center;
+    position: relative;
+}
+
+#sub-container_busqueda{
+    padding-left: 20%;
+}
+
+#barra_busqueda{
+    border: solid 2px #000000;
+    border-radius: 5px 5px 5px 5px;
+    max-width: 62% !important;
+    text-align: center;
+    justify-content: center;
+}
+
+#barra_busqueda:hover{
+    background-color: #98e6ed;
+    transition: 1s;
+}
+/*--------------------------------------------------- 🚀 BARRA BÚSQUEDA -----------------------------------------------------*/
+
+
+
+
+
+/*---------------------------------------------- 🚀 BARRA NAVEGACIÓN LATERAL ------------------------------------------------*/
+.sidebar{
+    position: fixed; /*QUEDE FIJA E INDEPENDIENTE AL CONTENIDO*/
+    left: 0;
+    margin-top: 80px;
+    padding-bottom: 45px;
+    z-index: 100;
+    width: 80px;
+    height: 100vh;
+    background:#a63755c1;
+    transition: 0.5s;
+    padding-left: 10px;
+    overflow: scroll;
+    transition: 0.4s linear;/*Linear para que se constante*/
+
+    /*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ */   
+    scrollbar-width: none;  
+}
+
+
+/*PERMITE DESPLAZAR EL MENÚ ACTIVANDO FUNCION DE LA VARIABLE "sibedar" AL FINAL DEL DOC. HTML*/
+.sidebar.active{
+    width: 250px;
+}
+
+.sidebar ul{
+    position: relative;
+    height: 100vh;
+}
+
+.sidebar ul  li{
+    position: relative;
+    list-style: none;
+}
+
+/*DESPLAZAR CON COLOR*/
+.sidebar ul  li.Color_Desplazar{
+    background: var(--clr);
+    border-top-left-radius: 50px; /*Dar forma circular del contorno*/
+    border-bottom-left-radius: 50px; /*Dar forma circular del contorno*/
+}
+
+.sidebar ul  li.Color_Desplazar::before{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -20px;
+    right: 0;
+    border-bottom-right-radius: 20px;
+    box-shadow: 5px 5px 0 5px var(--clr);
+    background: transparent;
+}
+
+.sidebar ul  li.Color_Desplazar::after{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: -20px;
+    right: 0;
+    border-top-right-radius: 20px;
+    box-shadow: 5px -5px 0 5px var(--clr);
+    background: transparent;
+}
+
+.sidebar ul li {
+    position: relative;
+    display: flex;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.sidebar ul li .icon{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    padding-left: 10px;
+    height: 70px;
+    font-size: 1.5em;
+    color: #fff;
+    transition: 0.5s;
+}
+
+.sidebar ul li.Color_Desplazar .icon{
+    color: #fff;
+}
+
+.sidebar ul li .text a{
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 400;
+}
+
+.sidebar ul li .text a{
+    position: relative;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding-left: 10px;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+
+
+.sidebar ul li:hover .icon,
+.sidebar ul li:hover .text a{
+    color: var(--bg);
+}
+
+.sidebar ul li.Color_Desplazar .icon::before{
+    content: '';
+    position: absolute;
+    inset: 5px;
+    width: 60px;
+    background: #EA4961;
+    border-radius: 50px;
+    transition: 0.3s;
+}
+
+.sidebar ul li.Color_Desplazar:hover .icon::before{
+    background: var(--bg);
+}
+/*---------------------------------------------- 🏁 BARRA NAVEGACIÓN LATERAL ------------------------------------------------*/
+
+
+
+/*--------------------------------------------------- 🚀 BOTON DESPLEGABLE-----------------------------------------------------*/
+.menuToggle{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    position: absolute;
+    top: 10px;
+    margin-left: 100px;
+    width: 30px;
+    height: 30px;
+    background: #5a2727a9;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.6s;
+}
+
+.menuToggle::before{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 3px;
+    margin-right: 0;
+    background: rgb(197, 184, 189);
+    transform: translateY(-9px);
+    transition: 0.5s;
+    box-shadow: 0 9px 0 rgb(197, 184, 189);
+}
+
+.menuToggle::after{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 3px;
+    background: rgb(197, 184, 189);
+    transform: translateY(9px);
+    transition: 0.5s;
+}
+
+
+.menuToggle.active::before{
+    transform: translateY(0px) rotate(45deg);
+    box-shadow: 0 0 0 rgb(197, 184, 189);
+}
+
+.menuToggle.active::after{
+    transform: translateY(0px) rotate(-45deg);
+}
+/*--------------------------------------------------- 🏁 BOTON DESPLEGABLE-----------------------------------------------------*/
+
+
+
+
+/*----------------------------------------------------- 🚀 IMG SIDEBEAR -------------------------------------------------------*/
+.icon_img{
+    max-width: 50px;
+    position: relative;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+.fac_compra_img{
+    max-width: 22px;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+.entrada_img{
+    max-width: 40px;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+.salida_img{
+    max-width: 40px;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+.avanzar_img{
+    max-width: 25px;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+
+.regresar_img{
+    max-width: 25px;
+    cursor: url(../IMG/cursor_clic.png), auto;
+}
+/*----------------------------------------------------- 🏁 IMG SIDEBEAR -------------------------------------------------------*/
+
+
+
+
+/*----------------------------------------------------- 🚀 IMG PASSWORD -------------------------------------------------------*/
+
+#input_contraseña{
+    max-width: 90%;
+}
+
+#icon_vista{
+    width: 35px;
+    cursor: pointer;
+}
+.input_contraseña_tabla{
+    background-color: transparent;
+    border: none;
+}
+
+.icon_vista_tabla{
+    width: 35px;
+    cursor: pointer;
+}
+/*----------------------------------------------------- 🏁 IMG PASSWORD -------------------------------------------------------*/
+
+
+
+
+/*---------------------------------------------------- 🚀 CREAR FORMULARIO-----------------------------------------------------*/
+    /*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ 
+    {
+    scrollbar-width: none;
+    }*/
+
+.BOTON_ROL-EMPLE{
+    margin-top: 35px !important;
+}
+
+#Contenedor_Botones_Crear{
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+}
+
+#Boton_Crear{
+    font-weight: 500;
+    cursor: url(../IMG/cursor_clic.png), auto;
+    margin-top: 35px;
+}
+#Boton_Usuario{
+    font-weight: 500;
+    cursor: url(../IMG/cursor_clic.png), auto;
+    margin-top: 35px;
+}
+
+select {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+/* Sobrescribir los estilos de .mt-5 */
+.mt-5 {
+    margin-top: 0 !important; /* Eliminar margen superior */
+}
+
+/*ENCABEZADO*/
+.modal-header{
+    display: flex !important;
+    justify-content: center !important;
+    background-color: #6e7c80;
+}
+
+#encabezado-modal > b{
+    margin: 0 100px 0 100px;
+}
+
+#cerrar{
+    font-size: 30px !important;
+}
+
+.modal-header #encabezado-modal{
+    color: #A63754;
+    background-color: #6e7c80;
+}
+
+
+.modal-header #cerrar {
+    margin: 0;
+  }
+
+
+#contenedor-info-login{
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.modal-body{
+    background-color: #BEBDBF;
+    z-index: 2000;
+    scrollbar-width: none; 
+}
+
+/*CONTENIDO*/
+.modal-body lord-icon{
+    margin-right: 10px;
+}
+
+#Sub_Contenido_Crear{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribuye los elementos de manera equitativa */
+    margin-top: 10px;
+}
+
+.input-box{
+    width: calc(50% - 20px); /* Calcula el ancho para que quepan dos input-box en una fila */
+    padding: 5px;
+    box-sizing: border-box; /* Ajusta el padding dentro del ancho especificado */
+}
+
+.combo-box{
+    width: calc(50% - 20px); /*Calcula el ancho para que quepan dos input-box en una fila*/
+    padding: 5px;
+    box-sizing: border-box; /*Ajusta el padding dentro del ancho especificado*/
+}
+
+.input-box input, label{
+    width: 100%;
+    color: #A63754;
+    font-weight:900;
+    margin-left: 10px;
+    margin: 5px 0;
+}
+
+#añadir {
+    display: flex;
+    align-items: center; /*Centra verticalmente el label y el ícono*/
+    justify-content: space-between; /*Ajusta la distribución*/
+    width: calc(25% - 20px); /*Mantén el ancho calculado*/
+}
+
+#añadir > label {
+    margin-right: 5px;/*Espacio entre el label y el ícono*/
+    font-weight: 900;
+    color: #A63754;
+}
+
+.combo-box label{
+    color: #A63754;
+    font-size: 20px;
+    font-weight:900;
+    z-index: 1000;
+}
+
+.input-box label{
+    font-size: 20px;
+    text-shadow: 0.8px  0px 0.5px #faefef,
+                0.8px  0px 0.5px #faefef,
+                0.8px  0px 0.5px #faefef,
+                0.8px 0px 0.5px #faefef;
+}
+
+.input-box input{
+    background:#EEEEEE;
+    transition: 0.5s;
+}
+
+.input-box input:hover{
+    background-color: #93BBBF;
+    transition: 0.5s;
+}
+
+*select option :hover{
+    background-color: #93BBBF;
+}
+
+.input-box input, ::placeholder {
+    color:#000000;
+    font-size: 18px;
+}
+/*---------------------------------------------------- 🏁 CREAR FORMULARIO-----------------------------------------------------*/
+
+
+
+
+/*-------------------------------------------------- 🚀 ACTUALIZAR FORMULARIO--------------------------------------------------*/
+#Contenido_Actualizar{
+    position: relative;
+    margin-right: 20px;
+    margin-top: 80px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #BEBDBF;
+}
+
+#Sub_Contenido_Actualizar{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#h2_Actualizar{
+    color: #A63754;
+    background-color: #6e7c80;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 5px;
+    border-bottom: 1px solid rgb(0, 0, 0);
+    width: 100%;
+}
+
+#h2_Actualizar lord-icon{
+    padding: 2px 2px;
+}/*NOTA: Tanto el diseño de los input y label del formulario actualizar se comparten con el formulariode Crear*/
+/*-------------------------------------------------- 🏁 ACTUALIZAR FORMULARIO--------------------------------------------------*/
+
+
+
+
+/*-------------------------------------------------------- 🚀 BOTONES ---------------------------------------------------------*/
+.boton{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    position: relative;
+    display: block;
+    padding: 10px 10px;
+    margin: 5px 5px;
+    border-radius: 4px;
+    text-transform: uppercase; /* Transforma el texto a mayúsculas.*/
+    background-color: #6e7c80;
+    color: #fff;
+    font-size: 18px;
+    overflow: hidden;/*Oculta cualquier contenido que se desborde del elemento.*/
+    transition: all 2s ease;/*Aplica una transición suave de 500 milisegundos a todos los cambios de propiedades.*/
+    border: 3px solid #A63754;
+    z-index: 0;
+    font-weight: bold;
+}
+
+.BOTON-DETALLE-MODAL{
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+}
+
+.BOTON-DETALLE-MODAL-2{
+    display: flex;
+    justify-content: start;
+    margin-top: 1rem;
+}
+
+#BOTON-REGISTRO-DETALLADO{
+    font-weight: 500;
+    background-color: #188bab;
+    border: 3px solid #37a66d;
+}
+
+#BOTON-REGISTRO-DETALLADO::before{
+    background-color: #37a66d !important;
+}
+
+.boton a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.boton::before{/*"::before" para insertar estilos y contenido antes de seleccionarlo*/
+    /*en este caso la barra diagonal que atraviesa el boton*/
+    content: '';/*Define el contenido del pseudo-elemento como vacío.*/
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    background-color: #A63754;
+    transition: all 2s ease;
+    z-index: -1;
+}
+
+.animacion-buton::before{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    left: -520px;/*desplaza la barra diagonal a la izquierda*/
+    right: 0;
+    width: 90%;
+    height: 90%;
+    transition: all 2s ease;
+    transform: rotate(45deg);/*aqui se crea la inclinación de la barra*/
+    box-shadow: 0 0 10px #A63754, 0 0 20px #A63754, 0 0 20px #A63754;
+}
+
+.animacion-buton:hover::before{
+    left: 520px;/*desplaza la barra diagonal a la derecha*/
+}
+
+.animacion-buton:hover{
+    cursor: url(../IMG/cursor_clic.png), auto !important;
+    color: #000000;
+    transition: 1s;
+}
+
+.animacion-buton a{
+    transition: 1s;
+}
+
+.animacion-buton:hover a{
+    text-decoration: none;
+    color: #000000;
+}
+
+.animacion-buton-2::before{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    left: -520px;/*desplaza la barra diagonal a la izquierda*/
+    right: 0;
+    width: 90%;
+    height: 90%;
+    transition: all 2s ease;
+    transform: rotate(45deg);/*aqui se crea la inclinación de la barra*/
+    box-shadow: 0 0 10px #37a66d, 0 0 20px #37a66d, 0 0 20px #37a66d;
+}
+
+.animacion-buton-2:hover::before{
+    left: 520px;/*desplaza la barra diagonal a la derecha*/
+}
+
+.animacion-buton-2:hover{
+    cursor: url(../IMG/cursor_clic.png), auto !important;
+    color: #000000;
+    transition: 1s;
+}
+
+.animacion-buton-2 a{
+    transition: 1s;
+}
+
+.animacion-buton-2:hover a{
+    text-decoration: none;
+    color: #000000;
+}
+/*-------------------------------------------------------- 🏁 BOTONES ---------------------------------------------------------*/
+
+
+
+
+/*----------------------------------------------- 🚀 ESTILOS TABLA CONSULTAS -------------------------------------------------*/
+#TABLA_CONSULTAS{
+    /*position: absolute;
+    left: 50%;
+    transform: translate(-50%);*/
+    text-align: center;
+    font-size: 18px;
+    background-color: #bfbdbd;
+    margin-top: 15px;
+}
+
+#TABLA_CONSULTAS_PRODUCTO{
+    text-align: center;
+    background-color: #bfbdbd;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+#TABLA_CONSULTAS tbody tr{
+    transition: 0.3s;
+}
+
+#TABLA_CONSULTAS tbody tr:hover{
+    background-color: #93BBBF;
+    transition: 0.3s;
+}
+
+#Contenido_Tabla_Detallada{
+    display: block !important;
+    justify-content: center !important;
+}
+
+#TABLA_CONSULTAS_DETALLADAS{
+    /*position: absolute;
+    left: 50%;
+    transform: translate(-50%);*/
+    text-align: center;
+    font-size: 18px;
+    background-color: #bfbdbd;
+    margin-top: 15px;
+}
+
+#TABLA_CONSULTAS_DETALLADAS{
+    text-align: center;
+    background-color: #bfbdbd;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+#TABLA_CONSULTAS_DETALLADAS tbody tr{
+    transition: 0.3s;
+}
+
+#TABLA_CONSULTAS_DETALLADAS tbody tr:hover{
+    background-color: #93BBBF;
+    transition: 0.3s;
+}
+
+#TABLA_CONSULTAS_PRODUCTO tbody tr:hover{
+    background-color: #93BBBF;
+    transition: 0.3s;
+}
+
+.TABLA_VISTAS{
+    margin-top: 5rem !important;
+}
+
+#h2_Consultas{
+    background-color: #6e7c80;
+    border-radius: 10px;
+    padding: 10px 10px;
+}
+
+#h2_Consultas span{
+    color: #19424d;
+    text-align: center;
+    font-size: 25px;
+}
+
+#sub_h2_Consultas{
+    padding: 10px;
+}
+
+#Sub_Encabezado_Consultas td{
+    background-color: #276a7c;
+    font-weight: 600;
+    color: #202023;
+    border: solid 2px #202023;
+    padding: 5px 5px;
+    text-align: center;
+}
+
+tbody td{
+    padding: 5px 5px;
+}
+
+#fila_boton-Actu_Elim{
+    cursor: url(../IMG/cursor_clic.png), auto;
+    border: none;
+}
+/*---------------------------------------------- 🏁 ESTILOS TABLA CONSULTAS -----------------------------------------------*/
+
+
+
+
+/*----------------------------------------------- 🚀 CREAR LOGIN/REGISTRO ------------------------------------------------*/
+/*PENDIENTE ROLES*/
+/*----------------------------------------------- 🏁 CREAR LOGIN/REGISTRO ------------------------------------------------*/
+
+
+
+
+/*---------------------------------------------------- 🚀 RESPONSIVE ----------------------------------------------------*/
+@media (max-width: 600px){ /*Aca el menú desplegable ya fijado, cuando la interfaz tenga un tamaño menor a 600px*/
+    .sidebar{              /*este menú desaparecerá para dejar un botom a la derecha superior para desplegarlo*/
+        position: fixed;
+        left: -250px;
+    }
+    .max-barra-lateral{
+        left: 0;
+    }
+    .menu{
+        display: flex;
+    }
+
+}
+/*---------------------------------------------------- 🏁 RESPONSIVE ----------------------------------------------------*/

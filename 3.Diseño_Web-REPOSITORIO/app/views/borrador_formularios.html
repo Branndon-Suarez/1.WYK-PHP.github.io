@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura de Venta - Panadería</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    :root {
+      --primary: #933e0d;
+      --primary-2: #5e2507;
+      --accent: #f59e0b;
+      --ring: #e2e8f0;
+      --bg: #f6f7ff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --shadow: 0 10px 30px rgba(24, 24, 48, .08);
+      --radius-xl: 18px;
+      --radius-2xl: 22px;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      background-image: url(fondo-formulario.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: linear-gradient(180deg, var(--primary), var(--primary-2));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 12px;
+      color: #fff;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #f59e0b, #fb923c);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, .12);
+      transform: translateY(-2px);
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    /* Main */
+    .main {
+      padding: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, .7);
+      border: 1px solid var(--ring);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(8px);
+    }
+
+    .search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--ring);
+    }
+
+    .search input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 220px;
+    }
+
+    .search:focus,
+    .search:hover {
+      outline: none;
+      border-color: rgba(108, 46, 5, 0.4);
+      background-color: #fff;
+      box-shadow: 0 0 0 6px rgba(59, 26, 2, 0.1);
+    }
+
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--ring);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      padding: 10px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(.95);
+    }
+
+
+    .formulario {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-grupo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-grupo label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-grupo input,
+    .form-grupo select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-grupo input:focus,
+    .form-grupo input:hover {
+      outline: none;
+      border-color: rgba(108, 46, 5, 0.4);
+      background-color: #fff;
+      box-shadow: 0 0 0 6px rgba(59, 26, 2, 0.1);
+    }
+
+    /* boton de Uiverse. */
+    button {
+      font-family: inherit;
+      font-size: 20px;
+      background: rgb(135, 61, 4);
+      color: white;
+      padding: 0.7em 1em;
+      padding-left: 0.9em;
+      display: flex;
+      align-items: center;
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    button span {
+      display: block;
+      margin-left: 0.3em;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button svg {
+      display: block;
+      transform-origin: center center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    button:hover .svg-wrapper {
+      animation: fly-1 0.6s ease-in-out infinite alternate;
+    }
+
+    button:hover svg {
+      transform: translateX(1.2em) rotate(45deg) scale(1.1);
+    }
+
+    button:hover span {
+      transform: translateX(5em);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes fly-1 {
+      from {
+        transform: translateY(0.1em);
+      }
+
+      to {
+        transform: translateY(-0.1em);
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .totales {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .totales div {
+      margin: 6px 0;
+      font-weight: 600;
+    }
+
+    .totales span {
+      min-width: 100px;
+      display: inline-block;
+      text-align: right;
+    }
+
+    .tabla-factura {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .tabla-factura th {
+      text-align: left;
+      padding: 12px;
+      background: #f5f5f5;
+      font-weight: 700
+    }
+
+    .tabla-factura td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle
+    }
+
+    .acciones {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Fila desactivada */
+    .row-disabled {
+      color: #9ca3af;
+      text-decoration: line-through;
+      background-color: #f3f4f6;
+    }
+
+    .row-disabled td {
+      font-style: italic;
+      /* opcional: cursiva */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🥐</div>
+    <div class="nav-btn" title="Inicio"><i data-feather="home"></i></div>
+    <div class="nav-btn" title="Formularios"><i data-feather="file-text"></i></div>
+    <div class="nav-btn" title="Ventas"><i data-feather="shopping-bag"></i></div>
+    <div class="nav-btn" title="Pedidos"><i data-feather="shopping-cart"></i></div>
+    <div class="nav-btn" title="Productos"><i data-feather="package"></i></div>
+    <div class="nav-btn" title="Clientes"><i data-feather="users"></i></div>
+    <div class="spacer"></div>
+    <div class="nav-btn" title="Ajustes"><i data-feather="settings"></i></div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <strong>Factura de Venta</strong>
+      <div class="search">
+        <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
+        <input placeholder="Buscar cliente…">
+      </div>
+    </div>
+
+    <!-- Formulario factura -->
+    <form id="formFactura" class="formulario">
+
+      <div class="form-grupo">
+        <label for="fecha">Fecha y Hora</label>
+        <input type="datetime-local" id="fecha" required>
+      </div>
+
+      <div class="form-grupo">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" maxlength="200" required>
+      </div>
+
+      <div class="form-grupo">
+        <label for="empleado">Empleado (ID):</label>
+        <input type="number" id="empleado" required>
+      </div>
+
+      <div class="form-grupo">
+        <label for="pedido">Pedido (ID):</label>
+        <input type="number" id="pedido" required>
+      </div>
+
+      <div class="form-grupo">
+        <label for="cliente">Cliente (ID):</label>
+        <input type="number" id="cliente" required>
+      </div>
+
+      <div class="form-grupo">
+        <label for="subtotal">Subtotal:</label>
+        <input type="number" step="0.01" id="subtotal" required>
+      </div>
+
+      <!-- Muestro IVA y Total en el formulario (readonly) para ver el cálculo antes de agregar -->
+      <div class="form-grupo">
+        <label for="iva">IVA (19%):</label>
+        <input type="number" id="iva" readonly>
+      </div>
+
+      <div class="form-grupo">
+        <label for="total">Total:</label>
+        <input type="number" id="total" readonly>
+      </div>
+
+      <div class="form-grupo">
+        <label for="estado">Estado:</label>
+        <select id="estado" required>
+          <option value="PENDIENTE">Pendiente</option>
+          <option value="PAGADA">Pagada</option>
+          <option value="CANCELADA">Cancelada</option>
+        </select>
+      </div>
+
+      <!--boton de enviar de universe (submit)-->
+      <button type="submit">
+        <div class="svg-wrapper-1">
+          <div class="svg-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path fill="currentColor"
+                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
+              </path>
+            </svg>
+          </div>
+        </div>
+        <span>Enviar Formulario</span>
+      </button>
+
+    </form>
+
+    <!-- Tabla -->
+    <table id="tablaFactura" class="tabla-factura" aria-live="polite">
+      <thead>
+        <tr>
+          <th style="width:90px">Fecha Factura</th>
+          <th>Descripción</th>
+          <th style="width:110px">Empleado</th>
+          <th style="width:110px">Pedido</th>
+          <th style="width:110px">Cliente</th>
+          <th style="width:110px">Estado</th>
+          <th style="width:140px">Subtotal</th>
+          <th style="width:200px">Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <td class="acciones" style="text-align:center">
+      <button class="btn-accion btn-update" title="Actualizar">
+        <i data-feather="edit-2"></i>
+      </button>
+      <button class="btn-accion btn-delete" title="Eliminar">
+        <i data-feather="trash-2"></i>
+      </button>
+      <button class="btn-accion btn-toggle" title="Desactivar/activar">
+        <i data-feather="slash"></i>
+      </button>
+    </td>
+
+
+    <!-- Totales (globales) -->
+    <div class="totales">
+      <div class="muted">Subtotal: <span id="subtotalGlobal">$0.00</span></div>
+      <div class="muted">IVA (19%): <span id="ivaGlobal">$0.00</span></div>
+      <div>Total: <span id="totalGlobal">$0.00</span></div>
+    </div>
+
+  </main>
+
+  <script>
+    // Inicializa Feather (reemplaza los <i data-feather>)
+    feather.replace();
+
+    // ===== Utilidades =====
+    const IVA_RATE = 0.19;
+
+    const formatCurrency = (n) => {
+      if (isNaN(n)) return '$0.00';
+      return '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    };
+
+    const parseCurrency = (str) => {
+      if (!str) return 0;
+      const num = String(str).replace(/[^0-9.-]+/g, '');
+      return parseFloat(num) || 0;
+    };
+
+    // ===== Elementos =====
+    const facturaForm = document.getElementById('formFactura');          // formulario
+    const tbody = document.querySelector('#tablaFactura tbody');         // cuerpo de la tabla 
+
+    // Totales globales (abajo)
+    const subtotalGlobalEl = document.getElementById('subtotalGlobal');
+    const ivaGlobalEl = document.getElementById('ivaGlobal');
+    const totalGlobalEl = document.getElementById('totalGlobal');
+
+    // Campos del formulario que calculan IVA/Total por factura (permiten digitar el subtotal)
+    const inputSubtotal = document.getElementById('subtotal');
+    const inputIva = document.getElementById('iva');
+    const inputTotal = document.getElementById('total');
+
+    // Calcula IVA y Total del formulario cuando el usuario digita el Subtotal
+    const recalcularFormulario = () => {
+      const sub = parseFloat(inputSubtotal.value) || 0;
+      const iva = sub * IVA_RATE;
+      const tot = sub + iva;
+      inputIva.value = Number(iva.toFixed(2));
+      inputTotal.value = Number(tot.toFixed(2));
+    };
+
+    // Añadimos listener sólo si existe el inputSubtotal
+    if (inputSubtotal) inputSubtotal.addEventListener('input', recalcularFormulario);
+
+    // --- Recalcular totales SOLO para un registro ---
+    function recalcularTotalesIndividual(subtotal) {
+      const iva = subtotal * 0.19;
+      const total = subtotal + iva;
+
+      // Mostrar en la caja de totales
+      subtotalEl.textContent = formatCurrency(subtotal);
+      ivaEl.textContent = formatCurrency(iva);
+      totalEl.textContent = formatCurrency(total);
+    }
+
+    // --- Envío del formulario ---
+    facturaForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Capturamos valores
+      const descripcion = document.getElementById('descripcion').value.trim();
+      const empleado = document.getElementById('empleado').value;
+      const pedido = document.getElementById('pedido').value;
+      const cliente = document.getElementById('cliente').value;
+      const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+      const estado = document.getElementById('estado').value;
+      const fecha = new Date().toISOString().slice(0, 16).replace("T", " ");
+
+      if (!descripcion || subtotal <= 0) {
+        alert('Ingrese datos válidos');
+        return;
+      }
+
+      // Insertar fila
+      agregarFila({ fecha, descripcion, empleado, pedido, cliente, estado, subtotal });
+
+      // Recalcular solo con este subtotal
+      recalcularTotalesIndividual(subtotal);
+
+      // Limpiar formulario
+      facturaForm.reset();
+    });
+
+    // ===== Agregar fila =====
+    function agregarFila({ fecha, descripcion, empleado, pedido, cliente, estado, subtotal }) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+      <td class="td-fecha">${fecha}</td>
+      <td class="td-descripcion">${descripcion}</td>
+      <td class="td-empleado">${empleado}</td>
+      <td class="td-pedido">${pedido}</td>
+      <td class="td-cliente">${cliente}</td>
+      <td class="td-estado">${estado}</td>
+      <td class="td-sub" style="text-align:right">${formatCurrency(subtotal)}</td>
+      <td class="acciones" style="text-align:center">
+        <button class="btn btn-warning btn-update" title="Actualizar"><i data-feather="edit-2"></i></button>
+        <button class="btn btn-danger btn-delete" title="Eliminar"><i data-feather="trash-2"></i></button>
+        <button class="btn btn-secondary btn-toggle" title="Desactivar/activar"><i data-feather="slash"></i></button>
+      </td>
+    `;
+      tbody.appendChild(tr);
+
+      feather.replace();
+
+      recalcularTotalesGlobales();
+
+    }
+
+    // ===== Envío de formulario =====
+    facturaForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const fechaRaw = document.getElementById('fecha').value;                         // datetime-local
+      const fecha = fechaRaw ? fechaRaw.replace('T', ' ') : '';
+      const descripcion = document.getElementById('descripcion').value.trim();
+      const empleado = document.getElementById('empleado').value;
+      const pedido = document.getElementById('pedido').value;
+      const cliente = document.getElementById('cliente').value;
+      const estado = document.getElementById('estado').value;
+      const subtotal = parseFloat(inputSubtotal.value) || 0;
+
+      if (!descripcion) return alert('Ingrese la descripción.');
+      if (subtotal <= 0) return alert('Ingrese un subtotal válido.');
+
+      agregarFila({ fecha, descripcion, empleado, pedido, cliente, estado, subtotal });
+
+      // Limpiar y resetear cálculos del form
+      facturaForm.reset();
+      inputIva.value = '';
+      inputTotal.value = '';
+    });
+
+    // ===== Acciones en la tabla (delegación) =====
+    tbody.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const tr = e.target.closest('tr');
+      if (!tr) return;
+
+      // Eliminar
+      if (btn.classList.contains('btn-delete')) {
+        if (confirm('¿Eliminar esta factura?')) {
+          tr.remove();
+          recalcularTotalesGlobales();
+        }
+        return;
+      }
+
+      // Desactivar (solo visual, no excluye del total)
+      if (btn.classList.contains('btn-toggle')) {
+        tr.classList.toggle('row-disabled');
+        return;
+      }
+
+      // Actualizar (cambiar descripción y/o subtotal)
+      if (btn.classList.contains('btn-update')) {
+        const descCell = tr.querySelector('.td-descripcion');
+        const subCell = tr.querySelector('.td-sub');
+
+        const nuevaDesc = prompt('Nueva descripción:', descCell.textContent);
+        if (nuevaDesc !== null) descCell.textContent = nuevaDesc;
+
+        const nuevoSubStr = prompt('Nuevo subtotal:', parseCurrency(subCell.textContent));
+        if (nuevoSubStr !== null) {
+          const nuevoSub = parseFloat(nuevoSubStr);
+          if (!isNaN(nuevoSub) && nuevoSub >= 0) {
+            subCell.textContent = formatCurrency(nuevoSub);
+            recalcularTotalesGlobales();
+          } else {
+            alert('Subtotal inválido.');
+          }
+        }
+        return;
+      }
+    });
+
+    // Iniciar totales en 0
+    document.addEventListener('DOMContentLoaded', () => {
+      recalcularFormulario();
+      recalcularTotalesGlobales();
+    });
+  </script>
+
+</body>
+
+</html>

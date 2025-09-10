@@ -26,6 +26,9 @@ INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA
 ('pedro.cliente', SHA2('cliente789', 256), NOW(), NOW(),'CLIENTE', 1),
 ('laura.cliente', SHA2('cliente101', 256), NOW(), NOW(),'CLIENTE', 1);
 
+INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA_SESION,ROL,ESTADO_USUARIO) VALUES 
+('carlos.admin', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('admin123', 'a','*'),'A','*'),'e','!'),'E','!'),'i','&'),'I','&'),'o','%'),'O','%'),'u','$'),'U','$'),'emaytin.wjyk')), NOW(), NOW(),'ADMINISTRADOR', 1);
+
 
 select*from USUARIO;
 														/*👩‍🍳INSERT EMPLEADO👨‍🍳

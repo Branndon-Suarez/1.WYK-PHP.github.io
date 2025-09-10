@@ -119,7 +119,7 @@ if (isset($_SESSION['error_message'])) {
               <div>11:45 AM</div>
               <div style="text-align:right"><span class="pill bad">Cancelado</span></div>
             </div>
-          </div>
+          </div> 
 
           <!-- Charts -->
           <div class="grid grid-col-12">

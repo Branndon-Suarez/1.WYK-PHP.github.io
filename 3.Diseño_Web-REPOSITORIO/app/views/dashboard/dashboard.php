@@ -1,23 +1,20 @@
 <?php
 $success_message = '';
 if (isset($_SESSION['success_message'])) {
-    $success_message = $_SESSION['success_message'];
-    unset($_SESSION['success_message']);
+  $success_message = $_SESSION['success_message'];
+  unset($_SESSION['success_message']);
 }
 
 $error_message = '';
 if (isset($_SESSION['error_message'])) {
-    $error_message = $_SESSION['error_message'];
-    unset($_SESSION['error_message']);
+  $error_message = $_SESSION['error_message'];
+  unset($_SESSION['error_message']);
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" >
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+
 <body>
   <div class="app">
     <!-- Sidebar -->
@@ -32,8 +29,7 @@ if (isset($_SESSION['error_message'])) {
       <div class="spacer"></div>
       <div class="nav-btn" title="Ajustes"><i data-feather="settings"></i></div>
       <div class="nav-btn"><i class="fas fa-sign-out-alt"></i><span class="texto">
-        
-      </span></div>
+        </span></div>
     </aside>
 
     <main class="main">
@@ -69,13 +65,76 @@ if (isset($_SESSION['error_message'])) {
 
           <!-- KPIs -->
           <div class="stats">
-            <div class="stat"><div><div class="muted">Ventas hoy</div><div class="kpi">$ 2.580</div></div><div class="icon"><i data-feather="bar-chart-2"></i></div></div>
-            <div class="stat"><div><div class="muted">Pedidos</div><div class="kpi">145</div></div><div class="icon"><i data-feather="shopping-cart"></i></div></div>
-            <div class="stat"><div><div class="muted">Productos</div><div class="kpi">38</div></div><div class="icon"><i data-feather="package"></i></div></div>
-            <div class="stat"><div><div class="muted">Clientes</div><div class="kpi">120</div></div><div class="icon"><i data-feather="users"></i></div></div>
+            <div class="stat">
+              <div>
+                <div class="muted">Ventas hoy</div>
+                <div class="kpi">$ 2.580</div>
+              </div>
+              <div class="icon"><i data-feather="bar-chart-2"></i></div>
+            </div>
+            <div class="stat">
+              <div>
+                <div class="muted">Pedidos</div>
+                <div class="kpi">145</div>
+              </div>
+              <div class="icon"><i data-feather="shopping-cart"></i></div>
+            </div>
+            <div class="stat">
+              <div>
+                <div class="muted">Productos</div>
+                <div class="kpi">38</div>
+              </div>
+              <div class="icon"><i data-feather="package"></i></div>
+            </div>
+            <div class="stat">
+              <div>
+                <div class="muted">Clientes</div>
+                <div class="kpi">120</div>
+              </div>
+              <div class="icon"><i data-feather="users"></i></div>
+            </div>
           </div>
 
           <!-- Tabla de pedidos -->
+          <table>
+            <caption style="text-align:left; font-weight:600; margin-bottom:8px;">Pedidos recientes</caption>
+            <thead>
+              <tr>
+                <th>Cargo</th>
+                <th style="text-align:right">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ana López</td>
+                <td>Pan francés ×12</td>
+                <td>26 Jun 2025</td>
+                <td>09:30 AM</td>
+                <td style="text-align:right"><span class="pill ok">Entregado</span></td>
+              </tr>
+              <tr>
+                <td>Carlos Pérez</td>
+                <td>Croissant ×6</td>
+                <td>26 Jun 2025</td>
+                <td>10:15 AM</td>
+                <td style="text-align:right"><span class="pill info">En proceso</span></td>
+              </tr>
+              <tr>
+                <td>María Gómez</td>
+                <td>Torta vainilla ×1</td>
+                <td>26 Jun 2025</td>
+                <td>11:00 AM</td>
+                <td style="text-align:right"><span class="pill warn">Pendiente</span></td>
+              </tr>
+              <tr>
+                <td>Juan Ruiz</td>
+                <td>Buñuelo ×24</td>
+                <td>26 Jun 2025</td>
+                <td>11:45 AM</td>
+                <td style="text-align:right"><span class="pill bad">Cancelado</span></td>
+              </tr>
+            </tbody>
+          </table>
           <div class="table card">
             <header>
               <strong>Mis pedidos</strong>
@@ -119,7 +178,7 @@ if (isset($_SESSION['error_message'])) {
               <div>11:45 AM</div>
               <div style="text-align:right"><span class="pill bad">Cancelado</span></div>
             </div>
-          </div> 
+          </div>
 
           <!-- Charts -->
           <div class="grid grid-col-12">
@@ -142,14 +201,37 @@ if (isset($_SESSION['error_message'])) {
               <span class="pill" style="margin-left:auto;background:#eef2ff;color:#3730a3;">Jun</span>
             </div>
             <div class="calendar">
-              <div class="d">L</div><div class="d">M</div><div class="d">M</div><div class="d">J</div><div class="d">V</div><div class="d">S</div><div class="d">D</div>
+              <div class="d">L</div>
+              <div class="d">M</div>
+              <div class="d">M</div>
+              <div class="d">J</div>
+              <div class="d">V</div>
+              <div class="d">S</div>
+              <div class="d">D</div>
               <!-- simple 30 days -->
-              <script>for(let i=1;i<=30;i++)document.write(`<button class="${i===26?'today':''}">${i}</button>`)</script>
+              <script>
+                for (let i = 1; i <= 30; i++) document.write(`<button class="${i===26?'today':''}">${i}</button>`)
+              </script>
             </div>
             <div class="list">
-              <div class="li"><i data-feather="check-circle" style="color:#16a34a"></i><div><div style="font-weight:600;">Entrega mayorista</div><div class="hero-note">26 Jun · 5:00 AM</div></div></div>
-              <div class="li"><i data-feather="clock" style="color:#f59e0b"></i><div><div style="font-weight:600;">Horneado de pandebono</div><div class="hero-note">26 Jun · 9:00 AM</div></div></div>
-              <div class="li"><i data-feather="x-circle" style="color:#f43f5e"></i><div><div style="font-weight:600;">Pedido cancelado</div><div class="hero-note">26 Jun · 11:45 AM</div></div></div>
+              <div class="li"><i data-feather="check-circle" style="color:#16a34a"></i>
+                <div>
+                  <div style="font-weight:600;">Entrega mayorista</div>
+                  <div class="hero-note">26 Jun · 5:00 AM</div>
+                </div>
+              </div>
+              <div class="li"><i data-feather="clock" style="color:#f59e0b"></i>
+                <div>
+                  <div style="font-weight:600;">Horneado de pandebono</div>
+                  <div class="hero-note">26 Jun · 9:00 AM</div>
+                </div>
+              </div>
+              <div class="li"><i data-feather="x-circle" style="color:#f43f5e"></i>
+                <div>
+                  <div style="font-weight:600;">Pedido cancelado</div>
+                  <div class="hero-note">26 Jun · 11:45 AM</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -225,4 +307,5 @@ if (isset($_SESSION['error_message'])) {
   </script>
   <script src="<?php echo \Config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 </body>
+
 </html>

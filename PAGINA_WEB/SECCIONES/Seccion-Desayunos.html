@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarjetas menú🥐</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url(IMAGENES/fondo_11.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .encabezado {
+      text-align: center;
+      color: #5a2d0c;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: rgba(255, 240, 220, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(90, 45, 12, 0.2);
+    }
+ 
+    .titulo-menu {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Georgia', serif;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .descripcion-menu {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    
+    .titulo-menu {
+      margin: 10px;
+      color: #6a4309;
+      font-family: 'Georgia', serif;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+
+    .card-container {
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 320px;
+      margin: auto;
+      height: 540px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(69, 30, 4, 0.959);
+      background: rgb(247, 221, 188);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+
+    .card-front img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card-front h2 {
+      font-size: 1.2rem;
+      margin-top: 0.8rem;
+      text-align: center;
+    }
+
+    .card-front p {
+      font-size: 0.95rem;
+      color: #3a2005;
+    }
+
+    .container_h2 {
+      border: solid 1px #482604;
+      box-shadow: 0 12px 30px rgba(255, 123, 0, 0.4);
+      padding: 2px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-align: center;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      align-items: center;
+      text-align: center;
+      background-color: #eddab7;
+    }
+
+    .card-back h3 {
+      margin-bottom: 0.5rem;
+      color: #3a2005;
+    }
+
+    .card-back p {
+      font-size: 0.95rem;
+      color: #492c03;
+    }
+
+    .card-front button,
+    .card-back button {
+      margin-top: 1rem;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #9c5b0a;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .card-front button:hover,
+    .card-back button:hover {
+      background-color: #bc5515;
+      transform: scale(1.05);
+    }
+
+    .ingredientes {
+       list-style: none;
+       padding: 0;
+       margin: 0.5rem 0;
+       text-align: left;
+    }
+
+    .ingredientes li {
+       font-size: 0.95rem;
+       margin: 6px 0;
+       display: flex;
+       align-items: center;
+       gap: 10px;
+       color: #523304;
+    }
+
+    .ingredientes li:hover {
+      color: rgb(179, 54, 9);
+    }
+
+    .card-back h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #5a2d0c;
+    }
+
+    .precio {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #482604;
+    }
+
+    .container_precio {
+      border: solid 1px #482604;
+      box-shadow: 0 12px 30px rgba(255, 123, 0, 0.4);
+      padding: 2px;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-align: center;
+    }
+    
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 12px 30px rgba(255, 123, 0, 0.4);
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="encabezado">
+  <h1 class="titulo-menu">🍳 Menú Energizante de Desayunos Caseros</h1>
+  <p class="descripcion-menu">Comienza tu día con nuestras opciones deliciosas y equilibradas, preparadas con amor y los mejores ingredientes para llenarte de energía.</p>
+</div>
+<div class="grid-container" id="grid">
+    <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/CALDO_PAJARILLA.jpg" alt="Imagen de portada">
+                <h2>Caldo de Pajarilla</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $8.000</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Caldo de Pajarilla <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $8.000</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $8.500</p>
+                  </div>
+                </ul>
+
+                <button onclick="this.closest('.card').classList.remove('flipped')">Girar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/CALDO_COSTILLA.jpg" alt="Imagen de portada">
+                <h2>Caldo de Costilla</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $7.000</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Caldo de Costilla <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $7.500</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $8.000</p>
+                  </div>
+                </ul>
+
+                <button onclick="this.closest('.card').classList.remove('flipped')">Volver</button>
+            </div>
+        </div>
+    </div>
+
+     <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/MUTE_MAIZ.jpg" alt="Imagen de portada">
+                <h2>Mute de Maiz</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $8.000</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Mute de Maiz <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $7.500</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $8.000</p>
+                  </div>
+                </ul>
+
+                <button onclick="this.closest('.card').classList.remove('flipped')">Volver</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/MOÑONA.jpg" alt="Imagen de portada">
+                <h2>Moñona</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $12.500</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Moñona <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $12.500</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $13.000</p>
+                  </div>
+                </ul>
+                <button onclick="this.closest('.card').classList.remove('flipped')">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/CALENTADO_PAISA.jpg" alt="Imagen de portada">
+                <h2>Calentado Paisa</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $12.000</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Mute de Maiz <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $12.000</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $12.500</p>
+                  </div>
+                </ul>
+
+                <button onclick="this.closest('.card').classList.remove('flipped')">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-face card-front">
+                <img src="IMAGENES/TAMAL.jpg" alt="Imagen de portada">
+                <h2>Tamal</h2>
+                <div class="container_precio">
+                  <p class="precio"><strong>Precio:</strong> $6.000</p>
+                </div>
+                <button onclick="this.closest('.card').classList.add('flipped')">Ver más</button>
+            </div>
+            <div class="card-face card-back">
+                <h3>Tamal <i class="fa-solid fa-utensils"></i></h3>
+                <p><strong>Como lo Deceas:</strong></p>
+
+                 <ul class="ingredientes">
+                  <li><i class="fa-solid fa-bowl-food"></i> Para la mesa</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $6.000</p>
+                  </div><br> 
+                  <li><i class="fa-solid fa-box-open"></i> Para llevar</li><br>
+                  <div class="container_precio">
+                    <p class="precio"><strong>Precio:</strong> $6.500</p>
+                  </div>
+                </ul>
+
+                <button onclick="this.closest('.card').classList.remove('flipped')">Volver</button>
+            </div>
+        </div>
+    </div>  
+</div>
+
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+</body>
+</html>

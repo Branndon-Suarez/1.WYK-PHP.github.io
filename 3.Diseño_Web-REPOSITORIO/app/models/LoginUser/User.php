@@ -5,7 +5,12 @@ use PDO;
 use PDOException;
 use config\Connection;
 
-class User extends Connection {
+class User {
+    private $db;
+    public function __construct() {
+        $this->db = Connection::getConnection(); 
+    }
+
     public function findUserByUsername($getUserName)
     {
         try {

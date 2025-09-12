@@ -5,7 +5,12 @@ use config\Connection;
 use PDO;
 use Exception;
 
-class UserClientModel extends Connection {
+class UserClientModel {
+    private $db;
+
+    public function __construct() {
+        $this->db = Connection::getConnection();
+    }
 
     private $idEmpleadoSistema = 1;
 

@@ -20,12 +20,12 @@ if (isset($_SESSION['error_message'])) {
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">🥐</div>
-      <div class="nav-btn" title="Inicio"><i data-feather="home"></i></div>
-      <div class="nav-btn" title="Formularios"><i data-feather="file-text"></i></div>
-      <div class="nav-btn" title="Ventas"><i data-feather="shopping-bag"></i></div>
-      <div class="nav-btn" title="Pedidos"><i data-feather="shopping-cart"></i></div>
-      <div class="nav-btn" title="Productos"><i data-feather="package"></i></div>
-      <div class="nav-btn" title="Clientes"><i data-feather="users"></i></div>
+      <div class="nav-btn" title="Inicio"><i data-feather="home"><a href="<?php echo \config\APP_URL . 'dashboard'; ?>"></a></i></div>
+      <div class="nav-btn" title="Cargos"><a href="<?php echo \config\APP_URL . 'cargos'; ?>"><i data-feather="file-text">Cargos</a></i></div>
+      <div class="nav-btn" title="Ventas"><a href="<?php echo \config\APP_URL . 'ventas'; ?>"><i data-feather="shopping-bag"></i>Ventas</a></div>
+      <div class="nav-btn" title="Pedidos"><a href="<?php echo \config\APP_URL . 'pedidos'; ?>"><i data-feather="shopping-cart"></i>Pedidos</a></div>
+      <div class="nav-btn" title="Productos"><a href="<?php echo \config\APP_URL . 'productos'; ?>"><i data-feather="package"></i>Productos</a></div>
+      <div class="nav-btn" title="Clientes"><a href="<?php echo \config\APP_URL . 'clientes'; ?>"><i data-feather="users"></i>Clientes</a></div>
       <div class="spacer"></div>
       <div class="nav-btn" title="Ajustes"><i data-feather="settings"></i></div>
       <div class="nav-btn"><i class="fas fa-sign-out-alt"></i><span class="texto">
@@ -35,7 +35,7 @@ if (isset($_SESSION['error_message'])) {
     <main class="main">
       <!-- Topbar -->
       <div class="topbar card">
-        <strong>PANADERIA WYK— Panel Control <a href="<?php echo \Config\APP_URL . 'logout'; ?>">Salir</a></strong>
+        <strong>PANADERIA WYK— Panel Control <a href="<?php echo \config\APP_URL . 'logout'; ?>">Salir</a></strong>
         <div class="search">
           <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
           <input placeholder="Buscar productos, clientes, pedidos…" />
@@ -299,13 +299,13 @@ if (isset($_SESSION['error_message'])) {
     crossorigin="anonymous">
   </script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <script src="<?php echo \Config\APP_URL; ?>public/js/dashboard.js"></script>
-  <script src="<?php echo \Config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <script>
     const successMessage = "<?php echo $success_message; ?>";
     const errorMessage = "<?php echo $error_message; ?>";
   </script>
-  <script src="<?php echo \Config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 </body>
 
 </html>

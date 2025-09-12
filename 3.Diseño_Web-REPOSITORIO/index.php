@@ -17,11 +17,11 @@ if (file_exists($autoloadPath)) {
  * 1. rtrim($_GET['views'], '/'): Remueve cualquier barra diagonal (/) al final de la cadena de texto.
  * 2. explode('/', ...): Divide la cadena en un array usando '/' como delimitador.
  * 3. $request[0]: La primera parte de la URL, que indica la vista.
- * 4. $request[1]: La segunda parte de la URL, que indica la acción (esto para el controlador con sus funciones para la CRUD).
+ * 4. $request[1]: La segunda parte de la URL, que indica la acción (esto para el controlador y modelos con sus funciones para la CRUD).
  */
 $request = isset($_GET['views']) ? explode('/', rtrim($_GET['views'], '/')) : ['home'];
 $vista = $request[0];
-$action = isset($request[1]) ? $request[1] : 'list';
+$action = isset($request[1]) ? $request[1] : 'reports';
 
 $validViews = ['home', 'login', 'logout', 'dashboard', 'cargos', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
 
@@ -42,7 +42,7 @@ if (in_array($vista, $validViews)) {
                 /* require_once __DIR__ . '/app/views/layouts/headers/headerDashboard.php'; */
                 require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
                 exit();
             }
             break;
@@ -50,14 +50,14 @@ if (in_array($vista, $validViews)) {
             session_start();
             session_unset();
             session_destroy();
-            header('Location: ' . \Config\APP_URL . 'login');
+            header('Location: ' . \config\APP_URL . 'login');
             exit();
             break;
-        case 'cargo':
-        case 'producto':
-        case 'cliente':
-        case 'empleado':
-        case 'usuario':
+        case 'cargos':
+        case 'productos':
+        case 'clientes':
+        case 'empleados':
+        case 'usuarios':
             if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
                 $controllerName = ucfirst($vista) . 'Controller';
                 $fullControllerName = '\\controllers\\' . $controllerName;
@@ -78,7 +78,7 @@ if (in_array($vista, $validViews)) {
                     exit();
                 }
             } else {
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
                 exit();
             }
             break;
@@ -91,7 +91,7 @@ if (in_array($vista, $validViews)) {
     } else {
         echo "<h1>404 - Página No Encontrada</h1>";
         echo "<p>La página '$vista' no existe en nuestra aplicación.</p>";
-        echo "<a href='" . \Config\APP_URL . "'>Volver al inicio</a>";
+        echo "<a href='" . \config\APP_URL . "'>Volver al inicio</a>";
     }
     exit;
 }

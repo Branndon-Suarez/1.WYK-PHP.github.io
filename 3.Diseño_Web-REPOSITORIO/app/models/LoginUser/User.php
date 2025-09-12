@@ -1,6 +1,6 @@
 <?php
 namespace app\models\LoginUser;
-/**Nota: La clase PDO de PHP de conexion a BD ya tiene namespace por defecto, lo que me permite usarlo cocn 'use'*/
+/**Nota: La clase PDO de PHP de conexion a BD ya tiene namespace por defecto, lo que me permite usarlo con 'use'*/
 use PDO;
 use PDOException;
 use config\Connection;

@@ -13,14 +13,17 @@ if (file_exists($autoloadPath)) {
 } else {
     die("Error: No se puede encontrar autoload.php");
 }
+/**Notas:
+ * 1. rtrim($_GET['views'], '/'): Remueve cualquier barra diagonal (/) al final de la cadena de texto.
+ * 2. explode('/', ...): Divide la cadena en un array usando '/' como delimitador.
+ * 3. $request[0]: La primera parte de la URL, que indica la vista.
+ * 4. $request[1]: La segunda parte de la URL, que indica la acción (esto para el controlador con sus funciones para la CRUD).
+ */
+$request = isset($_GET['views']) ? explode('/', rtrim($_GET['views'], '/')) : ['home'];
+$vista = $request[0];
+$action = isset($request[1]) ? $request[1] : 'list';
 
-if (isset($_GET['views'])) {
-    $vista = $_GET['views'];
-} else {
-    $vista = 'home';
-}
-
-$validViews = ['home', 'login', 'dashboard', 'logout'];
+$validViews = ['home', 'login', 'logout', 'dashboard', 'cargos', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -49,6 +52,35 @@ if (in_array($vista, $validViews)) {
             session_destroy();
             header('Location: ' . \Config\APP_URL . 'login');
             exit();
+            break;
+        case 'cargo':
+        case 'producto':
+        case 'cliente':
+        case 'empleado':
+        case 'usuario':
+            if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
+                $controllerName = ucfirst($vista) . 'Controller';
+                $fullControllerName = '\\controllers\\' . $controllerName;
+
+                if (class_exists($fullControllerName)) {
+                    $controller = new $fullControllerName();
+
+                    if (method_exists($controller, $action)) {
+                        $controller->$action();
+                    } else {
+                        http_response_code(404);
+                        require_once __DIR__ . '/config/error_404-500/404.php';
+                        exit();
+                    }
+                } else {
+                    http_response_code(404);
+                    require_once __DIR__ . '/config/error_404-500/404.php';
+                    exit();
+                }
+            } else {
+                header('Location: ' . \Config\APP_URL . 'login');
+                exit();
+            }
             break;
     }
 } else {

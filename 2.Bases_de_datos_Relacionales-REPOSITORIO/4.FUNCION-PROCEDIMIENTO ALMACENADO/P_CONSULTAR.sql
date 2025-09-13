@@ -10,7 +10,18 @@ BEGIN
 SELECT*FROM CARGO;
 END	$	
 
-CALL CONSULTAR_CARGO();				
+CALL CONSULTAR_CARGO();		
+
+														/*🤴PROCEDIMIENTO CONSULTAR USUARIO👸
+_____________________________________________________________________________________________________________________________________________________*/	
+                                                        
+DELIMITER $
+CREATE PROCEDURE CONSULTAR_USUARIO()
+BEGIN
+SELECT*FROM USUARIO;
+END	$	
+
+CALL CONSULTAR_USUARIO();	   		
 
 														/*👩‍🍳PROCEDIMIENTO CONSULTAR EMPLEADO👨‍🍳
 _____________________________________________________________________________________________________________________________________________________*/
@@ -34,38 +45,6 @@ END	$
 
 CALL CONSULTAR_CLIENTE();	
 
-														/*🤴PROCEDIMIENTO CONSULTAR USUARIO👸
-_____________________________________________________________________________________________________________________________________________________*/	
-                                                        
-DELIMITER $
-CREATE PROCEDURE CONSULTAR_USUARIO()
-BEGIN
-SELECT*FROM USUARIO;
-END	$	
-
-CALL CONSULTAR_USUARIO();	   
-
-														/*🤴PROCEDIMIENTO CONSULTAR USUARIO EMPLEADO👸
-_____________________________________________________________________________________________________________________________________________________*/ 
-                                                        
-DELIMITER $
-CREATE PROCEDURE CONSULTAR_USUARIO_EMPLEADO()
-BEGIN
-SELECT*FROM USUARIO_EMPLEADO;
-END	$	
-
-CALL CONSULTAR_USUARIO_EMPLEADO();   
-
-														/*🤴PROCEDIMIENTO CONSULTAR USUARIO CLIENTE👸
-_____________________________________________________________________________________________________________________________________________________*/
-                                                        
-DELIMITER $
-CREATE PROCEDURE CONSULTAR_USUARIO_CLIENTE()
-BEGIN
-SELECT*FROM USUARIO_CLIENTE;
-END	$	
-
-CALL CONSULTAR_USUARIO_CLIENTE();  		
 
 														/*🍰PROCEDIMIENTO CONSULTAR PEDIDO🍰
 _____________________________________________________________________________________________________________________________________________________*/	
@@ -187,4 +166,3 @@ SELECT*FROM PRODUCCION;
 END	$	
 
 CALL CONSULTAR_PRODUCCION();													
-                                                    

@@ -253,7 +253,7 @@ if (isset($_SESSION['error_message'])) {
           <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
           <input placeholder="Buscar…" />
         </div>
-        <a href="<?php echo \config\APP_URL; ?>cargos/create" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo cargo</button></a>
+        <a href="<?php echo \config\APP_URL; ?>cargos/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo cargo</button></a>
       </header>
 
       <div class="layout">

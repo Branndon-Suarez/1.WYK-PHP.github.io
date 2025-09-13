@@ -6,6 +6,7 @@ USE PROYECTO_WYK;
 ____________________________________________________________________________________________________________________________________________________*/                                                           
 
 INSERT INTO CARGO (NOMBRE_CARGO, ESTADO_CARGO) VALUES
+('Conicero', 1),
 ('Panadero', 1),
 ('Cajero', 1),
 ('Mesero', 1);
@@ -13,30 +14,32 @@ INSERT INTO CARGO (NOMBRE_CARGO, ESTADO_CARGO) VALUES
 														/*🤴INSERT USUARIO👸
 _____________________________________________________________________________________________________________________________________________________*/
 
-/* Este es el antiguo insert usuarios
-INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA_SESION,ROL,ESTADO_USUARIO) VALUES
+INSERT INTO USUARIO (NOMBRE_USUARIO, PASSWORD_USUARIO, FECHA_REGISTRO, FECHA_ULTIMA_SESION, ROL, ESTADO_USUARIO) VALUES 
 -- Usuarios para Empleados Y Admin
-('carlos.admin', SHA2('admin123', 256), NOW(), NOW(),'ADMINISTRADOR', 1),
-('sofia.panadera', SHA2('empleado123', 256), NOW(), NOW(),'EMPLEADO', 1),
-('luis.cajero', SHA2('cajero789', 256), NOW(), NOW(),'EMPLEADO', 1),
-('ana.mesera', SHA2('mesera101', 256), NOW(), NOW(),'EMPLEADO', 1),
+('carlos.admin', '$2y$10$9CGt8sMotuvICJefdYczFegaquDClFGStqddVp1NkfmtnaYq24iWK', NOW(), NOW(), 'ADMINISTRADOR', 1),
+('sofia.panadera', '$2y$10$spag8SgXTedv8UX0tZWzfOa/7yMQQd.pwwFsCYeGui2Wa22gC8R76', NOW(), NOW(), 'EMPLEADO', 1),
+('luis.cajero', '$2y$10$1lJ9isiLLi5U9P2/9RN8MucQdjbyB2gggjmrTWXmZ3aCi5/hZeST.', NOW(), NOW(), 'EMPLEADO', 1),
+('ana.mesera', '$2y$10$KI7WgM1ptD2IY1dYKyOxBu4aP4DzNSuabeXN2PF.3WU1B05Fd9xC.', NOW(), NOW(), 'EMPLEADO', 1),
 -- Usuarios para Cliente
-('javier.cliente', SHA2('cliente123', 256), NOW(), NOW(),'CLIENTE', 1),
-('maria.cliente', SHA2('cliente456', 256), NOW(), NOW(),'CLIENTE', 1),
-('pedro.cliente', SHA2('cliente789', 256), NOW(), NOW(),'CLIENTE', 1),
-('laura.cliente', SHA2('cliente101', 256), NOW(), NOW(),'CLIENTE', 1);*/
+('javier.cliente', '$2y$10$ithOoyBTIedvkhZ00UuCMuokFvUuSD3C.28hVoBPYLP7f3A6M9fBy', NOW(), NOW(), 'CLIENTE', 1),
+('maria.cliente', '$2y$10$w5o6LR4dSXtY755IjEQr7eUfMp1EImOnSPuyRGefHfPHHpSVT2eDu', NOW(), NOW(), 'CLIENTE', 1),
+('pedro.cliente', '$2y$10$j/Le56.q2LITDFW5NRjU.OYgAOVZJ5gZSYCn138lyNdkaHeIzFqrS', NOW(), NOW(), 'CLIENTE', 0),
+('laura.cliente', '$2y$10$Efm6QAlkliVmV/gN95HLS.obxjcmNJoWiL1P59Oyt6WRPTqC/9fp.', NOW(), NOW(), 'CLIENTE', 0);
 
-INSERT INTO USUARIO (NOMBRE_USUARIO,PASSWORD_USUARIO,FECHA_REGISTRO,FECHA_ULTIMA_SESION,ROL,ESTADO_USUARIO) VALUES 
-/*Usuarios para Empleado y Admin*/
-('carlos.admin', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('AdmiN123', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'ADMINISTRADOR', 1),
-('sofia.panadera', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('empleado123', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'EMPLEADO', 1),
-('luis.cajero', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('cajero789', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'EMPLEADO', 1),
-('ana.mesera', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('mesera101', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'EMPLEADO', 1),
-/*Usuarios para Cliente*/
-('javier.cliente', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('cliente123', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'CLIENTE', 1),
-('maria.cliente', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('cliente456', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'CLIENTE', 1),
-('pedro.cliente', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('cliente789', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'CLIENTE', 0),
-('laura.cliente', TO_BASE64(AES_ENCRYPT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE('cliente101', 'a','*'),'A','¿'),'e','!'),'E','¡'),'i','&'),'I','#'),'o','%'),'O','+'),'u','$'),'U','='),'emaytin.wjyk')), NOW(), NOW(),'CLIENTE', 0);
+/*CONTRASEÑAS HORIGINALES*/
+/*
+EMPLEADOS
+carlos.admin (AdmiN123)
+sofia.panadera (empleado123)
+luis.cajero (cajero789)
+ana.mesera (mesera101)
+CLIENTES
+javier.cliente (cliente123)
+maria.cliente (cliente456)
+pedro.cliente (cliente789)
+laura.cliente (cliente101)
+
+*/
 
 SELECT*FROM USUARIO;
 

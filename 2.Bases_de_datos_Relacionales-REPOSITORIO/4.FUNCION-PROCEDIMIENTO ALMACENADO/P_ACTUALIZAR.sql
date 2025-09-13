@@ -42,9 +42,17 @@ WHERE ID_USUARIO=P_A_ID_USUARIO;
 END $     
 
 /*Usuario Empleado*/
-CALL ACTUALIZAR_USUARIO (9,'sebas.cajero',SHA2('juan040205',256), NOW(), NOW(),'EMPLEADO', 0);
+CALL ACTUALIZAR_USUARIO (9,'sebas.cajero', '$2y$10$J4yHz0w4Sr9y6gnW8gwJmeYI0k680onW.uDkT/gNlmiQayjlPMQOm', NOW(), NOW(),'EMPLEADO', 0);
 /*Usuario Cliente*/
-CALL ACTUALIZAR_USUARIO (10,'andre.cliente',SHA2('Andre1234',256), NOW(), NOW(),'CLIENTE', 0);
+CALL ACTUALIZAR_USUARIO (10,'andre.cliente', '$2y$10$5iFPC0X7qx3l7JV0013foOIFMnlmqdNI7mcVyt.Nl2rQl1IHK1doK', NOW(), NOW(),'CLIENTE', 0);
+
+/*CONTRASEÑAS HORIGINALES*/
+/*
+EMPLEADO
+sebas.cajero (juan040205)
+CLIENTE
+andre.cliente (Andre1234)
+*/
 
 SELECT*FROM USUARIO;
 

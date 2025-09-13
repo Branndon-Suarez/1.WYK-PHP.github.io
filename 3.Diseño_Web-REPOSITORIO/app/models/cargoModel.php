@@ -25,12 +25,12 @@ class CargoModel {
         }
     }
 
-    public function createCargo($nombreCargo, $estadoCargo) {
+    public function createCargo($nombreCargo) {
         try {
             $sql = "INSERT INTO CARGO (NOMBRE_CARGO, ESTADO_CARGO) VALUES (:nombre_cargo, :estado_cargo)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':nombre_cargo', $nombreCargo);
-            $stmt->bindParam(':estado_cargo', $estadoCargo);
+            $stmt->bindParam(':nombre_cargo', $nombreCargo, \PDO::PARAM_STR);
+            $stmt->bindValue(':estado_cargo', 1, \PDO::PARAM_INT); // Estado activo por defecto
             return $stmt->execute();
         } catch (\PDOException $e) {
             error_log("Error en la función createCargo: " . $e->getMessage());

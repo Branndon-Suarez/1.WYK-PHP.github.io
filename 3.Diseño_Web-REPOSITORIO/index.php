@@ -39,7 +39,6 @@ if (in_array($vista, $validViews)) {
         case 'dashboard':
             if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
                 require_once __DIR__ . '/app/views/layouts/heads/headDashboard.php';
-                /* require_once __DIR__ . '/app/views/layouts/headers/headerDashboard.php'; */
                 require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
                 header('Location: ' . \config\APP_URL . 'login');
@@ -69,7 +68,6 @@ if (in_array($vista, $validViews)) {
                         $controller->$action();
                     } else {
                         http_response_code(404);
-                        require_once __DIR__ . '/config/error_404-500/404.php';
                         exit();
                     }
                 } else {

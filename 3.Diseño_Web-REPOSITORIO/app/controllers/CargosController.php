@@ -95,6 +95,38 @@ class CargosController {
         header('Location: ' . APP_URL . 'cargos');
         exit();
     }
+
+    public function updateState() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
+            // Enviar un error si no es una solicitud POST con JSON
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
+            return;
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (isset($data['id']) && isset($data['estado'])) {
+            $idCargo = $data['id'];
+            $estadoCargo = $data['estado'];
+            
+            try {
+                $result = $this->cargoModel->updateCargoState($idCargo, $estadoCargo);
+                if ($result) {
+                    echo json_encode(['success' => true, 'message' => 'Estado del cargo actualizado.']);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado del cargo.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Error en el servidor: ' . $e->getMessage()]);
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Datos incompletos.']);
+        }
+    }
     
     public function delete($id) {
         try {

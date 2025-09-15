@@ -101,6 +101,19 @@ class CargoModel {
         }
     }
 
+    public function updateCargoState($idCargo, $estadoCargo) {
+        try {
+            $sql = "UPDATE CARGO SET ESTADO_CARGO = :estado WHERE ID_CARGO = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':estado', $estadoCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $idCargo, \PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            error_log("Error al actualizar estado del cargo: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function deleteCargo($idCargo) {
         try {
             $sql = "CALL ELIMINAR_CARGO(:id_cargo)";

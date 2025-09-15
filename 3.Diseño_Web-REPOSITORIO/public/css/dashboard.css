@@ -2,6 +2,7 @@
     --primary: #933e0d;
     --primary-2: #5e2507;
     --primary-3: #b5a28f;
+    --color-hover-table: #d1bfae;
     --accent: #f59e0b;
     --bg: #f6f7ff;
     --text: #0f172a;
@@ -28,14 +29,6 @@ body {
     background: linear-gradient(135deg, #fff, #eef2ff 50%, #f8fafc);
 }
 
-
-/* Layout */
-.app {
-    display: grid;
-    grid-template-columns: 84px 1fr;
-    min-height: 100vh;
-}
-
 header {
     position: sticky !important;
     top: 0 !important;
@@ -53,6 +46,20 @@ header {
     box-shadow: var(--shadow);
 }
 
+main {
+    padding: 24px;
+    background: var(--bg);
+}
+
+
+/* Layout */
+.app {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    min-height: 100vh;
+}
+
+/* --------------------- Sidebar --------------------- */
 .sidebar {
     position: sticky;
     top: 0;
@@ -90,7 +97,8 @@ header {
 }
 
 .sidebar .nav-btn {
-    all: unset; /* Se eliminan estilos por defecto del <button> */
+    all: unset;
+    /* Se eliminan estilos por defecto del <button> */
     width: 48px;
     height: 48px;
     border-radius: 16px;
@@ -139,7 +147,7 @@ header {
 }
 
 /*Para mostrar el submenu al hacer click*/
-.has-submenu.open > .submenu {
+.has-submenu.open>.submenu {
     display: flex;
     opacity: 1;
 }
@@ -159,17 +167,90 @@ header {
 .sidebar .submenu li a:hover {
     background: rgba(255, 255, 255, .2);
 }
-
+/* --------------------- Sidebar --------------------- */
 
 .spacer {
     flex: 2;
 }
 
-
-.main {
-    padding: 22px;
+/* --------------------- Tabla Consulta --------------------- */
+.tabla-consultas {
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--ring);
+  background: #fff;
+  margin-bottom: 24px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
+.table-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #b8b4ae;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  border-bottom: 1px solid var(--primary);
+}
+
+.btp-personalizado {
+    background: #b1a090 !important;
+    color: #ffff;
+    border: 1px solid var(--ring);
+}
+
+.btp-personalizado:hover {
+    background-color: #947f6b !important;
+    color: #ffff;
+    filter: brightness(.95);
+    transform: translateY(-1px);
+    border: 1px solid var(--primary-2);
+}
+
+.tabla-consultas th, .tabla-consultas td {
+  padding: 12px 18px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.tabla-consultas th {
+  color: var(--muted);
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+.tabla-consultas tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tabla-consultas tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-consultas tr:hover {
+  background: #e1ddda;
+  transition: 0.5s ease;
+  transform: translateY(-2px);
+}
+/* --------------------- Tabla Consulta --------------------- */
+
+/* --------------------- Otros botones --------------------- */
+.btn-actualizar {
+    background-color: #6bb3e3 !important;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-actualizar:hover {
+    background-color: #5a9ccf !important;
+    transform: translateY(-2px);
+}
 
 .search {
     margin-left: auto;
@@ -387,34 +468,6 @@ header {
     color: var(--primary);
 }
 
-/* Table */
-.table {
-    overflow: hidden;
-    border-radius: var(--radius-2xl);
-    border: 1px solid var(--ring);
-    background: #fff;
-}
-
-
-.table header {
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #eef2ff;
-}
-
-.table .row {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr .9fr .7fr .7fr;
-    padding: 12px 18px;
-    align-items: center;
-}
-
-.table .row+.row {
-    border-top: 1px solid #f1f5f9;
-}
-
 .pill {
     padding: 6px 10px;
     border-radius: 999px;
@@ -545,24 +598,26 @@ textarea {
         grid-template-columns: 2fr 1fr;
     }
 }
+
 /*---------------------------------------------------- 🚀 CREAR FORMULARIO-----------------------------------------------------*/
-    /*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ  {scrollbar-width: none;}*/
-.BOTON_ROL-EMPLE{
+/*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ  {scrollbar-width: none;}*/
+.BOTON_ROL-EMPLE {
     margin-top: 35px !important;
 }
 
-#Contenedor_Botones_Crear{
+#Contenedor_Botones_Crear {
     display: flex;
     margin: 0;
     padding-left: 0;
 }
 
-#Boton_Crear{
+#Boton_Crear {
     font-weight: 500;
     cursor: url(../IMG/cursor_clic.png), auto;
     margin-top: 35px;
 }
-#Boton_Usuario{
+
+#Boton_Usuario {
     font-weight: 500;
     cursor: url(../IMG/cursor_clic.png), auto;
     margin-top: 35px;
@@ -576,25 +631,26 @@ select {
 
 /* Sobrescribir los estilos de .mt-5 */
 .mt-5 {
-    margin-top: 0 !important; /* Eliminar margen superior */
+    margin-top: 0 !important;
+    /* Eliminar margen superior */
 }
 
 /*ENCABEZADO*/
-.modal-header{
+.modal-header {
     display: flex !important;
     justify-content: center !important;
     background-color: var(--primary-2) !important;
 }
 
-#encabezado-modal > b{
+#encabezado-modal>b {
     margin: 0 100px 0 100px;
 }
 
-#cerrar{
+#cerrar {
     font-size: 30px !important;
 }
 
-.modal-header #encabezado-modal{
+.modal-header #encabezado-modal {
     color: #fff;
     background-color: none;
 }
@@ -603,93 +659,105 @@ select {
     margin: 0;
 }
 
-#contenedor-info-login{
+#contenedor-info-login {
     display: flex !important;
     justify-content: center !important;
 }
 
-.modal-body{
+.modal-body {
     background-color: var(--primary-3);
     z-index: 2000;
-    scrollbar-width: none; 
+    scrollbar-width: none;
 }
 
 /*CONTENIDO*/
-.modal-body lord-icon{
+.modal-body lord-icon {
     margin-right: 10px;
 }
 
-#Sub_Contenido_Crear{
+#Sub_Contenido_Crear {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribuye los elementos de manera equitativa */
+    justify-content: space-between;
+    /* Distribuye los elementos de manera equitativa */
     margin-top: 10px;
 }
 
-.input-box{
-    width: calc(50% - 20px); /* Calcula el ancho para que quepan dos input-box en una fila */
+.input-box {
+    width: calc(50% - 20px);
+    /* Calcula el ancho para que quepan dos input-box en una fila */
     padding: 5px;
-    box-sizing: border-box; /* Ajusta el padding dentro del ancho especificado */
+    box-sizing: border-box;
+    /* Ajusta el padding dentro del ancho especificado */
 }
 
-.combo-box{
-    width: calc(50% - 20px); /*Calcula el ancho para que quepan dos input-box en una fila*/
+.combo-box {
+    width: calc(50% - 20px);
+    /*Calcula el ancho para que quepan dos input-box en una fila*/
     padding: 5px;
-    box-sizing: border-box; /*Ajusta el padding dentro del ancho especificado*/
+    box-sizing: border-box;
+    /*Ajusta el padding dentro del ancho especificado*/
 }
 
-.input-box input, label{
+.input-box input,
+label {
     width: 100%;
     color: #A63754;
-    font-weight:900;
+    font-weight: 900;
     margin-left: 10px;
     margin: 5px 0;
 }
 
 #añadir {
     display: flex;
-    align-items: center; /*Centra verticalmente el label y el ícono*/
-    justify-content: space-between; /*Ajusta la distribución*/
-    width: calc(25% - 20px); /*Mantén el ancho calculado*/
+    align-items: center;
+    /*Centra verticalmente el label y el ícono*/
+    justify-content: space-between;
+    /*Ajusta la distribución*/
+    width: calc(25% - 20px);
+    /*Mantén el ancho calculado*/
 }
 
-#añadir > label {
-    margin-right: 5px;/*Espacio entre el label y el ícono*/
+#añadir>label {
+    margin-right: 5px;
+    /*Espacio entre el label y el ícono*/
     font-weight: 900;
     color: #A63754;
 }
 
-.combo-box label{
+.combo-box label {
     color: #A63754;
     font-size: 20px;
-    font-weight:900;
+    font-weight: 900;
     z-index: 1000;
 }
 
-.input-box label{
+.input-box label {
     font-size: 20px;
-    text-shadow: 0.8px  0px 0.5px #faefef,
-                0.8px  0px 0.5px #faefef,
-                0.8px  0px 0.5px #faefef,
-                0.8px 0px 0.5px #faefef;
+    text-shadow: 0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef;
 }
 
-.input-box input{
-    background:#EEEEEE;
+.input-box input {
+    background: #EEEEEE;
     transition: 0.5s;
 }
 
-.input-box input:hover{
+.input-box input:hover {
     background-color: #93BBBF;
     transition: 0.5s;
 }
 
-*select option :hover{
+*select option :hover {
     background-color: #93BBBF;
 }
 
-.input-box input, ::placeholder {
-    color:#000000;
+.input-box input,
+::placeholder {
+    color: #000000;
     font-size: 18px;
 }
+
 /*---------------------------------------------------- 🏁 CREAR FORMULARIO-----------------------------------------------------*/

@@ -18,41 +18,252 @@ if (isset($_SESSION['error_message'])) {
 <body>
   <div class="app">
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <nav aria-label="Menú de navegación" class="sidebar">
       <div class="logo">🥐</div>
-      <div class="nav-btn" title="Inicio"><i data-feather="home"><a href="<?php echo \config\APP_URL . 'dashboard'; ?>"></a></i></div>
-      <div class="nav-btn" title="Cargos"><a href="<?php echo \config\APP_URL . 'cargos'; ?>"><i data-feather="file-text">Cargos</a></i></div>
-      <div class="nav-btn" title="Ventas"><a href="<?php echo \config\APP_URL . 'ventas'; ?>"><i data-feather="shopping-bag"></i>Ventas</a></div>
-      <div class="nav-btn" title="Pedidos"><a href="<?php echo \config\APP_URL . 'pedidos'; ?>"><i data-feather="shopping-cart"></i>Pedidos</a></div>
-      <div class="nav-btn" title="Productos"><a href="<?php echo \config\APP_URL . 'productos'; ?>"><i data-feather="package"></i>Productos</a></div>
-      <div class="nav-btn" title="Clientes"><a href="<?php echo \config\APP_URL . 'clientes'; ?>"><i data-feather="users"></i>Clientes</a></div>
-      <div class="spacer"></div>
-      <div class="nav-btn" title="Ajustes"><i data-feather="settings"></i></div>
-      <div class="nav-btn"><i class="fas fa-sign-out-alt"></i><span class="texto">
-        </span></div>
-    </aside>
+      <ul>
+        <li title="Inicio">
+          <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn active" aria-label="Inicio">
+            <lord-icon
+                src="https://cdn.lordicon.com/oeotfwsx.json"
+                colors="primary:#ffffff"
+                trigger="hover"
+                style="width:40px;height:40px">
+            </lord-icon>
+          </a>
+        </li>
+
+        <li class="has-submenu" title="Usuarios">
+          <button class="nav-btn" aria-label="Usuarios" aria-expanded="false">
+            <lord-icon
+                src="https://cdn.lordicon.com/bushiqea.json"
+                trigger="hover"
+                colors="primary:#ffffff"
+                style="width:45px;height:45px">
+            </lord-icon>
+          </button>
+          <ul class="submenu">
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>usuarios">
+                <lord-icon
+                  src="https://cdn.lordicon.com/bushiqea.json"
+                  trigger="hover"
+                  colors="primary:#ffffff"
+                  style="width:45px;height:45px">
+                </lord-icon>
+                Usuarios Generales
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>usuarios_empleados">
+                <lord-icon
+                  src="https://cdn.lordicon.com/yanwuwms.json"
+                  trigger="hover"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:60px;height:60px">
+                </lord-icon>
+                Usuarios de Empleados
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>usuarios_clientes">
+                <lord-icon
+                  src="https://cdn.lordicon.com/jdgfsfzr.json"
+                  trigger="hover"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:60px;height:60px">
+                </lord-icon>
+                Usuarios de Clientes
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="has-submenu" title="Empleados">
+          <button class="nav-btn" aria-label="Empleados" aria-expanded="false">
+            <lord-icon
+              src="https://cdn.lordicon.com/yanwuwms.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </button>
+          <ul class="submenu">
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>cargos">
+                <lord-icon
+                  src="https://cdn.lordicon.com/zhiiqoue.json"
+                  trigger="morph"
+                  state="morph-open"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:50px;height:50px">
+                </lord-icon>
+                Cargos
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>empleados">
+                <lord-icon
+                  src="https://cdn.lordicon.com/yanwuwms.json"
+                  trigger="hover"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:50px;height:50px">
+                </lord-icon>
+                Empleados
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li title="Clientes">
+          <a href="<?php echo \config\APP_URL; ?>clientes" class="nav-btn" aria-label="Clientes">
+            <lord-icon
+              src="https://cdn.lordicon.com/jdgfsfzr.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </a>
+        </li>
+
+        <li title="Pedidos">
+          <a href="<?php echo \config\APP_URL; ?>pedidos" class="nav-btn" aria-label="Pedidos">
+            <lord-icon
+              src="https://cdn.lordicon.com/uisoczqi.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </a>
+        </li>
+
+        <li class="has-submenu" title="Productos">
+          <button class="nav-btn" aria-label="Productos" aria-expanded="false">
+            <lord-icon
+              src="https://cdn.lordicon.com/sbrvirwc.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </button>
+          <ul class="submenu">
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>productos">
+                <lord-icon
+                  src="https://cdn.lordicon.com/sbrvirwc.json"
+                  trigger="hover"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:50px;height:50px">
+                </lord-icon>
+                Productos
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>materia_prima">
+                <lord-icon
+                  src="https://cdn.lordicon.com/jhiqqftv.json"
+                  trigger="hover"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:50px;height:50px">
+                </lord-icon>
+                Materia Prima
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>produccion">
+                <lord-icon
+                  src="https://cdn.lordicon.com/asyunleq.json"
+                  trigger="hover"
+                  state="hover-cog-4"
+                  colors="primary:#ffffff"
+                  style="width:40px;height:40px">
+                </lord-icon>
+                Producción
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="has-submenu" title="Facturas">
+          <button class="nav-btn" aria-label="Facturas" aria-expanded="false">
+            <lord-icon
+              src="https://cdn.lordicon.com/yraqammt.json"
+              trigger="hover"
+              colors="primary:#ffffff"
+              style="width:40px;height:40px">
+            </lord-icon>
+          </button>
+          <ul class="submenu">
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>facturas_Ventas">
+                <lord-icon
+                  src="https://cdn.lordicon.com/bsdkzyjd.json"
+                  trigger="hover"
+                  state="hover-spending"
+                  colors="primary:#ffffff,secondary:#ffffff"
+                  style="width:60px;height:60px">
+                </lord-icon>
+                Facturas de Ventas
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo \config\APP_URL; ?>facturas_Compras">
+                <lord-icon
+                  src="https://cdn.lordicon.com/eeuqpnwy.json"
+                  trigger="hover"
+                  colors="primary:#ffffff"
+                  style="width:60px;height:60px">
+                </lord-icon>
+                Facturas de Compras
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li title="Proveedores">
+          <a href="<?php echo \config\APP_URL; ?>proveedores" class="nav-btn" aria-label="Proveedores">
+            <lord-icon
+              src="https://cdn.lordicon.com/byupthur.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </a>
+        </li>
+
+        <div class="spacer"></div>
+
+        <li title="Cerrar sesión">
+          <a href="<?php echo \config\APP_URL; ?>logout" class="nav-btn" aria-label="Cerrar sesión">
+            <lord-icon
+              src="https://cdn.lordicon.com/vfiwitrm.json"
+              trigger="hover"
+              colors="primary:#ffffff,secondary:#ffffff"
+              style="width:50px;height:50px">
+            </lord-icon>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
     <main class="main">
       <!-- Topbar -->
-      <div class="topbar card">
-        <strong>PANADERIA WYK— Panel Control <a href="<?php echo \config\APP_URL . 'logout'; ?>">Salir</a></strong>
+      <header>
+        <strong>PANADERIA WYK— Panel Control</strong>
         <div class="search">
           <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
-          <input placeholder="Buscar productos, clientes, pedidos…" />
+          <input placeholder="Buscar…" />
         </div>
-        <button id="openModal" class="btn btn-primary">+ Nuevo pedido</button>
-      </div>
+      </header>
 
       <div class="layout">
         <section class="left">
           <!-- Hero -->
-          <div class="hero card">
+          <div class="hero">
             <div>
               <div class="hero-note">¡Buen día!</div>
-              <h2>Bienvenido, <span style="color:var(--primary)">Panadero</span></h2>
+              <h2>Bienvenido, <span style="color:var(--primary)"><?php echo $_SESSION['username']; ?></span></h2>
               <div class="hero-note">Que el aroma del pan recién horneado te acompañe hoy 🍞</div>
               <div style="margin-top:12px; display:flex; gap:10px;">
-                <button class="btn btn-primary">Agregar producto</button>
                 <button class="btn btn-ghost">Ver agenda</button>
               </div>
             </div>
@@ -135,7 +346,7 @@ if (isset($_SESSION['error_message'])) {
               </tr>
             </tbody>
           </table>
-          <div class="table card">
+          <div class="table">
             <header>
               <strong>Mis pedidos</strong>
               <div style="display:flex; gap:8px;">
@@ -182,7 +393,7 @@ if (isset($_SESSION['error_message'])) {
 
           <!-- Charts -->
           <div class="grid grid-col-12">
-            <div class="card p-20" style="grid-column: span 12; height: 800px;">
+            <div class="p-20" style="grid-column: span 12; height: 800px;">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
                 <strong>Ventas vs. Pedidos (semana)</strong>
                 <span class="pill" style="background:#eef2ff; color:#3730a3;">Última semana</span>
@@ -194,7 +405,7 @@ if (isset($_SESSION['error_message'])) {
 
         <!-- Columna derecha -->
         <aside class="right grid">
-          <div class="card p-20">
+          <div class="p-20">
             <div style="display:flex; align-items:center; gap:8px;">
               <i data-feather="calendar" style="color:var(--primary)"></i>
               <strong>Agenda</strong>
@@ -257,53 +468,19 @@ if (isset($_SESSION['error_message'])) {
     </main>
   </div>
 
-  <!-- Modal Nuevo Pedido -->
-  <div class="modal-backdrop" id="modal">
-    <div class="modal">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-        <strong>Nuevo pedido</strong>
-        <button class="btn btn-ghost" id="closeModal">✕</button>
-      </div>
-      <form class="form">
-        <div>
-          <label>Cliente</label>
-          <input placeholder="Nombre" required />
-        </div>
-        <div>
-          <label>Producto</label>
-          <input placeholder="Ej. Pan francés" required />
-        </div>
-        <div>
-          <label>Cantidad</label>
-          <input type="number" value="1" min="1" />
-        </div>
-        <div>
-          <label>Fecha</label>
-          <input type="date" />
-        </div>
-        <div style="grid-column:1/-1;">
-          <label>Observaciones</label>
-          <textarea rows="3" placeholder="Notas para la cocina"></textarea>
-        </div>
-        <div style="grid-column:1/-1; display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
-          <button type="button" class="btn btn-ghost" id="closeModal2">Cancelar</button>
-          <button class="btn btn-primary" type="submit">Guardar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script src=""></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"
-    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
-    crossorigin="anonymous">
-  </script>
-  <script src="https://unpkg.com/feather-icons"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <script>
     const successMessage = "<?php echo $success_message; ?>";
     const errorMessage = "<?php echo $error_message; ?>";
+  </script>
+  <!-- <script src="https://unpkg.com/feather-icons"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"
+    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
+    crossorigin="anonymous">
   </script>
   <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 </body>

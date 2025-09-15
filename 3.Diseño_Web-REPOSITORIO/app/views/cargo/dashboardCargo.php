@@ -1,17 +1,3 @@
-<?php
-$success_message = '';
-if (isset($_SESSION['success_message'])) {
-  $success_message = $_SESSION['success_message'];
-  unset($_SESSION['success_message']);
-}
-
-$error_message = '';
-if (isset($_SESSION['error_message'])) {
-  $error_message = $_SESSION['error_message'];
-  unset($_SESSION['error_message']);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -22,12 +8,12 @@ if (isset($_SESSION['error_message'])) {
       <div class="logo">🥐</div>
       <ul>
         <li title="Inicio">
-          <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn active" aria-label="Inicio">
+          <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn" aria-label="Inicio">
             <lord-icon
-                src="https://cdn.lordicon.com/oeotfwsx.json"
-                colors="primary:#ffffff"
-                trigger="hover"
-                style="width:40px;height:40px">
+              src="https://cdn.lordicon.com/oeotfwsx.json"
+              colors="primary:#ffffff"
+              trigger="hover"
+              style="width:40px;height:40px">
             </lord-icon>
           </a>
         </li>
@@ -35,10 +21,10 @@ if (isset($_SESSION['error_message'])) {
         <li class="has-submenu" title="Usuarios">
           <button class="nav-btn" aria-label="Usuarios" aria-expanded="false">
             <lord-icon
-                src="https://cdn.lordicon.com/bushiqea.json"
-                trigger="hover"
-                colors="primary:#ffffff"
-                style="width:45px;height:45px">
+              src="https://cdn.lordicon.com/bushiqea.json"
+              trigger="hover"
+              colors="primary:#ffffff"
+              style="width:45px;height:45px">
             </lord-icon>
           </button>
           <ul class="submenu">
@@ -79,7 +65,7 @@ if (isset($_SESSION['error_message'])) {
         </li>
 
         <li class="has-submenu" title="Empleados">
-          <button class="nav-btn" aria-label="Empleados" aria-expanded="false">
+          <button class="nav-btn active" aria-label="Empleados" aria-expanded="false">
             <lord-icon
               src="https://cdn.lordicon.com/yanwuwms.json"
               trigger="hover"
@@ -276,198 +262,128 @@ if (isset($_SESSION['error_message'])) {
           </div>
 
           <!-- KPIs -->
-          <div class="stats">
+          <section class="stats">
             <div class="stat">
               <div>
-                <div class="muted">Ventas hoy</div>
-                <div class="kpi">$ 2.580</div>
+                <div class="muted">Cargos existentes</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosExistentes']; ?></div>
               </div>
-              <div class="icon"><i data-feather="bar-chart-2"></i></div>
+              <div class="icon">
+                <lord-icon
+                    src="https://cdn.lordicon.com/oqhqyeud.json"
+                    trigger="hover"
+                    stroke="bold"
+                    colors="primary:#933e0d,secondary:#933e0d"
+                    style="width:40px;height:40px">
+                </lord-icon>
+              </div>
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Pedidos</div>
-                <div class="kpi">145</div>
+                <div class="muted">Cargos activos</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosActivos']; ?></div>
               </div>
-              <div class="icon"><i data-feather="shopping-cart"></i></div>
+              <div class="icon">
+                <lord-icon
+                    src="https://cdn.lordicon.com/oqhqyeud.json"
+                    trigger="hover"
+                    stroke="bold"
+                    colors="primary:#933e0d,secondary:#933e0d"
+                    style="width:40px;height:40px">
+                </lord-icon>
+              </div>
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Productos</div>
-                <div class="kpi">38</div>
+                <div class="muted">Cargos inactivos</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosInactivos']; ?></div>
               </div>
-              <div class="icon"><i data-feather="package"></i></div>
-            </div>
-            <div class="stat">
-              <div>
-                <div class="muted">Clientes</div>
-                <div class="kpi">120</div>
+              <div class="icon">
+                <lord-icon
+                    src="https://cdn.lordicon.com/oqhqyeud.json"
+                    trigger="hover"
+                    stroke="bold"
+                    colors="primary:#933e0d,secondary:#933e0d"
+                    style="width:40px;height:40px">
+                </lord-icon>
               </div>
-              <div class="icon"><i data-feather="users"></i></div>
             </div>
-          </div>
+          </section><br><br>
 
-          <!-- Tabla de pedidos -->
-          <table>
-            <caption style="text-align:left; font-weight:600; margin-bottom:8px;">Pedidos recientes</caption>
-            <thead>
-              <tr>
-                <th>Cargo</th>
-                <th style="text-align:right">Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Ana López</td>
-                <td>Pan francés ×12</td>
-                <td>26 Jun 2025</td>
-                <td>09:30 AM</td>
-                <td style="text-align:right"><span class="pill ok">Entregado</span></td>
-              </tr>
-              <tr>
-                <td>Carlos Pérez</td>
-                <td>Croissant ×6</td>
-                <td>26 Jun 2025</td>
-                <td>10:15 AM</td>
-                <td style="text-align:right"><span class="pill info">En proceso</span></td>
-              </tr>
-              <tr>
-                <td>María Gómez</td>
-                <td>Torta vainilla ×1</td>
-                <td>26 Jun 2025</td>
-                <td>11:00 AM</td>
-                <td style="text-align:right"><span class="pill warn">Pendiente</span></td>
-              </tr>
-              <tr>
-                <td>Juan Ruiz</td>
-                <td>Buñuelo ×24</td>
-                <td>26 Jun 2025</td>
-                <td>11:45 AM</td>
-                <td style="text-align:right"><span class="pill bad">Cancelado</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="table">
-            <header>
-              <strong>Mis pedidos</strong>
-              <div style="display:flex; gap:8px;">
-                <button class="btn btn-ghost">Hoy</button>
-                <button class="btn btn-ghost">Esta semana</button>
-              </div>
-            </header>
-            <div class="row" style="color:#94a3b8; font-weight:600;">
-              <div>Cliente</div>
-              <div>Producto</div>
-              <div>Fecha</div>
-              <div>Hora</div>
-              <div style="text-align:right">Estado</div>
-            </div>
-            <div class="row">
-              <div>Ana López</div>
-              <div>Pan francés ×12</div>
-              <div>26 Jun 2025</div>
-              <div>09:30 AM</div>
-              <div style="text-align:right"><span class="pill ok">Entregado</span></div>
-            </div>
-            <div class="row">
-              <div>Carlos Pérez</div>
-              <div>Croissant ×6</div>
-              <div>26 Jun 2025</div>
-              <div>10:15 AM</div>
-              <div style="text-align:right"><span class="pill info">En proceso</span></div>
-            </div>
-            <div class="row">
-              <div>María Gómez</div>
-              <div>Torta vainilla ×1</div>
-              <div>26 Jun 2025</div>
-              <div>11:00 AM</div>
-              <div style="text-align:right"><span class="pill warn">Pendiente</span></div>
-            </div>
-            <div class="row">
-              <div>Juan Ruiz</div>
-              <div>Buñuelo ×24</div>
-              <div>26 Jun 2025</div>
-              <div>11:45 AM</div>
-              <div style="text-align:right"><span class="pill bad">Cancelado</span></div>
-            </div>
-          </div>
-
-          <!-- Charts -->
-          <div class="grid grid-col-12">
-            <div class="p-20" style="grid-column: span 12; height: 800px;">
-              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                <strong>Ventas vs. Pedidos (semana)</strong>
-                <span class="pill" style="background:#eef2ff; color:#3730a3;">Última semana</span>
-              </div>
-              <canvas id="barChart" style="width:100%; height:100%"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <!-- Columna derecha -->
-        <aside class="right grid">
-          <div class="p-20">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <i data-feather="calendar" style="color:var(--primary)"></i>
-              <strong>Agenda</strong>
-              <span class="pill" style="margin-left:auto;background:#eef2ff;color:#3730a3;">Jun</span>
-            </div>
-            <div class="calendar">
-              <div class="d">L</div>
-              <div class="d">M</div>
-              <div class="d">M</div>
-              <div class="d">J</div>
-              <div class="d">V</div>
-              <div class="d">S</div>
-              <div class="d">D</div>
-              <!-- simple 30 days -->
-              <script>
-                for (let i = 1; i <= 30; i++) document.write(`<button class="${i===26?'today':''}">${i}</button>`)
-              </script>
-            </div>
-            <div class="list">
-              <div class="li"><i data-feather="check-circle" style="color:#16a34a"></i>
-                <div>
-                  <div style="font-weight:600;">Entrega mayorista</div>
-                  <div class="hero-note">26 Jun · 5:00 AM</div>
+          <!-- Tabla de cargos -->
+          <div class="section-reportes">
+            <table class="tabla-consultas">
+              <tbody>
+                <div class="table-header">
+                  <strong>Tabla de cargos</strong>
+                  <div style="display:flex; gap:8px;">
+                    <a href="<?php echo \config\APP_URL . 'cargos/generateReportPDF'; ?>" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
+                      <span>Generar PDF</span>
+                      <lord-icon
+                        src="https://cdn.lordicon.com/gyyhoycg.json"
+                        trigger="hover"
+                        stroke="bold"
+                        colors="primary:#fff"
+                        style="width:50px;height:50px">
+                      </lord-icon>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div class="li"><i data-feather="clock" style="color:#f59e0b"></i>
-                <div>
-                  <div style="font-weight:600;">Horneado de pandebono</div>
-                  <div class="hero-note">26 Jun · 9:00 AM</div>
-                </div>
-              </div>
-              <div class="li"><i data-feather="x-circle" style="color:#f43f5e"></i>
-                <div>
-                  <div style="font-weight:600;">Pedido cancelado</div>
-                  <div class="hero-note">26 Jun · 11:45 AM</div>
-                </div>
-              </div>
-            </div>
-          </div>
+                <thead>
+                  <tr>
+                    <th>Cargo</th>
+                    <th>Estado</th>
+                    <th colspan="3" style="text-align:center">Acciones</th>
+                  </tr>
+                </thead>
+                <?php
 
-          <div class="card p-20">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-              <strong>Top productos (mes)</strong>
-            </div>
-            <canvas id="pieChart" height="160"></canvas>
+                if ($dashboardDataCargos['cargos']) {
+                  foreach ($dashboardDataCargos['cargos'] as $cargo) {
+                    $switchIdCargo = "switch_" . $cargo['ID_CARGO'];
+                    $estado = $cargo['ESTADO_CARGO'] == 1 ? true : false;
+                ?>
+                    <tr>
+                      <td> <?php echo htmlspecialchars($cargo['NOMBRE_CARGO']); ?></td>
+                      <td>
+                        <input id="<?php echo $switchIdCargo; ?>" type="checkbox" <?php echo $estado ? 'checked' : ''; ?>
+                           data-id="<?php echo htmlspecialchars($cargo['ID_CARGO']); ?>";>
+                        <label for="<?php echo $switchIdCargo; ?>" class="check-trail">
+                          <span class="check-handler"></span>
+                        </label>
+                      </td>
+                      <td><a href='<?php echo \config\APP_URL . "cargos/viewEdit/" . $cargo['ID_CARGO']; ?>' class='btn btn-sm btn-primary btn-actualizar'>
+                        <lord-icon
+                          src="https://cdn.lordicon.com/ibckyoan.json"
+                          trigger="hover"
+                          colors="primary:#ffffff"
+                          style="width:30px;height:30px">
+                        </lord-icon>
+                      </a></td>
+                      <td><a href='<?php echo \config\APP_URL . "cargos/delete/" . $cargo['ID_CARGO']; ?>' class='btn btn-sm btn-danger'>
+                        <lord-icon
+                          src="https://cdn.lordicon.com/oqeixref.json"
+                          trigger="morph"
+                          state="morph-trash-full"
+                          colors="primary:#ffffff"
+                          style="width:30px;height:30px">
+                        </lord-icon>
+                      </a></td>
+                    </tr>
+                  <?php
+                  }
+                } else {
+                  ?>
+                  <tr><td colspan='5' style="text-align:center;">No hay cargos disponibles.</td></tr>
+                <?php
+                }
+                ?>
+              </tbody>
+            </table>
           </div>
-
-          <div class="card p-20">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-              <strong>Tendencia de ventas (30 días)</strong>
-            </div>
-            <canvas id="lineChart" height="110"></canvas>
-          </div>
-        </aside>
       </div>
-
-      <footer style="text-align:center; color:#64748b; font-size:13px; margin-top: 18px;">
-        © <span id="year"></span> PANADERIA WYK-PROYECTO SENA
-      </footer>
+      <?php require_once __DIR__ . '/../layouts/footers/footerDashboard.php'; ?>
     </main>
-  </div>
 
   <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>

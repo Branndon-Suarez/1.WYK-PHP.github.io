@@ -1,5 +1,4 @@
 USE PROYECTO_WYK;
-
 														   /*PROCEDIMIENTOS DE INSERTAR*/
 
 														/*👮‍PROCEDIMIENTO INSERTAR CARGO👮‍

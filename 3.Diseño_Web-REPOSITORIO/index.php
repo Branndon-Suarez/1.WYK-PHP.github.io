@@ -7,6 +7,7 @@ session_start();
 
 require_once __DIR__ . '/config/app.php';
 $autoloadPath = __DIR__ . '/app/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';//Generar PDF con Dompdf
 
 if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
@@ -65,7 +66,27 @@ if (in_array($vista, $validViews)) {
                     $controller = new $fullControllerName();
 
                     if (method_exists($controller, $action)) {
-                        $controller->$action();
+                        /*Nota:
+                            1. array_slice(): Se utiliza para extraer una porción de un array y la devuelve como un nuevo array, sin modificar el original.
+                                1.1 Sintaxis: array_slice($array, $offset, $length, $preserve_keys)
+                                1.2 $array: El array del cual se extraerá la porción, en este caso, $request.
+                                1.3 offset: Indica el índice de posición desde donde se empezará a extraer. En este caso, 2, porque queremos los elementos después de $vista y $acción.
+                        */
+                        $params = array_slice($request, 2);
+                        //Se verifica si hay parámetros adicionales en la URL luego de el $vista y $acción
+                        if (count($params) > 0) {
+                            /*Nota:
+                                1. call_user_func_array(): Permite llamar a una función de una clase pasando el valor de sus parametros como un array.
+                                    1.1 Sintaxis: call_user_func_array(callable $callback, array $args)
+                                    1.2 $callback: Un array que contiene el objeto y el nombre del método a llamar, en este caso, [$controller, $action].
+                                        1.2.1. $controller: La instancia del controlador que contiene el método a llamar.
+                                        1.2.2. $action: El nombre del método a llamar dentro del controlador.
+                                    1.3 $args: Un array donde sus valores son los parámetros que se pasarán al método llamado. En este caso, $params.
+                            */
+                            call_user_func_array([$controller, $action], $params);
+                        } else {
+                            $controller->$action();
+                        }
                     } else {
                         http_response_code(404);
                         exit();

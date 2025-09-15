@@ -20,7 +20,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="container">
             <div class="forms-container">
                 <div class="container-login">
-                    <form action="<?php echo \Config\APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
+                    <form action="<?php echo \config\APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -106,7 +106,7 @@ if (isset($_SESSION['error_message'])) {
                         <h1 class="form-title">Información personal</h1>
                         <p class="form-subtitle">Join thousands of users and start your journey today</p>
 
-                        <form id="info-personal-form-submit" action="<?php echo \Config\APP_URL; ?>app/controllers/LoginUser/RegisterController.php" method="POST">
+                        <form id="info-personal-form-submit" action="<?php echo \config\APP_URL; ?>app/controllers/LoginUser/RegisterController.php" method="POST">
                             <input type="hidden" name="name_usuario" id="name_usuario">
                             <input type="hidden" name="password" id="password">
                             <input type="hidden" name="confirm_password" id="confirm_password">
@@ -219,7 +219,7 @@ if (isset($_SESSION['error_message'])) {
                             Registrarse
                         </button>
                     </div>
-                    <img src="<?php echo \Config\APP_URL; ?>public/images/imgLogin/login-1.svg" class="image" alt="">
+                    <img src="<?php echo \config\APP_URL; ?>public/images/imgLogin/login-1.svg" class="image" alt="">
                 </div>
 
                 <div class="panel right-panel">
@@ -232,15 +232,15 @@ if (isset($_SESSION['error_message'])) {
                             Iniciar Sesión
                         </button>
                     </div>
-                    <img src="<?php echo \Config\APP_URL; ?>public/images/imgLogin/login-2.svg" class="image" alt="">
+                    <img src="<?php echo \config\APP_URL; ?>public/images/imgLogin/login-2.svg" class="image" alt="">
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="<?php echo \Config\APP_URL; ?>public/js/register.js"></script>
-    <script src="<?php echo \Config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
-    <script src="<?php echo \Config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/register.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
     <script src="https://cdn.lordicon.com/lordicon.js" integrity="sha256-1C3IZn03j9193YxLyK8PoFh0a0rfXzXk5KhS3OiN53s=" crossorigin="anonymous"></script>
     <script>
         const successMessage = "<?php echo $success_message; ?>";

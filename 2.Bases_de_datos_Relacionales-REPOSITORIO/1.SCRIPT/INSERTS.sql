@@ -6,7 +6,7 @@ USE PROYECTO_WYK;
 ____________________________________________________________________________________________________________________________________________________*/                                                           
 
 INSERT INTO CARGO (NOMBRE_CARGO, ESTADO_CARGO) VALUES
-('Conicero', 1),
+('Cocinero', 1),
 ('Panadero', 1),
 ('Cajero', 1),
 ('Mesero', 1);

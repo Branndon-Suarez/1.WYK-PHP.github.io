@@ -1,12 +1,10 @@
 :root {
     --primary: #933e0d;
-    /* cafe calido*/
     --primary-2: #5e2507;
-    /* cafe oscuro*/
+    --primary-3: #b5a28f;
+    --color-hover-table: #d1bfae;
     --accent: #f59e0b;
-    /* naranja*/
     --bg: #f6f7ff;
-    --card: #ffffff;
     --text: #0f172a;
     --muted: #64748b;
     --ring: #e2e8f0;
@@ -31,6 +29,28 @@ body {
     background: linear-gradient(135deg, #fff, #eef2ff 50%, #f8fafc);
 }
 
+header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 18px !important;
+    margin: -22px -22px 18px -22px !important;
+    backdrop-filter: blur(8px) !important;
+    background: rgba(255, 255, 255, .7) !important;
+    border-bottom: 1px solid #eef2ff !important;
+    border: 1px solid var(--ring);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow);
+}
+
+main {
+    padding: 24px;
+    background: var(--bg);
+}
+
 
 /* Layout */
 .app {
@@ -39,10 +59,11 @@ body {
     min-height: 100vh;
 }
 
-
+/* --------------------- Sidebar --------------------- */
 .sidebar {
     position: sticky;
     top: 0;
+    width: 80px;
     height: 100vh;
     background: linear-gradient(180deg, var(--primary), var(--primary-2));
     display: flex;
@@ -54,8 +75,7 @@ body {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
 }
 
-
-.logo {
+.sidebar .logo {
     width: 52px;
     height: 52px;
     border-radius: 16px;
@@ -66,48 +86,171 @@ body {
     box-shadow: var(--shadow);
 }
 
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
 
-.nav-btn {
+.sidebar .nav-btn {
+    all: unset;
+    /* Se eliminan estilos por defecto del <button> */
     width: 48px;
     height: 48px;
     border-radius: 16px;
     display: grid;
     place-items: center;
-    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
     transition: .2s;
+    cursor: pointer;
 }
 
-
-.nav-btn:hover {
+.sidebar .nav-btn:hover {
     background: rgba(255, 255, 255, .12);
     transform: translateY(-2px);
 }
 
-
-.spacer {
-    flex: 1;
+.sidebar .nav-btn.active {
+    background: rgba(255, 255, 255, .2);
 }
 
-
-.main {
-    padding: 22px;
+.sidebar .nav-btn i {
+    pointer-events: none;
 }
 
+/* Submenús */
+.sidebar li {
+    position: relative;
+}
 
-.topbar {
-    position: sticky;
+.sidebar .submenu {
+    position: absolute;
     top: 0;
-    z-index: 20;
+    left: 70px;
+    /* aparece a la derecha del menú principal */
+    background: linear-gradient(180deg, var(--primary), var(--primary-2));
+    padding: 8px 0;
+    border: #0f172a 1px solid;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/*Para mostrar el submenu al hacer click*/
+.has-submenu.open>.submenu {
+    display: flex;
+    opacity: 1;
+}
+
+.sidebar .submenu li a {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    margin: -22px -22px 18px;
-    backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, .7);
-    border-bottom: 1px solid #eef2ff;
+    gap: 10px;
+    padding: 8px 14px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 10px;
+    transition: 0.2s;
 }
 
+.sidebar .submenu li a:hover {
+    background: rgba(255, 255, 255, .2);
+}
+/* --------------------- Sidebar --------------------- */
+
+.spacer {
+    flex: 2;
+}
+
+/* --------------------- Tabla Consulta --------------------- */
+.tabla-consultas {
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--ring);
+  background: #fff;
+  margin-bottom: 24px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #b8b4ae;
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  border-bottom: 1px solid var(--primary);
+}
+
+.btp-personalizado {
+    background: #b1a090 !important;
+    color: #ffff;
+    border: 1px solid var(--ring);
+}
+
+.btp-personalizado:hover {
+    background-color: #947f6b !important;
+    color: #ffff;
+    filter: brightness(.95);
+    transform: translateY(-1px);
+    border: 1px solid var(--primary-2);
+}
+
+.tabla-consultas th, .tabla-consultas td {
+  padding: 12px 18px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.tabla-consultas th {
+  color: var(--muted);
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+.tabla-consultas tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tabla-consultas tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-consultas tr:hover {
+  background: #e1ddda;
+  transition: 0.5s ease;
+  transform: translateY(-2px);
+}
+/* --------------------- Tabla Consulta --------------------- */
+
+/* --------------------- Otros botones --------------------- */
+.btn-actualizar {
+    background-color: #6bb3e3 !important;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-actualizar:hover {
+    background-color: #5a9ccf !important;
+    transform: translateY(-2px);
+}
 
 .search {
     margin-left: auto;
@@ -166,14 +309,6 @@ body {
 
 .grid-col-12 {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-
-.card {
-    background: var(--card);
-    border: 1px solid var(--ring);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow);
 }
 
 .p-16 {
@@ -333,34 +468,6 @@ body {
     color: var(--primary);
 }
 
-/* Table */
-.table {
-    overflow: hidden;
-    border-radius: var(--radius-2xl);
-    border: 1px solid var(--ring);
-    background: #fff;
-}
-
-
-.table header {
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #eef2ff;
-}
-
-.table .row {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr .9fr .7fr .7fr;
-    padding: 12px 18px;
-    align-items: center;
-}
-
-.table .row+.row {
-    border-top: 1px solid #f1f5f9;
-}
-
 .pill {
     padding: 6px 10px;
     border-radius: 999px;
@@ -440,39 +547,6 @@ body {
 
 /* Modal */
 
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, .3);
-    display: none;
-    place-items: center;
-    padding: 16px;
-    z-index: 50;
-}
-
-
-.modal {
-    width: min(520px, 100%);
-    background: #fff;
-    border: 1px solid var(--ring);
-    border-radius: 22px;
-    box-shadow: var(--shadow);
-    padding: 20px;
-    animation: pop .2s ease;
-}
-
-
-@keyframes pop {
-    from {
-        transform: scale(.96);
-        opacity: 0
-    }
-
-    to {
-        transform: scale(1);
-        opacity: 1
-    }
-}
 
 .form {
     display: grid;
@@ -524,3 +598,166 @@ textarea {
         grid-template-columns: 2fr 1fr;
     }
 }
+
+/*---------------------------------------------------- 🚀 CREAR FORMULARIO-----------------------------------------------------*/
+/*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ  {scrollbar-width: none;}*/
+.BOTON_ROL-EMPLE {
+    margin-top: 35px !important;
+}
+
+#Contenedor_Botones_Crear {
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+}
+
+#Boton_Crear {
+    font-weight: 500;
+    cursor: url(../IMG/cursor_clic.png), auto;
+    margin-top: 35px;
+}
+
+#Boton_Usuario {
+    font-weight: 500;
+    cursor: url(../IMG/cursor_clic.png), auto;
+    margin-top: 35px;
+}
+
+select {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+/* Sobrescribir los estilos de .mt-5 */
+.mt-5 {
+    margin-top: 0 !important;
+    /* Eliminar margen superior */
+}
+
+/*ENCABEZADO*/
+.modal-header {
+    display: flex !important;
+    justify-content: center !important;
+    background-color: var(--primary-2) !important;
+}
+
+#encabezado-modal>b {
+    margin: 0 100px 0 100px;
+}
+
+#cerrar {
+    font-size: 30px !important;
+}
+
+.modal-header #encabezado-modal {
+    color: #fff;
+    background-color: none;
+}
+
+.modal-header #cerrar {
+    margin: 0;
+}
+
+#contenedor-info-login {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.modal-body {
+    background-color: var(--primary-3);
+    z-index: 2000;
+    scrollbar-width: none;
+}
+
+/*CONTENIDO*/
+.modal-body lord-icon {
+    margin-right: 10px;
+}
+
+#Sub_Contenido_Crear {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Distribuye los elementos de manera equitativa */
+    margin-top: 10px;
+}
+
+.input-box {
+    width: calc(50% - 20px);
+    /* Calcula el ancho para que quepan dos input-box en una fila */
+    padding: 5px;
+    box-sizing: border-box;
+    /* Ajusta el padding dentro del ancho especificado */
+}
+
+.combo-box {
+    width: calc(50% - 20px);
+    /*Calcula el ancho para que quepan dos input-box en una fila*/
+    padding: 5px;
+    box-sizing: border-box;
+    /*Ajusta el padding dentro del ancho especificado*/
+}
+
+.input-box input,
+label {
+    width: 100%;
+    color: #A63754;
+    font-weight: 900;
+    margin-left: 10px;
+    margin: 5px 0;
+}
+
+#añadir {
+    display: flex;
+    align-items: center;
+    /*Centra verticalmente el label y el ícono*/
+    justify-content: space-between;
+    /*Ajusta la distribución*/
+    width: calc(25% - 20px);
+    /*Mantén el ancho calculado*/
+}
+
+#añadir>label {
+    margin-right: 5px;
+    /*Espacio entre el label y el ícono*/
+    font-weight: 900;
+    color: #A63754;
+}
+
+.combo-box label {
+    color: #A63754;
+    font-size: 20px;
+    font-weight: 900;
+    z-index: 1000;
+}
+
+.input-box label {
+    font-size: 20px;
+    text-shadow: 0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef,
+        0.8px 0px 0.5px #faefef;
+}
+
+.input-box input {
+    background: #EEEEEE;
+    transition: 0.5s;
+}
+
+.input-box input:hover {
+    background-color: #93BBBF;
+    transition: 0.5s;
+}
+
+*select option :hover {
+    background-color: #93BBBF;
+}
+
+.input-box input,
+::placeholder {
+    color: #000000;
+    font-size: 18px;
+}
+
+/*---------------------------------------------------- 🏁 CREAR FORMULARIO-----------------------------------------------------*/

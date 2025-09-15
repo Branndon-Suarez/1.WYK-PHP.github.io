@@ -5,12 +5,10 @@ error_reporting(E_ALL);
 session_start();
 
 require_once __DIR__ . '/../../../config/app.php';
-require_once __DIR__ . '/../../autoload.php';
-
+use const config\APP_URL;
 use Exception;
+require_once __DIR__ . '/../../autoload.php';
 use app\models\LoginUser\User;
-
-define('URL_LOGIN', \Config\APP_URL . 'login');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
@@ -20,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
     if (empty($username) || empty($password) || empty($confirm_password)) {
         $_SESSION['error_message'] = 'Inicio de sesión fallida.';
-        header('Location: ' . \Config\APP_URL . 'login');
+    header('Location: ' . APP_URL . 'login');
         exit();
     } elseif ($password !== $confirm_password) {
         $_SESSION['error_message'] = 'Las contraseñas no coinciden.';
-        header('Location: ' . URL_LOGIN);
+    header('Location: ' . APP_URL . 'login');
         exit();
     }
 
@@ -40,25 +38,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
                 $_SESSION['rol'] = $user['ROL'];
                 $_SESSION['success_message'] = '¡Inicio de sesión exitoso!' . ' Bienvenido, ' . $_SESSION['username'] . '.';
 
-                header('Location: ' . \Config\APP_URL . 'dashboard');
+                header('Location: ' . APP_URL . 'dashboard');
                 exit();
             } else {
                 $_SESSION['error_message'] = 'Tu cuenta ha sido desactivada. Contacta al administrador.';
-                header('Location: ' . URL_LOGIN);
+                header('Location: ' . APP_URL . 'login');
                 exit();
             }
         } else {
             $_SESSION['error_message'] = 'Usuario o contraseña incorrectos.';
-            header('Location: ' . URL_LOGIN);
+            header('Location: ' . APP_URL . 'login');
             exit();
         }
 
     } catch (Exception $e) {
         $_SESSION['error_message'] = 'Ocurrió un error. Por favor, inténtalo de nuevo.';
-    header('Location: ' . URL_LOGIN);
+    header('Location: ' . APP_URL . 'login');
         exit();
     }
 } else {
-    header('Location: ' . URL_LOGIN);
+    header('Location: ' . \config\APP_URL . 'login');
     exit();
 }

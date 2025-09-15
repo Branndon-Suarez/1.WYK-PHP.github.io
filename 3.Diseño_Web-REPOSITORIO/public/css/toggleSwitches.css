@@ -1,0 +1,87 @@
+:root {
+    --dark-bg: #34495e;
+    --light-bg: #ecf0f1;
+    --transition: all 0.4s ease;
+    --dark-trail: #4176ab;
+    --light-trail: #16a085;
+    --icon-color: var(--dark-trail);
+}
+
+/* Ocultar input */
+input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+/* La pista del toggle */
+.check-trail {
+    display: flex;
+    width: 4.5rem;
+    /* ancho del switch */
+    height: 2rem;
+    /* alto del switch */
+    padding: 0.2rem;
+    background: var(--dark-trail);
+    border-radius: 2rem;
+    transition: var(--transition);
+    cursor: pointer;
+    align-items: center;
+}
+
+/* El círculo (handler) */
+.check-handler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.6rem;
+    /* ancho del círculo */
+    height: 1.6rem;
+    /* alto del círculo */
+    background: var(--dark-bg);
+    border-radius: 50%;
+    transition: var(--transition);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.check-handler::before,
+.check-handler::after {
+    content: "";
+    position: absolute;
+    width: 0.2rem;
+    /* grosor horizontal de cada línea */
+    height: 1rem;
+    /* altura de cada línea */
+    background: var(--icon-color);
+    transition: var(--transition);
+}
+
+.check-handler::before {
+    transform: rotate(45deg);
+}
+
+.check-handler::after {
+    transform: rotate(-45deg);
+}
+
+/* Estado checked */
+input[type="checkbox"]:checked+.check-trail {
+    background: var(--light-trail);
+}
+
+input[type="checkbox"]:checked+.check-trail .check-handler {
+    --icon-color: var(--light-trail);
+    transform: translateX(2.4rem);
+    /* mover el círculo */
+    background: var(--light-bg);
+}
+
+input[type="checkbox"]:checked+.check-trail .check-handler::before {
+    transform: rotate(45deg) translate(0.2rem, -0.1rem);
+}
+
+input[type="checkbox"]:checked+.check-trail .check-handler::after {
+    height: 0.6rem;
+    transform: rotate(-45deg) translate(-0.3rem, -0.1rem);
+}

@@ -16,13 +16,13 @@ class RegisterController {
 
             if ($_POST["password"] !== $_POST["confirm_password"]) {
                 $_SESSION['error_message'] = "Las contraseñas no coinciden.";
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
                 exit;
             }
 
             if (strlen($_POST["password"]) < 8) {
                 $_SESSION['error_message'] = "La contraseña debe tener al menos 8 caracteres.";
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
                 exit;
             }
 
@@ -44,12 +44,12 @@ class RegisterController {
             try {
                 $model->createUserAndClient($userData, $clientData);
                 $_SESSION['success_message'] = 'Cuenta creada exitosamente. Por favor, inicia sesión.';
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
                 exit;
             } catch (\Exception $e) {
                 echo "Error: " . $e->getMessage();
                 $_SESSION['error_message'] = 'Error al crear cuenta.';
-                header('Location: ' . \Config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'login');
             }
         }
     }

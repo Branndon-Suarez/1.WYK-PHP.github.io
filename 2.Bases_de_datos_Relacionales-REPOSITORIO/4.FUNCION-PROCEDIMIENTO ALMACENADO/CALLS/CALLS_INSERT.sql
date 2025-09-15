@@ -9,14 +9,14 @@ CALL INSERTAR_CARGO('Cajero', 1);
 CALL INSERTAR_CARGO('Mesero', 1);
 
 -- 🤴CALL USUARIO👸
-CALL INSERTAR_USUARIO('carlos.admin', '$2y$10$9CGt8sMotuvICJefdYczFegaquDClFGStqddVp1NkfmtnaYq24iWK', NOW(), NOW(), 'ADMINISTRADOR', 1);
+/*CALL INSERTAR_USUARIO('carlos.admin', '$2y$10$9CGt8sMotuvICJefdYczFegaquDClFGStqddVp1NkfmtnaYq24iWK', NOW(), NOW(), 'ADMINISTRADOR', 1);
 CALL INSERTAR_USUARIO('sofia.panadera', '$2y$10$spag8SgXTedv8UX0tZWzfOa/7yMQQd.pwwFsCYeGui2Wa22gC8R76', NOW(), NOW(), 'EMPLEADO', 1);
 CALL INSERTAR_USUARIO('luis.cajero', '$2y$10$1lJ9isiLLi5U9P2/9RN8MucQdjbyB2gggjmrTWXmZ3aCi5/hZeST.', NOW(), NOW(), 'EMPLEADO', 1);
 CALL INSERTAR_USUARIO('ana.mesera', '$2y$10$KI7WgM1ptD2IY1dYKyOxBu4aP4DzNSuabeXN2PF.3WU1B05Fd9xC.', NOW(), NOW(), 'EMPLEADO', 1);
 CALL INSERTAR_USUARIO('javier.cliente', '$2y$10$ithOoyBTIedvkhZ00UuCMuokFvUuSD3C.28hVoBPYLP7f3A6M9fBy', NOW(), NOW(), 'CLIENTE', 1);
 CALL INSERTAR_USUARIO('maria.cliente', '$2y$10$w5o6LR4dSXtY755IjEQr7eUfMp1EImOnSPuyRGefHfPHHpSVT2eDu', NOW(), NOW(), 'CLIENTE', 1);
 CALL INSERTAR_USUARIO('pedro.cliente', '$2y$10$j/Le56.q2LITDFW5NRjU.OYgAOVZJ5gZSYCn138lyNdkaHeIzFqrS', NOW(), NOW(), 'CLIENTE', 0);
-CALL INSERTAR_USUARIO('laura.cliente', '$2y$10$Efm6QAlkliVmV/gN95HLS.obxjcmNJoWiL1P59Oyt6WRPTqC/9fp.', NOW(), NOW(), 'CLIENTE', 0);
+CALL INSERTAR_USUARIO('laura.cliente', '$2y$10$Efm6QAlkliVmV/gN95HLS.obxjcmNJoWiL1P59Oyt6WRPTqC/9fp.', NOW(), NOW(), 'CLIENTE', 0);*/
 
 -- 👩‍🍳CALL EMPLEADO👨‍🍳
 CALL INSERTAR_EMPLEADO(1001001001, 'Carlos Ramirez', 'O+', 3101234567, 'carlos.ramirez@wyk.com', 1, 1, 1);

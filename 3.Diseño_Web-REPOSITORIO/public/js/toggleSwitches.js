@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                // **Verifica que APP_URL exista en tu HTML o en el JS**
-                const appUrl = typeof APP_URL !== 'undefined' ? APP_URL : '';
-                const url = `${appUrl}cargos/updateState`;
+                const url = `${APP_URL}cargos/updateState`;
 
                 try {
                     const response = await fetch(url, {

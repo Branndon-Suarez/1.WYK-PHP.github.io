@@ -133,19 +133,39 @@ class CargosController {
         }
     }
     
-    public function delete($id) {
-        try {
-            $result = $this->cargoModel->deleteCargo($id);
-            if ($result) {
-                $_SESSION['success_message'] = 'Cargo eliminado exitosamente.';
-            } else {
-                $_SESSION['error_message'] = 'Error al eliminar el cargo.';
-            }
-        } catch (\Exception $e) {
-            $_SESSION['error_message'] = 'Error al eliminar el cargo: ' . $e->getMessage();
+    public function delete() {
+        // 1. Verificar que la petición sea POST y que el contenido sea JSON
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
+            return;
         }
-        header('Location: ' . APP_URL . 'cargos');
-        exit();
+
+        // 2. Leer y decodificar el JSON del cuerpo de la petición
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        // 3. Validar que el ID esté presente
+        if (isset($data['id'])) {
+            $idCargo = $data['id'];
+
+            try {
+                // 4. Llamar al modelo para eliminar el registro
+                $result = $this->cargoModel->deleteCargo($idCargo);
+
+                if ($result) {
+                    echo json_encode(['success' => true, 'message' => 'Cargo eliminado con éxito.']);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'No se pudo eliminar el cargo.']);
+                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => 'Error en el servidor: ' . $e->getMessage()]);
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Datos incompletos.']);
+        }
     }
 
     // ----------------- REPORTE EN PDF ----------------------------

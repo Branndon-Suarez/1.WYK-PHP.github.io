@@ -360,7 +360,7 @@
                           style="width:30px;height:30px">
                         </lord-icon>
                       </a></td>
-                      <td><a href='<?php echo \config\APP_URL . "cargos/delete/" . $cargo['ID_CARGO']; ?>' class='btn btn-sm btn-danger'>
+                      <td><button data-id="<?= $cargo['ID_CARGO'] ?>" class='btn btn-sm btn-danger delete-cargo'>
                         <lord-icon
                           src="https://cdn.lordicon.com/oqeixref.json"
                           trigger="morph"
@@ -368,7 +368,7 @@
                           colors="primary:#ffffff"
                           style="width:30px;height:30px">
                         </lord-icon>
-                      </a></td>
+                      </button></td>
                     </tr>
                   <?php
                   }
@@ -385,15 +385,23 @@
       <?php require_once __DIR__ . '/../layouts/footers/footerDashboard.php'; ?>
     </main>
 
+  <!-- JS Toads y var global -->
   <script>
+    const APP_URL = "<?php echo \config\APP_URL; ?>";
+
     const successMessage = "<?php echo $success_message; ?>";
     const errorMessage = "<?php echo $error_message; ?>";
   </script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/toggleSwitches.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+
+  <!-- JS para CRUD -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/toggleSwitches.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/confirmDelete.js"></script>
+  
+  <!-- LIBRERIAS -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <!-- <script src="https://unpkg.com/feather-icons"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>

@@ -14,6 +14,16 @@ if (file_exists($autoloadPath)) {
 } else {
     die("Error: No se puede encontrar autoload.php");
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['boton_login'])) {
+        require_once __DIR__ . '/app/controllers/LoginController.php';
+        exit();
+    } elseif (isset($_POST['boton_register'])) {
+        require_once __DIR__ . '/app/controllers/RegisterController.php';
+        exit();
+    }
+}
 /**Notas:
  * 1. rtrim($_GET['views'], '/'): Remueve cualquier barra diagonal (/) al final de la cadena de texto.
  * 2. explode('/', ...): Divide la cadena en un array usando '/' como delimitador.
@@ -66,7 +76,7 @@ if (in_array($vista, $validViews)) {
                     $controller = new $fullControllerName();
 
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        // Si la petición es POST (como la de updateState). Aplica para create(obtener datos), update(obtener datos)
+                        // Si la petición es POST (como la de updateState). Aplica para create(obtener datos), update(obtener datos), delete (en js)
                         $controller->$action();
                     } else {
                         /*Nota: Si la petición es GET (o cualquier otra que no sea POST). Aplica para reports, create (mostrar), editView

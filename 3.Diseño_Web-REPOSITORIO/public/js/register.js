@@ -16,133 +16,67 @@ function showForgotPassword() {
     document.getElementById('forgotForm').classList.add('active');
 }
 
-//Unir los datos de los dos formularios a uno solo
+// Unir los datos de los dos formularios
 document.getElementById('register-form-submit').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    //Capturar valores del primer form
-    const nameUsuario = this.querySelector('input[name="name_usuario"]').value;
     const password = this.querySelector('input[name="password"]').value;
     const confirmPassword = this.querySelector('input[name="confirm_password"]').value;
 
-    //Pasarlos como hidden al segundo form
+    if (password !== confirmPassword) {
+        showToast('error', 'Las contraseñas no coinciden.');
+        return;
+    }
+
+    if (password.length < 8) {
+        showToast('error', 'La contraseña debe tener al menos 8 caracteres.');
+        return;
+    }
+
+    // Capturar valores del primer form
+    const nameUsuario = this.querySelector('input[name="name_usuario"]').value;
+
+    // Pasarlos como hidden al segundo form
     document.getElementById('name_usuario').value = nameUsuario;
     document.getElementById('password').value = password;
     document.getElementById('confirm_password').value = confirmPassword;
 
+    // Mostrar el segundo formulario
     showSignup();
 });
 
 document.getElementById('info-personal-form-submit').addEventListener('submit', function (e) {
-    if (!validateSignupForm()) {
-        e.preventDefault();
-    }
+    // La validación se hace en el primer formulario ahora.
+    // Aquí solo se podría agregar una validación adicional si es necesario.
 });
 
 document.getElementById('forgotFormSubmit').addEventListener('submit', function (e) {
     e.preventDefault();
-    handleFormSubmit(this, 'Sending instructions...');
+    // Lógica para enviar el formulario de recuperación de contraseña
+    this.submit();
 });
 
-function validateSignupForm() {
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm_password').value;
-
-    if (password !== confirmPassword) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-
-        Toast.fire({
-            icon: "error",
-            title: "Contraseñas no coinciden."
-        });
-        return false;
-    }
-
-    if (password.length < 8) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        
-        Toast.fire({
-            icon: "error",
-            title: "La contraseña debe tener al menos 8 caracteres."
-        });
-        return false;
-    }
-    return true;
-}
-
-function handleFormSubmit(form, loadingText) {
-    const button = form.querySelector('.btn-primary');
-    const loading = button.querySelector('.loading');
-    const btnText = button.querySelector('.btn-text');
-    const originalText = btnText.textContent;
-
-    // Show loading state
-    loading.classList.add('show');
-    btnText.textContent = loadingText;
-    button.disabled = true;
-
-    // Simulate API call
-    setTimeout(() => {
-        loading.classList.remove('show');
-        button.disabled = false;
-        btnText.textContent = originalText;
-
-        if (form.id === 'register-form-submit') {
-            showSuccessMessage('Login successful! Redirecting...');
-        } else if (form.id === 'info-personal-form-submit') {
-            showSuccessMessage('Account created successfully! Please check your email.');
-        } else {
-            showSuccessMessage('Password reset instructions sent to your email!');
+// Función para mostrar los mensajes de Toast
+function showToast(icon, title) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
         }
-    }, 2000);
+    });
+
+    Toast.fire({
+        icon: icon,
+        title: title
+    });
 }
 
-function showSuccessMessage(message) {
-    // Create a temporary success notification
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #10b981;
-                color: white;
-                padding: 16px 24px;
-                border-radius: 12px;
-                font-weight: 600;
-                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-                z-index: 1000;
-                animation: slideInRight 0.5s ease;
-            `;
-    notification.textContent = message;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.remove();
-    }, 4000);
-}
-
-// Enhanced form interactions
+// Código para efectos e interacciones de la UI (sin cambios)
 document.querySelectorAll('.form-control').forEach(input => {
     input.addEventListener('focus', function () {
         this.parentNode.querySelector('i').style.color = '#3b82f6';
@@ -156,7 +90,6 @@ document.querySelectorAll('.form-control').forEach(input => {
         this.classList.remove('focused');
     });
 
-    // Real-time validation
     input.addEventListener('input', function () {
         if (this.type === 'email') {
             const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
@@ -166,7 +99,6 @@ document.querySelectorAll('.form-control').forEach(input => {
     });
 });
 
-// Add interactive hover effects
 document.querySelectorAll('.social-btn').forEach(btn => {
     btn.addEventListener('mouseenter', function () {
         this.style.transform = 'translateY(-3px) scale(1.02)';
@@ -177,12 +109,10 @@ document.querySelectorAll('.social-btn').forEach(btn => {
     });
 });
 
-// Smooth page load animation
 window.addEventListener('load', function () {
     document.querySelector('.container-register').style.animation = 'fadeIn 1s ease';
 });
 
-// Add keyboard shortcuts
 document.addEventListener('keydown', function (e) {
     if (e.altKey && e.key === 's') {
         e.preventDefault();

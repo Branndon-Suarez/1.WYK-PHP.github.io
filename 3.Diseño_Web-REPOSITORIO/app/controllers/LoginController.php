@@ -1,14 +1,13 @@
 <?php
+namespace controllers;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-require_once __DIR__ . '/../../../config/app.php';
 use const config\APP_URL;
 use Exception;
-require_once __DIR__ . '/../../autoload.php';
-use app\models\LoginUser\User;
+use models\User;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 

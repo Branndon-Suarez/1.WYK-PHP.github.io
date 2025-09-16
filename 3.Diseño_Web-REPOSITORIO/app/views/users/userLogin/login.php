@@ -20,7 +20,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="container">
             <div class="forms-container">
                 <div class="container-login">
-                    <form action="<?php echo \config\APP_URL; ?>app/controllers/LoginUser/LoginController.php" class="sign-in-form" method="post">
+                    <form action="<?php echo \config\APP_URL; ?>controllers" class="sign-in-form" method="post">
                         <h2 class="title">Iniciar Sesión</h2>
 
                         <div class="input-field">
@@ -106,7 +106,7 @@ if (isset($_SESSION['error_message'])) {
                         <h1 class="form-title">Información personal</h1>
                         <p class="form-subtitle">Join thousands of users and start your journey today</p>
 
-                        <form id="info-personal-form-submit" action="<?php echo \config\APP_URL; ?>app/controllers/LoginUser/RegisterController.php" method="POST">
+                        <form id="info-personal-form-submit" action="<?php echo \config\APP_URL; ?>controllers" method="POST">
                             <input type="hidden" name="name_usuario" id="name_usuario">
                             <input type="hidden" name="password" id="password">
                             <input type="hidden" name="confirm_password" id="confirm_password">
@@ -173,7 +173,7 @@ if (isset($_SESSION['error_message'])) {
                                 <input type="email" name="email" class="form-control" placeholder="Digite su correo electrónico" required>
                             </div>
 
-                            <button type="submit" class="btn-primary">
+                            <button type="submit" class="btn-primary" name="boton_register">
                                 <i class="fas fa-spinner loading"></i>
                                 <span class="btn-text">Crear cuenta</span>
                             </button>

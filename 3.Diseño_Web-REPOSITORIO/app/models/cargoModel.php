@@ -74,6 +74,19 @@ class CargoModel {
         }
     }
 
+    public function checkIfCargoExists($nombreCargo) {
+        try {
+            $sql = "SELECT COUNT(*) FROM CARGO WHERE NOMBRE_CARGO = :nombre_cargo";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':nombre_cargo', $nombreCargo, \PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchColumn() > 0;
+        } catch (\PDOException $e) {
+            error_log("Error en checkIfCargoExists: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function getCargoById($idCargo) {
         try {
             $sql = "SELECT * FROM CARGO WHERE ID_CARGO = :id_cargo";

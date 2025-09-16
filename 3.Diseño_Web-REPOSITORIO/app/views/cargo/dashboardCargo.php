@@ -352,14 +352,16 @@
                           <span class="check-handler"></span>
                         </label>
                       </td>
-                      <td><a href='<?php echo \config\APP_URL . "cargos/viewEdit/" . $cargo['ID_CARGO']; ?>' class='btn btn-sm btn-primary btn-actualizar'>
-                        <lord-icon
-                          src="https://cdn.lordicon.com/ibckyoan.json"
-                          trigger="hover"
-                          colors="primary:#ffffff"
-                          style="width:30px;height:30px">
-                        </lord-icon>
-                      </a></td>
+                      <td>
+                        <a href="<?php echo \config\APP_URL . 'cargos/viewEdit/' . htmlspecialchars($cargo['ID_CARGO']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
+                          <lord-icon
+                              src="https://cdn.lordicon.com/ibckyoan.json"
+                              trigger="hover"
+                              colors="primary:#ffffff"
+                              style="width:30px;height:30px">
+                          </lord-icon>
+                        </a>
+                      </td>
                       <td><button data-id="<?= $cargo['ID_CARGO'] ?>" class='btn btn-sm btn-danger delete-cargo'>
                         <lord-icon
                           src="https://cdn.lordicon.com/oqeixref.json"

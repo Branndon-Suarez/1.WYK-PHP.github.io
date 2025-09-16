@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Cargo</title>
+    <link rel="stylesheet" href="<?php \config\APP_URL; ?>public/css/sweetalert2.min.css">
 </head>
 
 <body>
     <h1>Actualizar Cargo</h1>
-    <form action="<?php echo \config\APP_URL; ?>cargos/update" method="POST">
+    <form id="update-cargo-form" action="<?php echo \config\APP_URL . 'cargos/update'; ?>" method="POST">
         <div>
             <input hidden="" type="number" id="Id_Cargo" name="Id_Cargo" value="<?php echo $cargo['ID_CARGO']; ?>" required>
         </div>
@@ -28,6 +29,10 @@
             <button type="submit">Actualizar</button>
         </div>
     </form>
+
+    <script>const APP_URL = '<?php echo \config\APP_URL; ?>';</script>
+    <script src="<?php echo \config\APP_URL; ?>public\js\cargo\confirmUpdate.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

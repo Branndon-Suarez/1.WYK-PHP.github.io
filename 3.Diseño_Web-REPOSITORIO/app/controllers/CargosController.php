@@ -38,37 +38,35 @@ class CargosController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreCargo = $_POST['Nom_Cargo'];
             try {
+                if ($this->cargoModel->checkIfCargoExists($nombreCargo)) {
+                    // Si el cargo ya existe, responde con un JSON de error.
+                    echo json_encode(['success' => false, 'message' => 'El cargo ya existe.']);
+                    return;
+                }
+
                 $result = $this->cargoModel->createCargo($nombreCargo);
                 if ($result) {
-                    $_SESSION['success_message'] = 'Cargo creado exitosamente.';
-                    header('Location: ' . APP_URL . 'cargos');
-                    exit();
+                    // Si es exitoso, responde con un JSON de éxito.
+                    echo json_encode(['success' => true, 'message' => 'Cargo creado exitosamente.']);
                 } else {
-                    $_SESSION['error_message'] = 'Error al crear el cargo.';
-                    exit();
+                    echo json_encode(['success' => false, 'message' => 'Error al crear el cargo.']);
                 }
             } catch (\Exception $e) {
-                $_SESSION['error_message'] = 'Error al crear el cargo: ' . $e->getMessage();
+                echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
             }
+            exit();
         }
+        // Si el método no es POST, simplemente muestra la vista de creación.
         require_once __DIR__ . '/../views/cargo/create.php';
-        exit();
     }
 
-    /*El index.php se encarga de poner el parametro de esta función mediante $params, array_slice y call_user_func_array*/
     public function viewEdit($id) {
-        try {
-            $cargo = $this->cargoModel->getCargoById($id);
-            if ($cargo) {
-                require_once __DIR__ . '/../views/cargo/update.php';
-            } else {
-                $_SESSION['error_message'] = 'Cargo no encontrado.';
-                header('Location: ' . APP_URL . 'cargos');
-                exit();
-            }
-        } catch (\Exception $e) {
-            $_SESSION['error_message'] = 'Error al obtener el cargo: ' . $e->getMessage();
-            header('Location: ' . APP_URL . 'cargos');
+        $cargo = $this->cargoModel->getCargoById($id);
+        if ($cargo) {
+            require_once __DIR__ . '/../views/cargo/update.php';
+        } else {
+            $_SESSION['error_message'] = 'Cargo no encontrado.';
+            header('Location: ' . \config\APP_URL . 'cargos');
             exit();
         }
     }
@@ -81,19 +79,17 @@ class CargosController {
             try {
                 $result = $this->cargoModel->updateCargo($idCargo, $nombreCargo, $estadoCargo);
                 if ($result) {
-                    $_SESSION['success_message'] = 'Cargo actualizado exitosamente.';
-                    header('Location: ' . APP_URL . 'cargos');
+                    echo json_encode(['success' => true, 'message' => 'Cargo actualizado exitosamente.']);
                     exit();
                 } else {
-                    $_SESSION['error_message'] = 'Error al actualizar el cargo.';
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el cargo.']);
                     exit();
                 }
             } catch (\Exception $e) {
-                $_SESSION['error_message'] = 'Error al actualizar el cargo: ' . $e->getMessage();
+                echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
+                exit();
             }
         }
-        header('Location: ' . APP_URL . 'cargos');
-        exit();
     }
 
     public function updateState() {

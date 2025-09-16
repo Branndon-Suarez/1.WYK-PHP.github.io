@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
+define('ROOT_DIR', __DIR__); //Para definir el directorio raiz
 
 require_once __DIR__ . '/config/app.php';
 $autoloadPath = __DIR__ . '/app/autoload.php';
@@ -33,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $request = isset($_GET['views']) ? explode('/', rtrim($_GET['views'], '/')) : ['home'];
 $vista = $request[0];
 $action = isset($request[1]) ? $request[1] : 'reports';
+$params = array_slice($request, 2);
 
 $validViews = ['home', 'login', 'logout', 'dashboard', 'cargos', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
 
@@ -76,28 +78,27 @@ if (in_array($vista, $validViews)) {
                     $controller = new $fullControllerName();
 
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        // Si la petición es POST (como la de updateState). Aplica para create(obtener datos), update(obtener datos), delete (en js)
-                        $controller->$action();
-                    } else {
-                        /*Nota: Si la petición es GET (o cualquier otra que no sea POST). Aplica para reports, create (mostrar), editView
-                            1. array_slice(): Se utiliza para extraer una porción de un array y la devuelve como un nuevo array, sin modificar el original.
-                                1.1 Sintaxis: array_slice($array, $offset, $length, $preserve_keys)
-                                1.2 $array: El array del cual se extraerá la porción, en este caso, $request.
-                                1.3 offset: Indica el índice de posición desde donde se empezará a extraer. En este caso, 2, porque queremos los elementos después de $vista y $acción.
-                        */
-                        $params = array_slice($request, 2);
-                        if (count($params) > 0) {
-                            /*Nota:
-                                1. call_user_func_array(): Permite llamar a una función de una clase pasando el valor de sus parametros como un array.
-                                    1.1 Sintaxis: call_user_func_array(callable $callback, array $args)
-                                    1.2 $callback: Un array que contiene el objeto y el nombre del método a llamar, en este caso, [$controller, $action].
-                                        1.2.1. $controller: La instancia del controlador que contiene el método a llamar.
-                                        1.2.2. $action: El nombre del método a llamar dentro del controlador.
-                                    1.3 $args: Un array donde sus valores son los parámetros que se pasarán al método llamado. En este caso, $params.
-                            */
-                            call_user_func_array([$controller, $action], $params);
-                        } else {
+                        // La lógica para la CRUD se maneja aquí (CREATE, UPDATE, DELETE).
+                        // La acción (update, create, delete) viene en la URL.
+                        if (method_exists($controller, $action)) {
                             $controller->$action();
+                            exit();
+                        } else {
+                            http_response_code(404);
+                            require_once __DIR__ . '/config/error_404-500/404.php';
+                            exit();
+                        }
+                    } else {
+                        // Las peticiones GET solo cargan las vistas.
+                        if ($action === 'reports' && method_exists($controller, 'reports')) {
+                             $controller->reports();
+                        } elseif ($action === 'viewEdit' && !empty($params) && method_exists($controller, 'viewEdit')) {
+                            // Esta condición específica permite la carga de la vista de edición.
+                            $controller->viewEdit($params[0]);
+                        } else {
+                            http_response_code(404);
+                            require_once __DIR__ . '/config/error_404-500/404.php';
+                            exit();
                         }
                     }
                 } else {
@@ -123,3 +124,4 @@ if (in_array($vista, $validViews)) {
     }
     exit;
 }
+

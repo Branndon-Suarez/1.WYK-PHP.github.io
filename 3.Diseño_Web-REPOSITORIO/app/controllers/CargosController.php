@@ -97,21 +97,26 @@ class CargosController {
     }
 
     public function updateState() {
+        // 1. Verificar que la petición sea POST y que el contenido sea JSON.
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
-            // Enviar un error si no es una solicitud POST con JSON
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
             return;
         }
 
+        // 2. Decodificar el JSON del cuerpo de la petición.
         $data = json_decode(file_get_contents('php://input'), true);
 
+        // 3. Validar que los datos necesarios (id y estado) estén presentes.
         if (isset($data['id']) && isset($data['estado'])) {
             $idCargo = $data['id'];
             $estadoCargo = $data['estado'];
             
             try {
+                // 4. Llamar al método del modelo para actualizar la base de datos.
                 $result = $this->cargoModel->updateCargoState($idCargo, $estadoCargo);
+
+                // 5. Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Estado del cargo actualizado.']);
                 } else {

@@ -385,13 +385,15 @@
       <?php require_once __DIR__ . '/../layouts/footers/footerDashboard.php'; ?>
     </main>
 
-  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <script>
     const successMessage = "<?php echo $success_message; ?>";
     const errorMessage = "<?php echo $error_message; ?>";
   </script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/toggleSwitches.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
   <!-- <script src="https://unpkg.com/feather-icons"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
@@ -399,8 +401,6 @@
     integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
     crossorigin="anonymous">
   </script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/toggleSwitches.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 </body>
 
 </html>

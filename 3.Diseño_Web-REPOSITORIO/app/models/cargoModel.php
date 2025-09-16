@@ -103,12 +103,20 @@ class CargoModel {
 
     public function updateCargoState($idCargo, $estadoCargo) {
         try {
+            // La consulta SQL con marcadores de posición.
             $sql = "UPDATE CARGO SET ESTADO_CARGO = :estado WHERE ID_CARGO = :id";
             $stmt = $this->db->prepare($sql);
+
+            // Vincular los parámetros para evitar inyección SQL.
             $stmt->bindParam(':estado', $estadoCargo, \PDO::PARAM_INT);
             $stmt->bindParam(':id', $idCargo, \PDO::PARAM_INT);
-            return $stmt->execute();
+            
+            $stmt->execute();
+
+            // Verificar si se actualizó al menos una fila.
+            return $stmt->rowCount() > 0;
         } catch (\PDOException $e) {
+            // Registrar el error en el log de XAMPP.
             error_log("Error al actualizar estado del cargo: " . $e->getMessage());
             return false;
         }

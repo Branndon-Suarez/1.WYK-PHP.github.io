@@ -65,15 +65,17 @@ if (in_array($vista, $validViews)) {
                 if (class_exists($fullControllerName)) {
                     $controller = new $fullControllerName();
 
-                    if (method_exists($controller, $action)) {
-                        /*Nota:
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        // Si la petición es POST (como la de updateState). Aplica para create(obtener datos), update(obtener datos)
+                        $controller->$action();
+                    } else {
+                        /*Nota: Si la petición es GET (o cualquier otra que no sea POST). Aplica para reports, create (mostrar), editView
                             1. array_slice(): Se utiliza para extraer una porción de un array y la devuelve como un nuevo array, sin modificar el original.
                                 1.1 Sintaxis: array_slice($array, $offset, $length, $preserve_keys)
                                 1.2 $array: El array del cual se extraerá la porción, en este caso, $request.
                                 1.3 offset: Indica el índice de posición desde donde se empezará a extraer. En este caso, 2, porque queremos los elementos después de $vista y $acción.
                         */
                         $params = array_slice($request, 2);
-                        //Se verifica si hay parámetros adicionales en la URL luego de el $vista y $acción
                         if (count($params) > 0) {
                             /*Nota:
                                 1. call_user_func_array(): Permite llamar a una función de una clase pasando el valor de sus parametros como un array.
@@ -87,9 +89,6 @@ if (in_array($vista, $validViews)) {
                         } else {
                             $controller->$action();
                         }
-                    } else {
-                        http_response_code(404);
-                        exit();
                     }
                 } else {
                     http_response_code(404);

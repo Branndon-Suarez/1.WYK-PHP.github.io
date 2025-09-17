@@ -4,7 +4,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-define('ROOT_DIR', __DIR__); //Para definir el directorio raiz
 
 require_once __DIR__ . '/config/app.php';
 $autoloadPath = __DIR__ . '/app/autoload.php';
@@ -92,9 +91,12 @@ if (in_array($vista, $validViews)) {
                         // Las peticiones GET solo cargan las vistas.
                         if ($action === 'reports' && method_exists($controller, 'reports')) {
                              $controller->reports();
-                        } elseif ($action === 'viewEdit' && !empty($params) && method_exists($controller, 'viewEdit')) {
-                            // Esta condición específica permite la carga de la vista de edición.
+                        } elseif ($action === 'create' && method_exists($controller, 'create')) {
+                            $controller->create();
+                        }elseif ($action === 'viewEdit' && !empty($params) && method_exists($controller, 'viewEdit')) {
                             $controller->viewEdit($params[0]);
+                        } elseif ($action === 'generateReportPDF' && method_exists($controller, 'generateReportPDF')) {
+                            $controller->generateReportPDF();
                         } else {
                             http_response_code(404);
                             require_once __DIR__ . '/config/error_404-500/404.php';

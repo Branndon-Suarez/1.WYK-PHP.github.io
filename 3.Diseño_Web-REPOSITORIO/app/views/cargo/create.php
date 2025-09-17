@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Cargo</title>
+    <link rel="stylesheet" href="<?php \config\APP_URL; ?>public/css/sweetalert2.min.css">
 </head>
 
 <body>
@@ -20,8 +21,8 @@
     </form>
 
     <script>const APP_URL = '<?php echo \config\APP_URL; ?>';</script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public\js\cargo\confirmCreate.js"></script>
-
 </body>
 
 </html>

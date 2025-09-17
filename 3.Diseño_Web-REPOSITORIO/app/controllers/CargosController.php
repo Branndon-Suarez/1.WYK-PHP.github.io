@@ -56,7 +56,7 @@ class CargosController {
             }
             exit();
         }
-        // Si el método no es POST, simplemente muestra la vista de creación.
+        // Si el método es GET (al precionar el boton de añadir cargo en el dashboardCargo.php), simplemente muestra la vista de creación para luego realizar el envio por metodo post(arriba).
         require_once __DIR__ . '/../views/cargo/create.php';
     }
 

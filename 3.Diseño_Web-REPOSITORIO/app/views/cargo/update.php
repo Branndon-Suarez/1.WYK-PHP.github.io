@@ -31,8 +31,8 @@
     </form>
 
     <script>const APP_URL = '<?php echo \config\APP_URL; ?>';</script>
-    <script src="<?php echo \config\APP_URL; ?>public\js\cargo\confirmUpdate.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public\js\cargo\confirmUpdate.js"></script>
 </body>
 
 </html>

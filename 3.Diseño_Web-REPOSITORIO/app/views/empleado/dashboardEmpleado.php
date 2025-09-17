@@ -18,7 +18,7 @@
           </a>
         </li>
 
-        <li class="has-submenu active" title="Usuarios">
+        <li class="has-submenu" title="Usuarios">
           <button class="nav-btn" aria-label="Usuarios" aria-expanded="false">
             <lord-icon
               src="https://cdn.lordicon.com/bushiqea.json"
@@ -65,7 +65,7 @@
         </li>
 
         <li class="has-submenu" title="Empleados">
-          <button class="nav-btn" aria-label="Empleados" aria-expanded="false">
+          <button class="nav-btn active" aria-label="Empleados" aria-expanded="false">
             <lord-icon
               src="https://cdn.lordicon.com/yanwuwms.json"
               trigger="hover"
@@ -239,7 +239,7 @@
           <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
           <input placeholder="Buscar…" />
         </div>
-        <a href="<?php echo \config\APP_URL; ?>usuarios/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo Usuario</button></a>
+        <a href="<?php echo \config\APP_URL; ?>cargos/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo cargo</button></a>
       </header>
 
       <div class="layout">
@@ -265,8 +265,8 @@
           <section class="stats">
             <div class="stat">
               <div>
-                <div class="muted">Usuarios existentes</div>
-                <div class="kpi"><?php echo $dashboardDataUsuarios['usuariosExistentes']; ?></div>
+                <div class="muted">Cargos existentes</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosExistentes']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -280,8 +280,8 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Usuarios activos</div>
-                <div class="kpi"><?php echo $dashboardDataUsuarios['usuariosActivos']; ?></div>
+                <div class="muted">Cargos activos</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosActivos']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -295,8 +295,8 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Usuarios inactivos</div>
-                <div class="kpi"><?php echo $dashboardDataUsuarios['usuariosInactivos']; ?></div>
+                <div class="muted">Cargos inactivos</div>
+                <div class="kpi"><?php echo $dashboardDataCargos['cargosInactivos']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -310,14 +310,14 @@
             </div>
           </section><br><br>
 
-          <!-- Tabla de Usuarios -->
+          <!-- Tabla de cargos -->
           <div class="section-reportes">
             <table class="tabla-consultas">
               <tbody>
                 <div class="table-header">
-                  <strong>Tabla de Usuarios</strong>
+                  <strong>Tabla de cargos</strong>
                   <div style="display:flex; gap:8px;">
-                    <a href="<?php echo \config\APP_URL . 'usuarios/generateReportPDF'; ?>" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
+                    <a href="<?php echo \config\APP_URL . 'cargos/generateReportPDF'; ?>" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
                       <span>Generar PDF</span>
                       <lord-icon
                         src="https://cdn.lordicon.com/gyyhoycg.json"
@@ -331,35 +331,29 @@
                 </div>
                 <thead>
                   <tr>
-                    <th>Nombre Usuario</th>
-                    <th>Fecha Registro </th>
-                    <th>Última Sesión</th>
-                    <th>Rol</th>
+                    <th>Cargo</th>
                     <th>Estado</th>
                     <th colspan="3" style="text-align:center">Acciones</th>
                   </tr>
                 </thead>
                 <?php
 
-                if ($dashboardDataUsuarios['usuarios']) {
-                  foreach ($dashboardDataUsuarios['usuarios'] as $usuario) {
-                    $switchIdUsuario = "switch_" . $usuario['ID_USUARIO'];
-                    $estado = $usuario['ESTADO_USUARIO'] == 1 ? true : false;
+                if ($dashboardDataCargos['cargos']) {
+                  foreach ($dashboardDataCargos['cargos'] as $cargo) {
+                    $switchIdCargo = "switch_" . $cargo['ID_CARGO'];
+                    $estado = $cargo['ESTADO_CARGO'] == 1 ? true : false;
                 ?>
                     <tr>
-                      <td> <?php echo htmlspecialchars($usuario['NOMBRE_USUARIO']); ?></td>
-                      <td> <?php echo htmlspecialchars($usuario['FECHA_REGISTRO']); ?></td>
-                      <td> <?php echo htmlspecialchars($usuario['FECHA_ULTIMA_SESION']); ?></td>
-                      <td> <?php echo htmlspecialchars($usuario['ROL']); ?></td>
+                      <td> <?php echo htmlspecialchars($cargo['NOMBRE_CARGO']); ?></td>
                       <td>
-                        <input id="<?php echo $switchIdUsuario; ?>" type="checkbox" <?php echo $estado ? 'checked' : ''; ?>
-                           data-id="<?php echo htmlspecialchars($usuario['ID_USUARIO']); ?>";>
-                        <label for="<?php echo $switchIdUsuario; ?>" class="check-trail">
+                        <input id="<?php echo $switchIdCargo; ?>" type="checkbox" <?php echo $estado ? 'checked' : ''; ?>
+                           data-id="<?php echo htmlspecialchars($cargo['ID_CARGO']); ?>";>
+                        <label for="<?php echo $switchIdCargo; ?>" class="check-trail">
                           <span class="check-handler"></span>
                         </label>
                       </td>
                       <td>
-                        <a href="<?php echo \config\APP_URL . 'usuarios/viewEdit/' . htmlspecialchars($usuario['ID_USUARIO']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
+                        <a href="<?php echo \config\APP_URL . 'cargos/viewEdit/' . htmlspecialchars($cargo['ID_CARGO']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
                           <lord-icon
                               src="https://cdn.lordicon.com/ibckyoan.json"
                               trigger="hover"
@@ -368,7 +362,7 @@
                           </lord-icon>
                         </a>
                       </td>
-                      <td><button data-id="<?= $usuario['ID_USUARIO'] ?>" class='btn btn-sm btn-danger delete-usuario'>
+                      <td><button data-id="<?= $cargo['ID_CARGO'] ?>" class='btn btn-sm btn-danger delete-cargo'>
                         <lord-icon
                           src="https://cdn.lordicon.com/oqeixref.json"
                           trigger="morph"
@@ -382,7 +376,7 @@
                   }
                 } else {
                   ?>
-                  <tr><td colspan='5' style="text-align:center;">No hay usuarios disponibles.</td></tr>
+                  <tr><td colspan='5' style="text-align:center;">No hay cargos disponibles.</td></tr>
                 <?php
                 }
                 ?>
@@ -405,8 +399,8 @@
   <!-- JS para CRUD -->
   <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
   <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/usuario/confirmState.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/usuario/confirmDelete.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
   
   <!-- LIBRERIAS -->
   <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>

@@ -18,8 +18,8 @@
           </a>
         </li>
 
-        <li class="has-submenu active" title="Usuarios">
-          <button class="nav-btn" aria-label="Usuarios" aria-expanded="false">
+        <li class="has-submenu" title="Usuarios">
+          <button class="nav-btn active" aria-label="Usuarios" aria-expanded="false">
             <lord-icon
               src="https://cdn.lordicon.com/bushiqea.json"
               trigger="hover"

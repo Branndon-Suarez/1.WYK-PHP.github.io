@@ -1,3 +1,6 @@
+<?php
+use const \config\APP_URL;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

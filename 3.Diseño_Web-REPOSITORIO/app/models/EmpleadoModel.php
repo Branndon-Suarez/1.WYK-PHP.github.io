@@ -6,79 +6,66 @@ error_reporting(E_ALL);
 
 use \config\Connection;
 
-class CargoModel {
+class EmpleadoModel {
     private $db;
 
     public function __construct() {
         $this->db = Connection::getConnection();
     }
 
-    public function getCargos() {
+    public function getEmpleados() {
         try {
-            $sql = "CALL CONSULTAR_CARGO";
+            $sql = "CALL CONSULTAR_EMPLEADO";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getCargos: " . $e->getMessage());
+            error_log("Error en la función getEmpleados: " . $e->getMessage());
             return [];
         }
     }
 
-    public function getCantCargosExistentes() {
+    public function getCantEmpleadosExist() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM CARGO";
+            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantCargosExistentes: " . $e->getMessage());
+            error_log("Error en la función getCantEmpleadosExist: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCantCargosActivos() {
+    public function getCantEmpleadosActivos() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM CARGO WHERE ESTADO_CARGO = 1";
+            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO WHERE ESTADO_EMPLEADO = 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantCargosActivos: " . $e->getMessage());
+            error_log("Error en la función getCantEmpleadosActivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCantCargosInactivos() {
+    public function getCantEmpleadosInactivos() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM CARGO WHERE ESTADO_CARGO = 0";
+            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO WHERE ESTADO_EMPLEADO = 0";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantCargosInactivos: " . $e->getMessage());
+            error_log("Error en la función getCantEmpleadosInactivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function createCargo($nombreCargo) {
+    public function checkIfEmpleadoExists($cedulaEmpleado) {
         try {
-            $sql = "CALL INSERTAR_CARGO(:nombre_cargo, :estado_cargo)";
+            $sql = "SELECT COUNT(*) FROM CARGO WHERE CC_EMPLEADO = :cedula_empleado";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':nombre_cargo', $nombreCargo, \PDO::PARAM_STR);
-            $stmt->bindValue(':estado_cargo', 1, \PDO::PARAM_INT); // Estado activo por defecto
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            error_log("Error en la función createCargo: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function checkIfCargoExists($nombreCargo) {
-        try {
-            $sql = "SELECT COUNT(*) FROM CARGO WHERE NOMBRE_CARGO = :nombre_cargo";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':nombre_cargo', $nombreCargo, \PDO::PARAM_STR);
+            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetchColumn() > 0;
         } catch (\PDOException $e) {
@@ -87,62 +74,83 @@ class CargoModel {
         }
     }
 
-    public function getCargoById($idCargo) {
+    public function createEmpleado($cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado) {
         try {
-            $sql = "SELECT * FROM CARGO WHERE ID_CARGO = :id_cargo";
+            $sql = "CALL INSERTAR_EMPLEADO(:cedula_empleado, :nombre_empleado, :RH_empleado, :tel_empleado, :email_empleado, :cargo_empleado, :usuario_empleado, :estado_empleado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_cargo', $idCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':nombre_empleado', $nombreEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':RH_empleado', $rhEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel_empleado', $telEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':email_empleado', $emailEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':cargo_empleado', $cargoEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':usuario_empleado', $usuarioEmpleado, \PDO::PARAM_INT);
+            $stmt->bindValue(':estado_empleado', 1, \PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            error_log("Error en la función createCargo: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getEmpleadoById($id) {
+        try {
+            $sql = "SELECT * FROM EMPLEADO WHERE ID_EMPLEADO = :id_empleado";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id_empleado', $id, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getCargoById: " . $e->getMessage());
+            error_log("Error en la función getEmpleadoById: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateCargo($idCargo, $nombreCargo, $estadoCargo) {
+    public function updateEmpleado($idEmpleado, $cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado, $estadoEmpleado) {
         try {
-            $sql = "CALL ACTUALIZAR_CARGO(:id_cargo, :nombre_cargo, :estado_cargo)";
+            $sql = "CALL ACTUALIZAR_EMPLEADO(:id_empleado, :cedula_empleado, :nombre_empleado, :RH_empleado, :tel_empleado, :email_empleado, :cargo_empleado, :usuario_empleado, :estado_empleado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_cargo', $idCargo, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_cargo', $nombreCargo, \PDO::PARAM_STR);
-            $stmt->bindValue(':estado_cargo', $estadoCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_empleado', $idEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':nombre_empleado', $nombreEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':RH_empleado', $rhEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel_empleado', $telEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':email_empleado', $emailEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':cargo_empleado', $cargoEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':usuario_empleado', $usuarioEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado_empleado', $estadoEmpleado, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función updateCargo: " . $e->getMessage());
+            error_log("Error en la función updateEmpleado: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateCargoState($idCargo, $estadoCargo) {
+    public function updateEmpleadoState($idEmpleado, $estadoEmpleado) {
         try {
-            // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE CARGO SET ESTADO_CARGO = :estado WHERE ID_CARGO = :id";
+            $sql = "UPDATE EMPLEADO SET ESTADO_EMPLEADO = :estado WHERE ID_EMPLEADO = :id";
             $stmt = $this->db->prepare($sql);
 
-            // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoCargo, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado', $estadoEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $idEmpleado, \PDO::PARAM_INT);
             
             $stmt->execute();
 
-            // Verificar si se actualizó al menos una fila.
             return $stmt->rowCount() > 0;
         } catch (\PDOException $e) {
-            // Registrar el error en el log de XAMPP.
-            error_log("Error al actualizar estado del cargo: " . $e->getMessage());
+            error_log("Error al actualizar estado del empleado: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteCargo($idCargo) {
+    public function deleteEmpleado($idEmpleado) {
         try {
-            $sql = "CALL ELIMINAR_CARGO(:id_cargo)";
+            $sql = "CALL ELIMINAR_EMPLEADO(:id_empleado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_cargo', $idCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_empleado', $idEmpleado, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función deleteCargo: " . $e->getMessage());
+            error_log("Error en la función deleteEmpleado: " . $e->getMessage());
             return null;
         }
     }

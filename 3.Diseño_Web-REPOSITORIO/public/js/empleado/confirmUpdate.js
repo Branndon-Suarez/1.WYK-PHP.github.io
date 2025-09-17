@@ -1,11 +1,11 @@
-document.getElementById('update-usuario-form').addEventListener('submit', function (e) {
+document.getElementById('update-empleado-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const form = this;
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Se actualizarán los datos de este usuario.',
+        text: 'Se actualizarán los datos de este empleado.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -16,7 +16,7 @@ document.getElementById('update-usuario-form').addEventListener('submit', functi
         if (result.isConfirmed) {
             const formData = new FormData(form);
 
-            fetch(APP_URL + 'usuarios/update', {
+            fetch(APP_URL + 'empleados/update', {
                 method: 'POST',
                 body: formData
             })
@@ -33,7 +33,7 @@ document.getElementById('update-usuario-form').addEventListener('submit', functi
                         title: '¡Éxito!',
                         text: data.message
                     }).then(() => {
-                        window.location.href = APP_URL + 'usuarios';
+                        window.location.href = APP_URL + 'empleados';
                     });
                 } else {
                     Swal.fire({

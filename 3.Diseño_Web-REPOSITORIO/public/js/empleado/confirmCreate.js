@@ -1,9 +1,9 @@
-document.getElementById('create-usuario-form').addEventListener('submit', function (e) {
+document.getElementById('create-empleado-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
 
-    fetch(APP_URL + 'usuarios/create', {
+    fetch(APP_URL + 'empleados/create', {
         method: 'POST',
         body: formData
     })
@@ -15,7 +15,7 @@ document.getElementById('create-usuario-form').addEventListener('submit', functi
                     title: '¡Éxito!',
                     text: data.message
                 }).then(() => {
-                    window.location.href = APP_URL + 'usuarios';
+                    window.location.href = APP_URL + 'empleados';
                 });
             } else {
                 Swal.fire({

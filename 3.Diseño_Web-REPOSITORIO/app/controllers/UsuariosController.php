@@ -195,7 +195,7 @@ class UsuariosController {
         <html lang="es">
         <head>
             <meta charset="UTF-8">
-            <title>Reporte de Cargos</title>
+            <title>Reporte de Usuarios</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                 .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
@@ -208,7 +208,7 @@ class UsuariosController {
             </style>
         </head>
         <body>
-        <div class="header"><h1>Reporte de Cargos - Panaderia Wyk</h1></div>
+        <div class="header"><h1>Reporte de Usuarios - Panaderia Wyk</h1></div>
         <div class="content">
             <table>
                 <thead>

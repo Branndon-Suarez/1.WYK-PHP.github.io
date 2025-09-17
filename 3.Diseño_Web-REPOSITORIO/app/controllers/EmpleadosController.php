@@ -4,24 +4,24 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \models\CargoModel;
+use \models\EmpleadoModel;
 use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class CargosController {
-    private $cargoModel;
+class EmpleadosController {
+    private $empleadoModel;
 
     public function __construct() {
-        $this->cargoModel = new CargoModel();
+        $this->empleadoModel = new EmpleadoModel();
     }
 
     public function reports() {
-        $dashboardDataCargos = [
-            'cargosExistentes' => $this->cargoModel->getCantCargosExistentes(),
-            'cargosActivos' => $this->cargoModel->getCantCargosActivos(),
-            'cargosInactivos' => $this->cargoModel->getCantCargosInactivos(),
-            'cargos' => $this->cargoModel->getCargos()
+        $dashboardDataEmpleados = [
+            'empleadosExistentes' => $this->empleadoModel->getCantEmpleadosExist(),
+            'empleadosActivos' => $this->empleadoModel->getCantEmpleadosActivos(),
+            'empleadosInactivos' => $this->empleadoModel->getCantEmpleadosInactivos(),
+            'empleados' => $this->empleadoModel->getEmpleados()
         ];
 
         // Mensajes de sesión
@@ -31,58 +31,67 @@ class CargosController {
         if (isset($_SESSION['error_message'])) { unset($_SESSION['error_message']); }
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/cargo/dashboardCargo.php';
+        require_once __DIR__ . '/../views/empleado/dashboardEmpleado.php';
     }
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombreCargo = $_POST['Nom_Cargo'];
+            $cedulaEmpleado = $_POST['Cedula_Empleado'];
+            $nombreEmpleado = $_POST['Nom_Empleado'];
+            $rhEmpleado = $_POST['RH_Empleado'];
+            $telEmpleado = $_POST['Telefono_Empleado'];
+            $emailEmpleado = $_POST['Email_Empleado'];
+            $cargoEmpleado = $_POST['Cargo_Empleado'];
+            $usuarioEmpleado = $_POST['Usuario_Empleado'];
             try {
-                if ($this->cargoModel->checkIfCargoExists($nombreCargo)) {
-                    // Si el cargo ya existe, responde con un JSON de error.
-                    echo json_encode(['success' => false, 'message' => 'El cargo ya existe.']);
+                if ($this->empleadoModel->checkIfEmpleadoExists($cedulaEmpleado)) {
+                    echo json_encode(['success' => false, 'message' => 'El empleado ya existe.']);
                     return;
                 }
 
-                $result = $this->cargoModel->createCargo($nombreCargo);
+                $result = $this->empleadoModel->createEmpleado($cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado);
                 if ($result) {
-                    // Si es exitoso, responde con un JSON de éxito.
-                    echo json_encode(['success' => true, 'message' => 'Cargo creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Empleado creado exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el cargo.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear el empleado.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
             }
             exit();
         }
-        // Si el método es GET (al precionar el boton de añadir cargo en el dashboardCargo.php), simplemente muestra la vista de creación para luego realizar el envio por metodo post(arriba).
-        require_once __DIR__ . '/../views/cargo/create.php';
+        require_once __DIR__ . '/../views/empleado/create.php';
     }
 
     public function viewEdit($id) {
-        $cargo = $this->cargoModel->getCargoById($id);
-        if ($cargo) {
-            require_once __DIR__ . '/../views/cargo/update.php';
+        $empleado = $this->empleadoModel->getEmpleadoById($id);
+        if ($empleado) {
+            require_once __DIR__ . '/../views/empleado/update.php';
         } else {
-            $_SESSION['error_message'] = 'Cargo no encontrado.';
-            header('Location: ' . \config\APP_URL . 'cargos');
+            $_SESSION['error_message'] = 'Empleado no encontrado.';
+            header('Location: ' . \config\APP_URL . 'empleados');
             exit();
         }
     }
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idCargo = $_POST['Id_Cargo'];
-            $nombreCargo = $_POST['Nom_Cargo'];
-            $estadoCargo = $_POST['Estado_Cargo'];
+            $idEmpleado = $_POST['Id_Empleado'];
+            $cedulaEmpleado = $_POST['Cedula_Empleado'];
+            $nombreEmpleado = $_POST['Nom_Empleado'];
+            $rhEmpleado = $_POST['RH_Empleado'];
+            $telEmpleado = $_POST['Telefono_Empleado'];
+            $emailEmpleado = $_POST['Email_Empleado'];
+            $cargoEmpleado = $_POST['Cargo_Empleado'];
+            $usuarioEmpleado = $_POST['Usuario_Empleado'];
+            $estadoEmpleado = $_POST['Estado_Empleado'];
             try {
-                $result = $this->cargoModel->updateCargo($idCargo, $nombreCargo, $estadoCargo);
+                $result = $this->empleadoModel->updateEmpleado($idEmpleado, $cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado, $estadoEmpleado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Cargo actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Empleado actualizado exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el cargo.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el empleado.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -93,31 +102,26 @@ class CargosController {
     }
 
     public function updateState() {
-        // 1. Verificar que la petición sea POST y que el contenido sea JSON.
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
             return;
         }
 
-        // 2. Decodificar el JSON del cuerpo de la petición.
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // 3. Validar que los datos necesarios (id y estado) estén presentes.
         if (isset($data['id']) && isset($data['estado'])) {
-            $idCargo = $data['id'];
-            $estadoCargo = $data['estado'];
+            $idEmpleado = $data['id'];
+            $estadoEmpleado = $data['estado'];
             
             try {
-                // 4. Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->cargoModel->updateCargoState($idCargo, $estadoCargo);
+                $result = $this->empleadoModel->updateEmpleadoState($idEmpleado, $estadoEmpleado);
 
-                // 5. Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del cargo actualizado.']);
+                    echo json_encode(['success' => true, 'message' => 'Estado del empleado actualizado.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del cargo.']);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado del empleado.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -130,29 +134,25 @@ class CargosController {
     }
     
     public function delete() {
-        // 1. Verificar que la petición sea POST y que el contenido sea JSON
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
             return;
         }
 
-        // 2. Leer y decodificar el JSON del cuerpo de la petición
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // 3. Validar que el ID esté presente
         if (isset($data['id'])) {
-            $idCargo = $data['id'];
+            $idEmpleado = $data['id'];
 
             try {
-                // 4. Llamar al modelo para eliminar el registro
-                $result = $this->cargoModel->deleteCargo($idCargo);
+                $result = $this->empleadoModel->deleteEmpleado($idEmpleado);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Cargo eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Empleado eliminado con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el cargo.']);
+                    echo json_encode(['error' => 'No se pudo eliminar el empleado porque esta conectado con otro(s) registros.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -166,16 +166,14 @@ class CargosController {
 
     // ----------------- REPORTE EN PDF ----------------------------
     public function generateReportPDF() {
-        // 1. Obtener los datos del modelo
-        $cargos = $this->cargoModel->getCargos();
+        $empleados = $this->empleadoModel->getEmpleados();
 
-        // 2. Construir el HTML
         $html = '
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
-            <title>Reporte de Cargos</title>
+            <title>Reporte de Empleados</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                 .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
@@ -188,29 +186,40 @@ class CargosController {
             </style>
         </head>
         <body>
-        <div class="header"><h1>Reporte de Cargos - Panaderia Wyk</h1></div>
+        <div class="header"><h1>Reporte de Empleados - Panaderia Wyk</h1></div>
         <div class="content">
             <table>
                 <thead>
                     <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>RH</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
                         <th>Cargo</th>
+                        <th>Usuario</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>';
 
-        if (!empty($cargos)) {
-            foreach ($cargos as $cargo) {
-                // Asume que la columna de estado es 'ESTADO_CARGO' y es un valor booleano o numérico (1/0)
-                $estado = ($cargo['ESTADO_CARGO'] == 1) ? 'Activo' : 'Inactivo';
+        if (!empty($empleados)) {
+            foreach ($empleados as $empleado) {
+                $estado = ($empleado['ESTADO_EMPLEADO'] == 1) ? 'Activo' : 'Inactivo';
                 $html .= '
                 <tr>
-                    <td>' . htmlspecialchars($cargo['NOMBRE_CARGO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['CC_EMPLEADO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['NOMBRE_EMPLEADO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['RH_EMPLEADO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['TEL_EMPLEADO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['EMAIL_EMPLEADO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['NOMBRE_CARGO']) . '</td>
+                    <td>' . htmlspecialchars($empleado['NOMBRE_USUARIO']) . '</td>
                     <td>' . $estado . '</td>
                 </tr>';
             }
         } else {
-            $html .= '<tr><td colspan="2">No se encontraron cargos</td></tr>';
+            $html .= '<tr><td colspan="2">No se encontraron empleados</td></tr>';
         }
 
         $html .= '</tbody></table></div></body></html>';
@@ -222,7 +231,7 @@ class CargosController {
         $dompdf = new Dompdf($options);
 
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper('letter', 'landscape'); //portrait = vertical, landscape = horizontal
         $dompdf->render();
 
         // Manejo de la paginación

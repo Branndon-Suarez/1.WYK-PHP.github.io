@@ -25,16 +25,10 @@ CALL INSERTAR_EMPLEADO(1003003003, 'Luis Fernandez', 'B+', 3121234567, 'luis.fer
 CALL INSERTAR_EMPLEADO(1004004004, 'Ana Martinez', 'AB+', 3131234567, 'ana.martinez@wyk.com', 4, 4, 1);
 
 -- 👦CALL CLIENTE👦
-CALL INSERTAR_CLIENTE(2001001001, 'CC', 'Javier Torres', 3209876543, 'javier.torres@email.com', 1, 5, 1);
-CALL INSERTAR_CLIENTE(2002002002, 'CE', 'Maria Rodriguez', 3219876543, 'maria.rodriguez@email.com', 2, 6, 1);
-CALL INSERTAR_CLIENTE(99010112345, 'TI', 'Pedro Infante', 3229876543, 'pedro.infante@email.com', 3, 7, 1);
-CALL INSERTAR_CLIENTE(2004004004, 'CC', 'Laura Sanchez', 3239876543, 'laura.sanchez@email.com', 4, 8, 1);
-
--- 🍰CALL PEDIDO🍰
-CALL INSERTAR_PEDIDO(NOW(), 5, 4, 1, 'EN PREPARACION');
-CALL INSERTAR_PEDIDO(NOW(), 2, 4, 2, 'PENDIENTE');
-CALL INSERTAR_PEDIDO(NOW(), 8, 4, 3, 'ENTREGADO');
-CALL INSERTAR_PEDIDO(NOW(), 1, 4, 4, 'CANCELADO');
+CALL INSERTAR_CLIENTE(2001001001, 'CC', 'Javier Torres', 3209876543, 'javier.torres@email.com', 5, 1);
+CALL INSERTAR_CLIENTE(2002002002, 'CE', 'Maria Rodriguez', 3219876543, 'maria.rodriguez@email.com', 6, 1);
+CALL INSERTAR_CLIENTE(99010112345, 'TI', 'Pedro Infante', 3229876543, 'pedro.infante@email.com', 7, 1);
+CALL INSERTAR_CLIENTE(2004004004, 'CC', 'Laura Sanchez', 3239876543, 'laura.sanchez@email.com', 8, 1);
 
 -- 🥐CALL PRODUCTO🥐
 CALL INSERTAR_PRODUCTO(770001, 'Pan Frances', 1500, 50, '2025-07-15', 'PANADERIA', 'Baguette', 'Wyk Pan', 2, 1);
@@ -42,23 +36,23 @@ CALL INSERTAR_PRODUCTO(770002, 'Torta de Chocolate', 35000, 10, '2025-07-20', 'P
 CALL INSERTAR_PRODUCTO(770003, 'Leche Deslactosada', 4000, 30, '2025-10-01', 'VIBERES', 'Lacteo', 'Lala', 1, 1);
 CALL INSERTAR_PRODUCTO(770004, 'Croissant de Almendras', 4500, 40, '2025-07-10', 'PANADERIA', 'Hojaldre', 'Wyk Pan', 2, 1);
 
--- 🚲CALL DETALLE PEDIDO🚲
-CALL INSERTAR_DETALLE_PEDIDO(1, 'Pedido de Pan Frances para la mesa 5', 1, 770001, 1);
-CALL INSERTAR_DETALLE_PEDIDO(2, 'Pedido de Torta de Chocolate para llevar', 2, 770002, 1);
-CALL INSERTAR_DETALLE_PEDIDO(3, 'Pedido de Leche para el cafe', 3, 770003, 1);
-CALL INSERTAR_DETALLE_PEDIDO(4, 'Pedido de Croissant para la mesa 1', 4, 770004, 1);
+-- 🛍️ CALL VENTA🛍️
+CALL INSERTAR_VENTA(NOW(), 1500, 1, 'Venta de 1 Pan Frances', 'PAGADA', 3, 1);
+CALL INSERTAR_VENTA(NOW(), 35000, 2, 'Venta de 1 Torta de Chocolate', 'PENDIENTE', 3, 2);
+CALL INSERTAR_VENTA(NOW(), 4000, NULL, 'Venta de 1 Leche', 'PAGADA', 3, 3);
+CALL INSERTAR_VENTA(NOW(), 4500, 4, 'Venta de 1 Croissant cancelada', 'CANCELADA', 3, 4);
 
--- 📄CALL FACTURA VENTA📄
-CALL INSERTAR_FACTURA_VENTA(1500, NOW(), 'Venta de 1 Pan Frances', 3, 1, 1, 'PAGADA');
-CALL INSERTAR_FACTURA_VENTA(35000, NOW(), 'Venta de 1 Torta de Chocolate', 3, 2, 2, 'PENDIENTE');
-CALL INSERTAR_FACTURA_VENTA(4000, NOW(), 'Venta de 1 Leche', 3, 3, 3, 'PAGADA');
-CALL INSERTAR_FACTURA_VENTA(4500, NOW(), 'Venta de 1 Croissant cancelada', 3, 4, 4, 'CANCELADA');
+-- 🛒 CALL DETALLE_VENTA🛒
+CALL INSERTAR_DETALLE_VENTA(1, 1500, 1, 770001);
+CALL INSERTAR_DETALLE_VENTA(1, 35000, 2, 770002);
+CALL INSERTAR_DETALLE_VENTA(1, 4000, 3, 770003);
+CALL INSERTAR_DETALLE_VENTA(1, 4500, 4, 770004);
 
--- 🔖CALL DETALLE_VENTA_PRODUCTO🔖
-CALL INSERTAR_DETALLE_VENTA_PRODUCTO(1, 1, 1500, 1, 770001, 1);
-CALL INSERTAR_DETALLE_VENTA_PRODUCTO(2, 1, 35000, 2, 770002, 1);
-CALL INSERTAR_DETALLE_VENTA_PRODUCTO(3, 1, 4000, 3, 770003, 1);
-CALL INSERTAR_DETALLE_VENTA_PRODUCTO(4, 1, 4500, 4, 770004, 0);
+-- 🗄️ CALL AJUSTE_INVENTARIO🗄️
+CALL INSERTAR_AJUSTE_INVENTARIO(770004, 'CADUCADO', 5, NOW(), 'Croissants expirados por baja rotacion', 3);
+CALL INSERTAR_AJUSTE_INVENTARIO(770001, 'PERDIDA', 2, NOW(), 'Panes que se quemaron en el horno', 2);
+CALL INSERTAR_AJUSTE_INVENTARIO(770003, 'DAÑADO', 1, NOW(), 'Envase de leche roto', 1);
+CALL INSERTAR_AJUSTE_INVENTARIO(770002, 'MUESTRA', 1, NOW(), 'Torta de chocolate para degustacion', 4);
 
 -- 👩‍💼CALL PROVEEDOR👨‍💼
 CALL INSERTAR_PROVEEDOR(800100200, 'Harinas del Valle', 6011234567, 'ventas@harinasvalle.com', 1, 1);

@@ -45,15 +45,14 @@ class UserClientModel {
 
             // Insertar en la tabla CLIENTE
             $sqlClient = "INSERT INTO CLIENTE
-                          (NUM_DOCUMENTO_CLIENTE, TIPO_DOCUMENTO_CLIENTE, NOMBRE_CLIENTE, TEL_CLIENTE, EMAIL_CLIENTE, ID_EMPLEADO_FK_CLIENTE, ID_USUARIO_FK_CLIENTE, ESTADO_CLIENTE)
-                          VALUES (:documento, :tipo_doc, :nombre, :telefono, :email, :id_empleado_sistema, :id_usuario, 1)";
+                          (NUM_DOCUMENTO_CLIENTE, TIPO_DOCUMENTO_CLIENTE, NOMBRE_CLIENTE, TEL_CLIENTE, EMAIL_CLIENTE, ID_USUARIO_FK_CLIENTE, ESTADO_CLIENTE)
+                          VALUES (:documento, :tipo_doc, :nombre, :telefono, :email, :id_usuario, 1)";
             $stmtClient = $this->db->prepare($sqlClient);
             $stmtClient->bindParam(':documento', $clientData['documento'], PDO::PARAM_INT);
             $stmtClient->bindParam(':tipo_doc', $clientData['tipo_documento'], PDO::PARAM_STR);
             $stmtClient->bindParam(':nombre', $clientData['nombre_completo'], PDO::PARAM_STR);
             $stmtClient->bindParam(':telefono', $clientData['telefono'], PDO::PARAM_INT);
             $stmtClient->bindParam(':email', $clientData['email'], PDO::PARAM_STR);
-            $stmtClient->bindParam(':id_empleado_sistema', $this->idEmpleadoSistema, PDO::PARAM_INT);
             $stmtClient->bindParam(':id_usuario', $userId, PDO::PARAM_INT);
             $stmtClient->execute();
 

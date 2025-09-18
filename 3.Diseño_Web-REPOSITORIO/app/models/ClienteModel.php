@@ -15,142 +15,140 @@ class ClienteModel {
 
     public function getClientes() {
         try {
-            $sql = "CALL CONSULTAR_EMPLEADO";
+            $sql = "CALL CONSULTAR_CLIENTE";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getEmpleados: " . $e->getMessage());
+            error_log("Error en la función getClientes: " . $e->getMessage());
             return [];
         }
     }
 
-    public function getCantEmpleadosExist() {
+    public function getCantClientesExist() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO";
+            $sql = "SELECT COUNT(*) AS total FROM CLIENTE";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantEmpleadosExist: " . $e->getMessage());
+            error_log("Error en la función getCantClientesExist: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCantEmpleadosActivos() {
+    public function getCantClientesActivos() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO WHERE ESTADO_EMPLEADO = 1";
+            $sql = "SELECT COUNT(*) AS total FROM CLIENTE WHERE ESTADO_CLIENTE = 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantEmpleadosActivos: " . $e->getMessage());
+            error_log("Error en la función getCantClientesActivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCantEmpleadosInactivos() {
+    public function getCantClientesInactivos() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM EMPLEADO WHERE ESTADO_EMPLEADO = 0";
+            $sql = "SELECT COUNT(*) AS total FROM CLIENTE WHERE ESTADO_CLIENTE = 0";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantEmpleadosInactivos: " . $e->getMessage());
+            error_log("Error en la función getCantClientesInactivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function checkIfEmpleadoExists($cedulaEmpleado) {
+    public function checkIfClienteExists($numDocCliente) {
         try {
-            $sql = "SELECT COUNT(*) FROM CARGO WHERE CC_EMPLEADO = :cedula_empleado";
+            $sql = "SELECT COUNT(*) FROM CLIENTE WHERE NUM_DOCUMENTO_CLIENTE = :num_doc_cliente";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_STR);
+            $stmt->bindParam(':num_doc_cliente', $numDocCliente, \PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetchColumn() > 0;
         } catch (\PDOException $e) {
-            error_log("Error en checkIfCargoExists: " . $e->getMessage());
+            error_log("Error en checkIfClienteExists: " . $e->getMessage());
             return false;
         }
     }
 
-    public function createEmpleado($cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado) {
+    public function createCliente($numDocCliente, $tipoDocCliente, $nomCliente, $telCliente, $emailCliente, $usuarioCliente) {
         try {
-            $sql = "CALL INSERTAR_EMPLEADO(:cedula_empleado, :nombre_empleado, :RH_empleado, :tel_empleado, :email_empleado, :cargo_empleado, :usuario_empleado, :estado_empleado)";
+            $sql = "CALL INSERTAR_CLIENTE(:num_doc_cliente, :tipo_doc_cliente, :nom_cliente, :tel_cliente, :email_cliente, :usuario_cliente, :estado_cliente)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_empleado', $nombreEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':RH_empleado', $rhEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':tel_empleado', $telEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':email_empleado', $emailEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':cargo_empleado', $cargoEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':usuario_empleado', $usuarioEmpleado, \PDO::PARAM_INT);
-            $stmt->bindValue(':estado_empleado', 1, \PDO::PARAM_INT);
+            $stmt->bindParam(':num_doc_cliente', $numDocCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':tipo_doc_cliente', $tipoDocCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':nom_cliente', $nomCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel_cliente', $telCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':email_cliente', $emailCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':usuario_cliente', $usuarioCliente, \PDO::PARAM_INT);
+            $stmt->bindValue(':estado_cliente', 1, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función createCargo: " . $e->getMessage());
+            error_log("Error en la función createCliente: " . $e->getMessage());
             return null;
         }
     }
 
-    public function getEmpleadoById($id) {
+    public function getClienteById($id) {
         try {
-            $sql = "SELECT * FROM EMPLEADO WHERE ID_EMPLEADO = :id_empleado";
+            $sql = "SELECT * FROM CLIENTE WHERE ID_CLIENTE = :id_cliente";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_empleado', $id, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_cliente', $id, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getEmpleadoById: " . $e->getMessage());
+            error_log("Error en la función getClienteById: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateEmpleado($idEmpleado, $cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado, $estadoEmpleado) {
+    public function updateCliente($idCliente, $numDocCliente, $tipoDocCliente, $nomCliente, $telCliente, $emailCliente, $usuarioCliente, $estadoCliente) {
         try {
-            $sql = "CALL ACTUALIZAR_EMPLEADO(:id_empleado, :cedula_empleado, :nombre_empleado, :RH_empleado, :tel_empleado, :email_empleado, :cargo_empleado, :usuario_empleado, :estado_empleado)";
+            $sql = "CALL ACTUALIZAR_CLIENTE(:id_cliente, :num_doc_cliente, :tipo_doc_cliente, :nom_cliente, :tel_cliente, :email_cliente, :usuario_cliente, :estado_cliente, :estado_cliente)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_empleado', $idEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':cedula_empleado', $cedulaEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_empleado', $nombreEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':RH_empleado', $rhEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':tel_empleado', $telEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':email_empleado', $emailEmpleado, \PDO::PARAM_STR);
-            $stmt->bindParam(':cargo_empleado', $cargoEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':usuario_empleado', $usuarioEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':estado_empleado', $estadoEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_cliente', $idCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':num_doc_cliente', $numDocCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':tipo_doc_cliente', $tipoDocCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':nom_cliente', $nomCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel_cliente', $telCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':email_cliente', $emailCliente, \PDO::PARAM_STR);
+            $stmt->bindParam(':usuario_cliente', $usuarioCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado_cliente', $estadoCliente, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función updateEmpleado: " . $e->getMessage());
+            error_log("Error en la función updateCliente: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateEmpleadoState($idEmpleado, $estadoEmpleado) {
+    public function updateClienteState($idCliente, $estadoCliente) {
         try {
-            $sql = "UPDATE EMPLEADO SET ESTADO_EMPLEADO = :estado WHERE ID_EMPLEADO = :id";
+            $sql = "UPDATE CLIENTE SET ESTADO_CLIENTE = :estado WHERE ID_CLIENTE = :id";
             $stmt = $this->db->prepare($sql);
 
-            $stmt->bindParam(':estado', $estadoEmpleado, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado', $estadoCliente, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $idCliente, \PDO::PARAM_INT);
             
             $stmt->execute();
 
             return $stmt->rowCount() > 0;
         } catch (\PDOException $e) {
-            error_log("Error al actualizar estado del empleado: " . $e->getMessage());
+            error_log("Error al actualizar estado del cliente: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteEmpleado($idEmpleado) {
+    public function deleteCliente($idCliente) {
         try {
-            $sql = "CALL ELIMINAR_EMPLEADO(:id_empleado)";
+            $sql = "CALL ELIMINAR_CLIENTE(:id_cliente)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_empleado', $idEmpleado, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_cliente', $idCliente, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función deleteEmpleado: " . $e->getMessage());
+            error_log("Error en la función deleteCliente: " . $e->getMessage());
             return null;
         }
     }

@@ -1,68 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const switches = document.querySelectorAll('.check-trail');
-    switches.forEach(switchElement => {
-        const checkbox = switchElement.previousElementSibling;
-        
-        checkbox.addEventListener('change', async (event) => {
-            const empleadoId = event.target.dataset.id;
-            const nuevoEstado = event.target.checked ? 1 : 0;
+document.getElementById('update-cliente-form').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-            const result = await Swal.fire({
-                title: '¿Estás seguro?',
-                text: `¿Quieres ${nuevoEstado === 1 ? 'activar' : 'desactivar'} este empleado?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, ¡cambiar estado!',
-                cancelButtonText: 'Cancelar'
-            });
+    const form = this;
 
-            if (result.isConfirmed) {
-                const url = `${APP_URL}empleados/updateState`;
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Se actualizarán los datos de este cliente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, actualizar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData(form);
 
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            id: empleadoId,
-                            estado: nuevoEstado
-                        })
+            fetch(APP_URL + 'clientes/update', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La respuesta de la red no fue exitosa');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: data.message
+                    }).then(() => {
+                        window.location.href = APP_URL + 'clientes';
                     });
-
-                    if (!response.ok) {
-                        // Si la respuesta no es OK (ej. 404, 500), maneja el error.
-                        const errorData = await response.json();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error de Servidor',
-                            text: errorData.error || `Error: ${response.status} ${response.statusText}`
-                        });
-                        event.target.checked = !event.target.checked;
-                    } else {
-                        // Si la respuesta es exitosa (código 200).
-                        const data = await response.json();
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Actualizado!',
-                            text: data.message
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error en la petición fetch:', error);
-                    event.target.checked = !event.target.checked;
+                } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error de conexión',
-                        text: 'No se pudo conectar con el servidor. Por favor, revisa la consola del navegador para más detalles.'
+                        title: 'Error',
+                        text: data.message
                     });
                 }
-            } else {
-                event.target.checked = !event.target.checked;
-            }
-        });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de conexión',
+                    text: 'No se pudo contactar al servidor: ' + error.message
+                });
+            });
+        }
     });
 });

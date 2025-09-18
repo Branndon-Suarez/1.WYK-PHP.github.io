@@ -17,11 +17,11 @@ class ClientesController {
     }
 
     public function reports() {
-        $dashboardDataEmpleados = [
-            'clientesExistentes' => $this->clienteModel->getCantEmpleadosExist(),
-            'clientesActivos' => $this->clienteModel->getCantEmpleadosActivos(),
-            'clientesInactivos' => $this->clienteModel->getCantEmpleadosInactivos(),
-            'clientes' => $this->clienteModel->getEmpleados()
+        $dashboardDataClientes = [
+            'clientesExistentes' => $this->clienteModel->getCantClientesExist(),
+            'clientesActivos' => $this->clienteModel->getCantClientesActivos(),
+            'clientesInactivos' => $this->clienteModel->getCantClientesInactivos(),
+            'clientes' => $this->clienteModel->getClientes()
         ];
 
         // Mensajes de sesión
@@ -31,67 +31,64 @@ class ClientesController {
         if (isset($_SESSION['error_message'])) { unset($_SESSION['error_message']); }
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/empleado/dashboardEmpleado.php';
+        require_once __DIR__ . '/../views/cliente/dashboardCliente.php';
     }
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $cedulaEmpleado = $_POST['Cedula_Empleado'];
-            $nombreEmpleado = $_POST['Nom_Empleado'];
-            $rhEmpleado = $_POST['RH_Empleado'];
-            $telEmpleado = $_POST['Telefono_Empleado'];
-            $emailEmpleado = $_POST['Email_Empleado'];
-            $cargoEmpleado = $_POST['Cargo_Empleado'];
-            $usuarioEmpleado = $_POST['Usuario_Empleado'];
+            $numDocCliente = $_POST['Num_Doc_Cliente'];
+            $tipoDocCliente = $_POST['Tipo_Doc_Cliente'];
+            $nomCliente = $_POST['Nom_Cliente'];
+            $telCliente = $_POST['Telefono_Cliente'];
+            $emailCliente = $_POST['Email_Cliente'];
+            $usuarioCliente = $_POST['Usuario_Cliente'];
             try {
-                if ($this->empleadoModel->checkIfEmpleadoExists($cedulaEmpleado)) {
-                    echo json_encode(['success' => false, 'message' => 'El empleado ya existe.']);
+                if ($this->clienteModel->checkIfClienteExists($numDocCliente)) {
+                    echo json_encode(['success' => false, 'message' => 'El cliente ya existe.']);
                     return;
                 }
 
-                $result = $this->empleadoModel->createEmpleado($cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado);
+                $result = $this->clienteModel->createCliente($numDocCliente, $tipoDocCliente, $nomCliente, $telCliente, $emailCliente, $usuarioCliente);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Empleado creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Cliente creado exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el empleado.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear el cliente.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
             }
             exit();
         }
-        require_once __DIR__ . '/../views/empleado/create.php';
     }
 
     public function viewEdit($id) {
-        $empleado = $this->empleadoModel->getEmpleadoById($id);
-        if ($empleado) {
-            require_once __DIR__ . '/../views/empleado/update.php';
+        $cliente = $this->clienteModel->getClienteById($id);
+        if ($cliente) {
+            require_once __DIR__ . '/../views/cliente/update.php';
         } else {
-            $_SESSION['error_message'] = 'Empleado no encontrado.';
-            header('Location: ' . \config\APP_URL . 'empleados');
+            $_SESSION['error_message'] = 'Cliente no encontrado.';
+            header('Location: ' . \config\APP_URL . 'clientes');
             exit();
         }
     }
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idEmpleado = $_POST['Id_Empleado'];
-            $cedulaEmpleado = $_POST['Cedula_Empleado'];
-            $nombreEmpleado = $_POST['Nom_Empleado'];
-            $rhEmpleado = $_POST['RH_Empleado'];
-            $telEmpleado = $_POST['Telefono_Empleado'];
-            $emailEmpleado = $_POST['Email_Empleado'];
-            $cargoEmpleado = $_POST['Cargo_Empleado'];
-            $usuarioEmpleado = $_POST['Usuario_Empleado'];
-            $estadoEmpleado = $_POST['Estado_Empleado'];
+            $idCliente = $_POST['Id_Cliente'];
+            $numDocCliente = $_POST['Num_Doc_Cliente'];
+            $tipoDocCliente = $_POST['Tipo_Doc_Cliente'];
+            $nomCliente = $_POST['Nom_Cliente'];
+            $telCliente = $_POST['Telefono_Cliente'];
+            $emailCliente = $_POST['Email_Cliente'];
+            $usuarioCliente = $_POST['Usuario_Cliente'];
+            $estadoCliente = $_POST['Estado_Cliente'];
             try {
-                $result = $this->empleadoModel->updateEmpleado($idEmpleado, $cedulaEmpleado, $nombreEmpleado, $rhEmpleado, $telEmpleado, $emailEmpleado, $cargoEmpleado, $usuarioEmpleado, $estadoEmpleado);
+                $result = $this->clienteModel->updateCliente($idCliente, $numDocCliente, $tipoDocCliente, $nomCliente, $telCliente, $emailCliente, $usuarioCliente, $estadoCliente);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Empleado actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Cliente actualizado exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el empleado.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el cliente.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -111,17 +108,17 @@ class ClientesController {
         $data = json_decode(file_get_contents('php://input'), true);
 
         if (isset($data['id']) && isset($data['estado'])) {
-            $idEmpleado = $data['id'];
-            $estadoEmpleado = $data['estado'];
+            $idCliente = $data['id'];
+            $estadoCliente = $data['estado'];
             
             try {
-                $result = $this->empleadoModel->updateEmpleadoState($idEmpleado, $estadoEmpleado);
+                $result = $this->clienteModel->updateClienteState($idCliente, $estadoCliente);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del empleado actualizado.']);
+                    echo json_encode(['success' => true, 'message' => 'Estado del cliente actualizado.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del empleado.']);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado del cliente.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -143,16 +140,16 @@ class ClientesController {
         $data = json_decode(file_get_contents('php://input'), true);
 
         if (isset($data['id'])) {
-            $idEmpleado = $data['id'];
+            $idCliente = $data['id'];
 
             try {
-                $result = $this->empleadoModel->deleteEmpleado($idEmpleado);
+                $result = $this->clienteModel->deleteCliente($idCliente);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Empleado eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Cliente eliminado con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el empleado porque esta conectado con otro(s) registros.']);
+                    echo json_encode(['error' => 'No se pudo eliminar el cliente porque está conectado con otro(s) registros.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -166,14 +163,14 @@ class ClientesController {
 
     // ----------------- REPORTE EN PDF ----------------------------
     public function generateReportPDF() {
-        $empleados = $this->empleadoModel->getEmpleados();
+        $clientes = $this->clienteModel->getClientes();
 
         $html = '
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
-            <title>Reporte de Empleados</title>
+            <title>Reporte de Clientes</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                 .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
@@ -186,40 +183,38 @@ class ClientesController {
             </style>
         </head>
         <body>
-        <div class="header"><h1>Reporte de Empleados - Panaderia Wyk</h1></div>
+        <div class="header"><h1>Reporte de Clientes - Panaderia Wyk</h1></div>
         <div class="content">
             <table>
                 <thead>
                     <tr>
-                        <th>Cédula</th>
+                        <th>N° Doc.</th>
+                        <th>Tipo Doc.</th>
                         <th>Nombre</th>
-                        <th>RH</th>
                         <th>Teléfono</th>
                         <th>Email</th>
-                        <th>Cargo</th>
                         <th>Usuario</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>';
 
-        if (!empty($empleados)) {
-            foreach ($empleados as $empleado) {
-                $estado = ($empleado['ESTADO_EMPLEADO'] == 1) ? 'Activo' : 'Inactivo';
+        if (!empty($clientes)) {
+            foreach ($clientes as $cliente) {
+                $estado = ($cliente['ESTADO_CLIENTE'] == 1) ? 'Activo' : 'Inactivo';
                 $html .= '
                 <tr>
-                    <td>' . htmlspecialchars($empleado['CC_EMPLEADO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['NOMBRE_EMPLEADO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['RH_EMPLEADO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['TEL_EMPLEADO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['EMAIL_EMPLEADO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['NOMBRE_CARGO']) . '</td>
-                    <td>' . htmlspecialchars($empleado['NOMBRE_USUARIO']) . '</td>
+                    <td>' . htmlspecialchars($cliente['NUM_DOCUMENTO_CLIENTE']) . '</td>
+                    <td>' . htmlspecialchars($cliente['TIPO_DOCUMENTO_CLIENTE']) . '</td>
+                    <td>' . htmlspecialchars($cliente['NOMBRE_CLIENTE']) . '</td>
+                    <td>' . htmlspecialchars($cliente['TEL_CLIENTE']) . '</td>
+                    <td>' . htmlspecialchars($cliente['EMAIL_CLIENTE']) . '</td>
+                    <td>' . htmlspecialchars($cliente['NOMBRE_USUARIO']) . '</td>
                     <td>' . $estado . '</td>
                 </tr>';
             }
         } else {
-            $html .= '<tr><td colspan="2">No se encontraron empleados</td></tr>';
+            $html .= '<tr><td colspan="2">No se encontraron clientes</td></tr>';
         }
 
         $html .= '</tbody></table></div></body></html>';
@@ -245,6 +240,6 @@ class ClientesController {
         ');
 
         // Envía el PDF al navegador
-        $dompdf->stream("Reporte_Cargos.pdf", array("Attachment" => false));
+        $dompdf->stream("Reporte_Clientes.pdf", array("Attachment" => false));
     }
 }

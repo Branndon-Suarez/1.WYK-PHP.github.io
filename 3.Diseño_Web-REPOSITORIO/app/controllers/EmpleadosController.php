@@ -245,6 +245,6 @@ class EmpleadosController {
         ');
 
         // Envía el PDF al navegador
-        $dompdf->stream("Reporte_Cargos.pdf", array("Attachment" => false));
+        $dompdf->stream("Reporte_Empleados.pdf", array("Attachment" => false));
     }
 }

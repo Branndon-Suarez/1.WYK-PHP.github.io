@@ -67,8 +67,8 @@ if (in_array($vista, $validViews)) {
         case 'cargos':
         case 'usuarios':
         case 'empleados':
-        case 'productos':
         case 'clientes':
+        case 'productos':
             if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
                 $controllerName = ucfirst($vista) . 'Controller';
                 $fullControllerName = '\\controllers\\' . $controllerName;

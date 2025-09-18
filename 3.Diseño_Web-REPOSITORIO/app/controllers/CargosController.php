@@ -56,6 +56,7 @@ class CargosController {
             }
             exit();
         }
+        require_once __DIR__ . '/../views/cargo/create.php';
     }
 
     public function viewEdit($id) {

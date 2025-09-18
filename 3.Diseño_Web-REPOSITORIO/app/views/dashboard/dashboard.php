@@ -15,19 +15,29 @@ if (isset($_SESSION['error_message'])) {
 <!DOCTYPE html>
 <html lang="es">
 
-<body>
-  <div class="app">
-    <!-- Sidebar -->
-    <nav aria-label="Menú de navegación" class="sidebar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard WYK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+    </style>
+</head>
+
+<body data-theme="light">
+    <div class="app">
+        <!-- Sidebar -->
+        <nav aria-label="Menú de navegación" class="sidebar">
       <div class="logo">🥐</div>
       <ul>
         <li title="Inicio">
           <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn active" aria-label="Inicio">
             <lord-icon
-                src="https://cdn.lordicon.com/oeotfwsx.json"
-                colors="primary:#ffffff"
-                trigger="hover"
-                style="width:40px;height:40px">
+              src="https://cdn.lordicon.com/oeotfwsx.json"
+              colors="primary:#ffffff"
+              trigger="hover"
+              style="width:40px;height:40px">
             </lord-icon>
           </a>
         </li>
@@ -35,10 +45,10 @@ if (isset($_SESSION['error_message'])) {
         <li class="has-submenu" title="Usuarios">
           <button class="nav-btn" aria-label="Usuarios" aria-expanded="false">
             <lord-icon
-                src="https://cdn.lordicon.com/bushiqea.json"
-                trigger="hover"
-                colors="primary:#ffffff"
-                style="width:45px;height:45px">
+              src="https://cdn.lordicon.com/bushiqea.json"
+              trigger="hover"
+              colors="primary:#ffffff"
+              style="width:45px;height:45px">
             </lord-icon>
           </button>
           <ul class="submenu">
@@ -245,236 +255,313 @@ if (isset($_SESSION['error_message'])) {
       </ul>
     </nav>
 
-    <main class="main">
-      <!-- Topbar -->
-      <header>
-        <strong>PANADERIA WYK— Panel Control</strong>
-        <div class="search">
-          <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
-          <input placeholder="Buscar…" />
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <div class="s">Buenos días, 
+                        <span class="n"><?php echo $_SESSION['username']; ?></span>
+                    </div>
+                    <div class="subtitle">Ten un buen día en el trabajo</div>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" id="themeToggle" title="Cambiar tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="action-btn" id="notificationsBtn" title="Notificaciones">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">JD</div>
+                        <span><?php echo $_SESSION['username']; ?></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="profile-card">
+                    <div class="profile-image-container">
+                        <div class="profile-image" id="profileImage">
+                            JD
+                            <div class="online-indicator"></div>
+                        </div>
+                        <button class="change-photo-btn" id="changePhotoBtn" title="Cambiar foto">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+
+                    <div class="profile-name"><?php echo $_SESSION['username']; ?></div>
+                    <div class="profile-company">Administrador</div>
+
+                    <div class="contact-buttons">
+                        <button class="contact-btn phone" onclick="makeCall()" title="Llamar">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="contact-btn message" onclick="sendMessage()" title="Mensaje">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="contact-btn email" onclick="sendEmail()" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="contact-btn location" onclick="showLocation()" title="Ubicación">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                    </div>
+
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-label">
+                                <i class="fas fa-phone"></i> Teléfono
+                            </span>
+                            <span class="contact-value">+57 3128826314</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">
+                                <i class="fas fa-envelope"></i> Email
+                            </span>
+                            <span class="contact-value">juan16for@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">
+                                <i class="fas fa-map-marker-alt"></i> Dirección
+                            </span>
+                            <span class="contact-value">Av 46 calle 2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tasks-card">
+                    <div class="tasks-header">
+                        <div class="tasks-title">Mis Tareas</div>
+                        <button class="add-task-btn" id="addTaskBtn">
+                            <i class="fas fa-plus"></i> Agregar Tarea
+                        </button>
+                    </div>
+
+                    <div class="progress-overview">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 60%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>Progreso general</span>
+                            <span id="progressText">60%</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline" id="taskTimeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot dot-completed"></div>
+                            <div class="task-item completed" data-task-id="1">
+                                <div class="task-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="task-info">
+                                    <div class="task-name">Compras y Ventas</div>
+                                    <div class="task-description">Recibir Pedido de cocacola
+                                    </div>
+                                    <div class="task-meta">
+                                        <span><i class="fas fa-clock"></i> 1 hora</span>
+                                        <span><i class="fas fa-calendar"></i> Completado</span>
+                                    </div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action-btn delete-btn" onclick="deleteTask(1)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot dot-in-progress"></div>
+                            <div class="task-item in-progress" data-task-id="2">
+                                <div class="task-icon">
+                                    <i class="fas fa-calendar-week"></i>
+                                </div>
+                                <div class="task-info">
+                                    <div class="task-name">Agendar pedido mayorista</div>
+                                    <div class="task-description">pedido mayorista lunes 21
+                                    </div>
+                                    <div class="task-meta">
+                                        <span><i class="fas fa-clock"></i> 30 minutos</span>
+                                        <span><i class="fas fa-calendar"></i> En progreso</span>
+                                    </div>
+                                </div>
+
+                                <div class="task-actions">
+                                    <button class="task-action-btn complete-btn" onclick="completeTask(2)">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="task-action-btn delete-btn" onclick="deleteTask(2)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot dot-pending"></div>
+                            <div class="task-item" data-task-id="3">
+                                <div class="task-icon">
+                                   <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="task-info">
+                                    <div class="task-name">Actualizar Menú</div>
+                                    <div class="task-description">Nuevo menu del fin de semana</div>
+                                    <div class="task-meta">
+                                        <span><i class="fas fa-clock"></i> 1 hora</span>
+                                        <span><i class="fas fa-calendar"></i> Pendiente</span>
+                                    </div>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="task-action-btn complete-btn" onclick="completeTask(3)">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="task-action-btn delete-btn" onclick="deleteTask(3)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </header>
 
-      <div class="layout">
-        <section class="left">
-          <!-- Hero -->
-          <div class="hero">
-            <div>
-              <div class="hero-note">¡Buen día!</div>
-              <h2>Bienvenido, <span style="color:var(--primary)"><?php echo $_SESSION['username']; ?></span></h2>
-              <div class="hero-note">Que el aroma del pan recién horneado te acompañe hoy 🍞</div>
-              <div style="margin-top:12px; display:flex; gap:10px;">
-                <button class="btn btn-ghost">Ver agenda</button>
-              </div>
+        <!-- Notifications Panel -->
+        <div class="notifications-panel" id="notificationsPanel">
+            <div class="notification-header">
+                <h3>Notificaciones</h3>
+                <button class="modal-close" id="closeNotifications">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="illus">
-              <div class="floaty"></div>
-              <div class="bread">🥖</div>
-              <div class="croissant">🥐</div>
-            </div>
-          </div>
-
-          <!-- KPIs -->
-          <div class="stats">
-            <div class="stat">
-              <div>
-                <div class="muted">Ventas hoy</div>
-                <div class="kpi">$ 2.580</div>
-              </div>
-              <div class="icon"><i data-feather="bar-chart-2"></i></div>
-            </div>
-            <div class="stat">
-              <div>
-                <div class="muted">Pedidos</div>
-                <div class="kpi">145</div>
-              </div>
-              <div class="icon"><i data-feather="shopping-cart"></i></div>
-            </div>
-            <div class="stat">
-              <div>
-                <div class="muted">Productos</div>
-                <div class="kpi">38</div>
-              </div>
-              <div class="icon"><i data-feather="package"></i></div>
-            </div>
-            <div class="stat">
-              <div>
-                <div class="muted">Clientes</div>
-                <div class="kpi">120</div>
-              </div>
-              <div class="icon"><i data-feather="users"></i></div>
-            </div>
-          </div>
-
-          <!-- Tabla de pedidos -->
-          <table>
-            <caption style="text-align:left; font-weight:600; margin-bottom:8px;">Pedidos recientes</caption>
-            <thead>
-              <tr>
-                <th>Cargo</th>
-                <th style="text-align:right">Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Ana López</td>
-                <td>Pan francés ×12</td>
-                <td>26 Jun 2025</td>
-                <td>09:30 AM</td>
-                <td style="text-align:right"><span class="pill ok">Entregado</span></td>
-              </tr>
-              <tr>
-                <td>Carlos Pérez</td>
-                <td>Croissant ×6</td>
-                <td>26 Jun 2025</td>
-                <td>10:15 AM</td>
-                <td style="text-align:right"><span class="pill info">En proceso</span></td>
-              </tr>
-              <tr>
-                <td>María Gómez</td>
-                <td>Torta vainilla ×1</td>
-                <td>26 Jun 2025</td>
-                <td>11:00 AM</td>
-                <td style="text-align:right"><span class="pill warn">Pendiente</span></td>
-              </tr>
-              <tr>
-                <td>Juan Ruiz</td>
-                <td>Buñuelo ×24</td>
-                <td>26 Jun 2025</td>
-                <td>11:45 AM</td>
-                <td style="text-align:right"><span class="pill bad">Cancelado</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="table">
-            <header>
-              <strong>Mis pedidos</strong>
-              <div style="display:flex; gap:8px;">
-                <button class="btn btn-ghost">Hoy</button>
-                <button class="btn btn-ghost">Esta semana</button>
-              </div>
-            </header>
-            <div class="row" style="color:#94a3b8; font-weight:600;">
-              <div>Cliente</div>
-              <div>Producto</div>
-              <div>Fecha</div>
-              <div>Hora</div>
-              <div style="text-align:right">Estado</div>
-            </div>
-            <div class="row">
-              <div>Ana López</div>
-              <div>Pan francés ×12</div>
-              <div>26 Jun 2025</div>
-              <div>09:30 AM</div>
-              <div style="text-align:right"><span class="pill ok">Entregado</span></div>
-            </div>
-            <div class="row">
-              <div>Carlos Pérez</div>
-              <div>Croissant ×6</div>
-              <div>26 Jun 2025</div>
-              <div>10:15 AM</div>
-              <div style="text-align:right"><span class="pill info">En proceso</span></div>
-            </div>
-            <div class="row">
-              <div>María Gómez</div>
-              <div>Torta vainilla ×1</div>
-              <div>26 Jun 2025</div>
-              <div>11:00 AM</div>
-              <div style="text-align:right"><span class="pill warn">Pendiente</span></div>
-            </div>
-            <div class="row">
-              <div>Juan Ruiz</div>
-              <div>Buñuelo ×24</div>
-              <div>26 Jun 2025</div>
-              <div>11:45 AM</div>
-              <div style="text-align:right"><span class="pill bad">Cancelado</span></div>
-            </div>
-          </div>
-
-          <!-- Charts -->
-          <div class="grid grid-col-12">
-            <div class="p-20" style="grid-column: span 12; height: 800px;">
-              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-                <strong>Ventas vs. Pedidos (semana)</strong>
-                <span class="pill" style="background:#eef2ff; color:#3730a3;">Última semana</span>
-              </div>
-              <canvas id="barChart" style="width:100%; height:100%"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <!-- Columna derecha -->
-        <aside class="right grid">
-          <div class="p-20">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <i data-feather="calendar" style="color:var(--primary)"></i>
-              <strong>Agenda</strong>
-              <span class="pill" style="margin-left:auto;background:#eef2ff;color:#3730a3;">Jun</span>
-            </div>
-            <div class="calendar">
-              <div class="d">L</div>
-              <div class="d">M</div>
-              <div class="d">M</div>
-              <div class="d">J</div>
-              <div class="d">V</div>
-              <div class="d">S</div>
-              <div class="d">D</div>
-              <!-- simple 30 days -->
-              <script>
-                for (let i = 1; i <= 30; i++) document.write(`<button class="${i===26?'today':''}">${i}</button>`)
-              </script>
-            </div>
-            <div class="list">
-              <div class="li"><i data-feather="check-circle" style="color:#16a34a"></i>
-                <div>
-                  <div style="font-weight:600;">Entrega mayorista</div>
-                  <div class="hero-note">26 Jun · 5:00 AM</div>
+            <div id="notificationsList">
+                <div class="notification-item unread">
+                    <strong>Nueva tarea asignada</strong>
+                    <p>Se te ha asignado "Recibir Pedido de cocacola"</p>
+                    <small>Hace 2 horas</small>
                 </div>
-              </div>
-              <div class="li"><i data-feather="clock" style="color:#f59e0b"></i>
-                <div>
-                  <div style="font-weight:600;">Horneado de pandebono</div>
-                  <div class="hero-note">26 Jun · 9:00 AM</div>
+                <div class="notification-item unread">
+                    <strong>Agendar nuevo pedido</strong>
+                    <p>Agendar pedido mayorista mañana a las 10:00 AM </p>
+                    <small>Hace 4 horas</small>
                 </div>
-              </div>
-              <div class="li"><i data-feather="x-circle" style="color:#f43f5e"></i>
-                <div>
-                  <div style="font-weight:600;">Pedido cancelado</div>
-                  <div class="hero-note">26 Jun · 11:45 AM</div>
+                <div class="notification-item unread">
+                    <strong>Tarea completada</strong>
+                    <p>Has completado exitosamente la tarea "Nuevo menu del fin de semana"</p>
+                    <small>Ayer</small>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
 
-          <div class="card p-20">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-              <strong>Top productos (mes)</strong>
+        <!-- Add Task Modal -->
+        <div class="modal" id="addTaskModal">
+            <div class="modal-content">
+                <button class="modal-close" id="closeTaskModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2>Agregar Nueva Tarea</h2>
+                <form id="addTaskForm">
+                    <div class="form-group">
+                        <label class="form-label">Nombre de la tarea</label>
+                        <input type="text" class="form-input" id="taskName"
+                            placeholder="Ej. Desarrollar componente React" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-textarea" id="taskDescription"
+                            placeholder="Describe los detalles de la tarea..." rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select" id="taskCategory">
+                            <option value="desarrollo">Pedidos mayoristas</option>
+                            <option value="diseño">Pedidos de preparacion</option>
+                            <option value="testing">Organizacion de productos</option>
+                            <option value="documentacion">Registrar Compras</option>
+                            <option value="reunion">Limpieza y organizacion de herramientas de trabajo</option>
+                            <option value="investigacion">Registrar y Actualizar ventas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tiempo estimado (horas)</label>
+                        <input type="number" class="form-input" id="taskHours" min="1" max="40" value="4">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Prioridad</label>
+                        <select class="form-select" id="taskPriority">
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="form-button">
+                            <i class="fas fa-plus"></i> Crear Tarea
+                        </button>
+                        <button type="button" class="form-button secondary" id="cancelTask">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
             </div>
-            <canvas id="pieChart" height="160"></canvas>
-          </div>
+        </div>
 
-          <div class="card p-20">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-              <strong>Tendencia de ventas (30 días)</strong>
+        <!-- Change Photo Modal -->
+        <div class="modal" id="changePhotoModal">
+            <div class="modal-content">
+                <button class="modal-close" id="closePhotoModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2>Cambiar Foto de Perfil</h2>
+                <div class="form-group">
+                    <label class="form-label">Seleccionar foto</label>
+                    <input type="file" class="form-input" id="photoInput" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">O elegir un avatar predefinido</label>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
+                        <div class="avatar-option" data-avatar="NP"
+                            style="background: linear-gradient(45deg, #3498db, #2c3e50);">JD</div>
+                        <div class="avatar-option" data-avatar="👨‍💼"
+                            style="background: linear-gradient(45deg, #e74c3c, #c0392b);">👨‍💼</div>
+                        <div class="avatar-option" data-avatar="👩‍💻"
+                            style="background: linear-gradient(45deg, #27ae60, #229954);">👩‍💻</div>
+                        <div class="avatar-option" data-avatar="👨‍🎨"
+                            style="background: linear-gradient(45deg, #f39c12, #d68910);">👨‍🎨</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="form-button" id="savePhoto">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                    <button type="button" class="form-button secondary" id="cancelPhoto">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
             </div>
-            <canvas id="lineChart" height="110"></canvas>
-          </div>
-        </aside>
-      </div>
+        </div>
+    </div>
 
-      <footer style="text-align:center; color:#64748b; font-size:13px; margin-top: 18px;">
-        © <span id="year"></span> PANADERIA WYK-PROYECTO SENA
-      </footer>
-    </main>
-  </div>
-
-  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+  <!-- JS Toads y var global -->
   <script>
+    const APP_URL = "<?php echo \config\APP_URL; ?>";
+
     const successMessage = "<?php echo $success_message; ?>";
     const errorMessage = "<?php echo $error_message; ?>";
   </script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+
+  <!-- JS para CRUD -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
+  
+  <!-- LIBRERIAS -->
+  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <!-- <script src="https://unpkg.com/feather-icons"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
@@ -482,7 +569,7 @@ if (isset($_SESSION['error_message'])) {
     integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
     crossorigin="anonymous">
   </script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+
 </body>
 
 </html>

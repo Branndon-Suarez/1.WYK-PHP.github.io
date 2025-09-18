@@ -50,7 +50,7 @@ if (in_array($vista, $validViews)) {
             break;
         case 'dashboard':
             if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
-                require_once __DIR__ . '/app/views/layouts/heads/headDashboard.php';
+                require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
                 require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
                 header('Location: ' . \config\APP_URL . 'login');

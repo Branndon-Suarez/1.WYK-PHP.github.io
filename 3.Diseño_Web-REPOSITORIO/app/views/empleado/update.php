@@ -24,7 +24,18 @@
         </div>
         <div>
             <label for="RH_Empleado">RH</label>
-            <input type="text" id="RH_Empleado" name="RH_Empleado" value="<?php echo htmlspecialchars($empleado['RH_EMPLEADO']); ?>" required>
+            <select id="RH_Empleado" name="RH_Empleado" required>
+                <option value="<?php echo $empleado['RH_EMPLEADO']; ?>"><?php echo $empleado['RH_EMPLEADO']; ?></option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+        </div>
         </div>
         <div>
             <label for="Telefono_Empleado">Telefono</label>

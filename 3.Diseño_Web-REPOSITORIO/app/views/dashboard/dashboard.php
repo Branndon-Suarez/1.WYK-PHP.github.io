@@ -68,7 +68,7 @@ $active_page = 'dashboard';
                     </div>
 
                     <div class="profile-name"><?php echo $_SESSION['userName']; ?></div>
-                    <div class="profile-company">Administrador</div>
+                    <div class="profile-company"><?php echo $_SESSION['rol']; ?></div>
 
                     <div class="contact-buttons">
                         <button class="contact-btn phone" onclick="makeCall()" title="Llamar">
@@ -90,19 +90,13 @@ $active_page = 'dashboard';
                             <span class="contact-label">
                                 <i class="fas fa-phone"></i> Teléfono
                             </span>
-                            <span class="contact-value">+57 3128826314</span>
+                            <span class="contact-value">+57 <?php echo $_SESSION['userTel']; ?></span>
                         </div>
                         <div class="contact-item">
                             <span class="contact-label">
                                 <i class="fas fa-envelope"></i> Email
                             </span>
-                            <span class="contact-value">juan16for@gmail.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-label">
-                                <i class="fas fa-map-marker-alt"></i> Dirección
-                            </span>
-                            <span class="contact-value">Av 46 calle 2</span>
+                            <span class="contact-value"><?php echo $_SESSION['userEmail']; ?></span>
                         </div>
                     </div>
                 </div>

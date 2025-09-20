@@ -29,10 +29,19 @@ class LoginController {
 
                 if ($user && $user['EMAIL_USUARIO'] === $emailLogin && $user['PASSWORD_USUARIO'] === $passwordLogin /* password_verify($passwordLogin, $user['PASSWORD_USUARIO']) */) {
                     if ($user['ESTADO_USUARIO']) {
+                        //Campos de la tabla ROL según el USUARIO correspondiente
+                        $_SESSION['rolId'] = $user['ID_ROL'];
+                        $_SESSION['rol'] = $user['ROL'];
+                        $_SESSION['rolClasificacion'] = $user['CLASIFICACION'];
+                        $_SESSION['rolEstado'] = $user['ESTADO_ROL'];
+
+                        //Campos de la tabla USUARIO
                         $_SESSION['userId'] = $user['ID_USUARIO'];
                         $_SESSION['numDocUser'] = $user['NUM_DOC'];
                         $_SESSION['userName'] = $user['NOMBRE'];
-                        $_SESSION['rol'] = $user['ROL_FK_USUARIO'];
+                        $_SESSION['userTel'] = $user['TEL_USUARIO'];
+                        $_SESSION['userEmail'] = $user['EMAIL_USUARIO'];
+                        $_SESSION['userFechRegistro'] = $user['FECHA_REGISTRO'];
                         $_SESSION['success_message'] = '¡Inicio de sesión exitoso!' . ' Bienvenido, ' . $_SESSION['userName'] . '.';
 
                         header('Location: ' . APP_URL . 'dashboard');

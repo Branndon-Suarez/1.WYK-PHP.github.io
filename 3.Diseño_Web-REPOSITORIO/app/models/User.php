@@ -15,7 +15,10 @@ class User {
     {
         try {
             $stmt = $this->db->prepare(
-                "SELECT * FROM USUARIO WHERE NUM_DOC = :num_Doc_Login"
+                "SELECT U.*, R.*
+                FROM USUARIO U
+                INNER JOIN ROL R ON U.ROL_FK_USUARIO = R.ID_ROL
+                WHERE U.NUM_DOC = :num_Doc_Login AND U.ESTADO_USUARIO = 1"
             );
             $stmt->bindParam(':num_Doc_Login', $numDocLogin);
             $stmt->execute();

@@ -1,48 +1,65 @@
 USE PROYECTO_WYK;
+DELIMITER $
 
 START TRANSACTION;
 
--- 👮‍♀️ CALL CARGO 👮‍♀️
-CALL ACTUALIZAR_CARGO(1, 'Cocinero Actualizado', 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR ROL
+-- Ejemplo: actualizar el estado de un rol
+CALL ACTUALIZAR_ROL(2, 'Empleado Panadería', 'EMPLEADO', 0);
 
--- 🤴 CALL USUARIO 👸
-CALL ACTUALIZAR_USUARIO(1, 'carlos.admin.editado', '$2y$10$9CGt8sMotuvICJefdYczFegaquDClFGStqddVp1NkfmtnaYq24iWK', NOW(), NOW(), 'ADMINISTRADOR', 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR USUARIO
+-- Ejemplo: cambiar teléfono y correo de un usuario
+CALL ACTUALIZAR_USUARIO(1002, 3112345678, 'Maria Lopez', NULL, 3123456789, 'maria.lopez@correo.com', NULL, 2, 1);
 
--- 👩‍🍳 CALL EMPLEADO 👨‍🍳
-CALL ACTUALIZAR_EMPLEADO(1, 1001001009, 'Carlos Ramirez Editado', 'O-', 3109998888, 'carlos.ramirez.editado@wyk.com', 1, 1, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR TAREA
+-- Ejemplo: marcar tarea como completada
+CALL ACTUALIZAR_TAREA(1, 'Revisar inventario', 'Inventario', 'Control actualizado', 2, 'ALTA', 'COMPLETADA', 2, 1);
 
--- 👦 CALL CLIENTE 👦
-CALL ACTUALIZAR_CLIENTE(1, 2001001999, 'CC', 'Javier Torres Editado', 3201112222, 'javier.torres.editado@email.com', 5, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR PRODUCTO
+-- Ejemplo: cambiar precio y existencia
+CALL ACTUALIZAR_PRODUCTO(101, 'Pan de Trigo', 1600, 180, '2025-12-31', 'PANADERIA', 2, 1);
 
--- 🥐 CALL PRODUCTO 🥐
-CALL ACTUALIZAR_PRODUCTO(770001, 'Pan Frances Editado', 2000, 60, '2025-08-01', 'PANADERIA', 'Baguette Grande', 'Wyk Pan Editado', 2, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR VENTA
+-- Ejemplo: actualizar total y estado de venta
+CALL ACTUALIZAR_VENTA(1, NOW(), 15500, 1, 'Venta mostrador corregida', 3, 'PAGADA');
 
--- 🛍️ CALL VENTA 🛍️
-CALL ACTUALIZAR_VENTA(1, NOW(), 2000, 1, 'Venta editada de Pan Frances', 'PENDIENTE', 3, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_VENTA
+-- Ejemplo: actualizar cantidad de un detalle de venta
+CALL ACTUALIZAR_DETALLE_VENTA(1, 3, 4500, 1, 101);
 
--- 🛒 CALL DETALLE_VENTA 🛒
-CALL ACTUALIZAR_DETALLE_VENTA(1, 2, 3000, 1, 770001);
+-- CALL PROCEDIMIENTO ACTUALIZAR AJUSTE_INVENTARIO
+-- Ejemplo: corregir cantidad ajustada
+CALL ACTUALIZAR_AJUSTE_INVENTARIO(2, NOW(), 'PERDIDA', 3, 'Pérdida ajustada', 102, 2);
 
--- 🗄️ CALL AJUSTE_INVENTARIO 🗄️
-CALL ACTUALIZAR_AJUSTE_INVENTARIO(1, 770004, 'CADUCADO', 10, NOW(), 'Ajuste de croissants caducados', 3);
+-- CALL PROCEDIMIENTO ACTUALIZAR MATERIA_PRIMA
+-- Ejemplo: actualizar cantidad y estado
+CALL ACTUALIZAR_MATERIA_PRIMA(1, 'Harina Trigo', '2026-01-01', 480, 'Kg', 'Harina de alta calidad', 2, 1);
 
--- 👩‍💼 CALL PROVEEDOR 👨‍💼
-CALL ACTUALIZAR_PROVEEDOR(1, 800100299, 'Harinas del Valle Editado', 6019990000, 'ventas.editado@harinasvalle.com', 1, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR COMPRA
+-- Ejemplo: actualizar total y estado factura
+CALL ACTUALIZAR_COMPRA(1, NOW(), 'MATERIA PRIMA', 510000, 'Proveedor Harinas', 'Harimsa', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina ajustada', 2, 'PAGADA');
 
--- 🥣 CALL MATERIA PRIMA 🥣
-CALL ACTUALIZAR_MATERIA_PRIMA(1, 'Harina de Trigo Editada', '2026-02-01', 'Kilogramos', 120, 'Harinas del Valle Premium', 'Bulto 25kg', 'Harina especial para panadería', 1, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_COMPRA_MATERIA_PRIMA
+-- Ejemplo: actualizar cantidad comprada
+CALL ACTUALIZAR_DETALLE_COMPRA_MATERIA_PRIMA(1, 110, 110000, 1, 1, 1);
 
--- 📜 CALL FACTURA COMPRA 📜
-CALL ACTUALIZAR_FACTURA_COMPRA(1, 260000, NOW(), 'Compra editada de Harina de Trigo', 1, 1, 'PENDIENTE');
+-- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_COMPRA_PRODUCTO
+-- Ejemplo: actualizar cantidad comprada de producto
+CALL ACTUALIZAR_DETALLE_COMPRA_PRODUCTO(1, 12, 36000, 1, 101, 1);
 
--- 📰 CALL DETALLE_FACTURA_COMPRA_MATERIA_PRIMA 📰
-CALL ACTUALIZAR_DETALLE_FACTURA_COMPRA_MATERIA_PRIMA(1, 120, 260000, 1, 1, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR RECETA
+-- Ejemplo: actualizar cantidad requerida de materia prima
+CALL ACTUALIZAR_RECETA(1, 101, 1, 0.6, 'Kg');
 
--- 🍮 CALL DETALLE_COMPRA_PRODUCTO 🍮
-CALL ACTUALIZAR_DETALLE_COMPRA_PRODUCTO(1, 35, 140000, 5, 770003, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR PRODUCCION
+-- Ejemplo: actualizar cantidad de producción
+CALL ACTUALIZAR_PRODUCCION(1, 'Producción Pan Trigo', 120, 'Elaboración diaria pan actualizada', 101, 2, 1);
 
--- 🍲 CALL PRODUCCION 🍲
-CALL ACTUALIZAR_PRODUCCION(1, 'Produccion Pan Frances Editada', 55, 'Produccion ajustada de Pan Frances', 30, 1, 770001, 2, 1);
+-- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_PRODUCCION
+-- Ejemplo: actualizar cantidad usada en producción
+CALL ACTUALIZAR_DETALLE_PRODUCCION(1, 1, 1, 55, 55);
 
 COMMIT;
-SELECT 'Todos los CALLs ejecutados correctamente. COMMIT realizado.' AS Mensaje;
+SELECT 'Todos los CALL ACTUALIZAR ejecutados correctamente. COMMIT realizado.' AS Mensaje;
+
+/*ROLLBACK; ejecutar en caso de error.*/

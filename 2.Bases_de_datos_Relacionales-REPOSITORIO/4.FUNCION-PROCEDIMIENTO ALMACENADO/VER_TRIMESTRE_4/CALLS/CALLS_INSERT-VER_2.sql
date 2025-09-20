@@ -2,99 +2,106 @@ USE PROYECTO_WYK;
 
 START TRANSACTION;
 
--- 👮‍CALL CARGO👮‍
-CALL INSERTAR_CARGO('Cocinero', 1);
-CALL INSERTAR_CARGO('Panadero', 1);
-CALL INSERTAR_CARGO('Cajero', 1);
-CALL INSERTAR_CARGO('Mesero', 1);
+-- PROCEDIMIENTO INSERTAR ROL
+CALL INSERTAR_ROL('Administrador General', 'ADMINISTRADOR', 1);
+CALL INSERTAR_ROL('Empleado Panadería', 'EMPLEADO', 1);
+CALL INSERTAR_ROL('Empleado Ventas', 'EMPLEADO', 1);
+CALL INSERTAR_ROL('Empleado Inventario', 'EMPLEADO', 1);
 
--- 🤴CALL USUARIO👸
-CALL INSERTAR_USUARIO('carlos.admin', '$2y$10$9CGt8sMotuvICJefdYczFegaquDClFGStqddVp1NkfmtnaYq24iWK', NOW(), NOW(), 'ADMINISTRADOR', 1);
-CALL INSERTAR_USUARIO('sofia.panadera', '$2y$10$spag8SgXTedv8UX0tZWzfOa/7yMQQd.pwwFsCYeGui2Wa22gC8R76', NOW(), NOW(), 'EMPLEADO', 1);
-CALL INSERTAR_USUARIO('luis.cajero', '$2y$10$1lJ9isiLLi5U9P2/9RN8MucQdjbyB2gggjmrTWXmZ3aCi5/hZeST.', NOW(), NOW(), 'EMPLEADO', 1);
-CALL INSERTAR_USUARIO('ana.mesera', '$2y$10$KI7WgM1ptD2IY1dYKyOxBu4aP4DzNSuabeXN2PF.3WU1B05Fd9xC.', NOW(), NOW(), 'EMPLEADO', 1);
-CALL INSERTAR_USUARIO('javier.cliente', '$2y$10$ithOoyBTIedvkhZ00UuCMuokFvUuSD3C.28hVoBPYLP7f3A6M9fBy', NOW(), NOW(), 'CLIENTE', 1);
-CALL INSERTAR_USUARIO('maria.cliente', '$2y$10$w5o6LR4dSXtY755IjEQr7eUfMp1EImOnSPuyRGefHfPHHpSVT2eDu', NOW(), NOW(), 'CLIENTE', 1);
-CALL INSERTAR_USUARIO('pedro.cliente', '$2y$10$j/Le56.q2LITDFW5NRjU.OYgAOVZJ5gZSYCn138lyNdkaHeIzFqrS', NOW(), NOW(), 'CLIENTE', 0);
-CALL INSERTAR_USUARIO('laura.cliente', '$2y$10$Efm6QAlkliVmV/gN95HLS.obxjcmNJoWiL1P59Oyt6WRPTqC/9fp.', NOW(), NOW(), 'CLIENTE', 0);
+-- PROCEDIMIENTO INSERTAR USUARIO
+CALL INSERTAR_USUARIO(1001, 'Juan Perez', 'pass123', 3101234567, 'juan@correo.com', NOW(), 1, 1);
+CALL INSERTAR_USUARIO(1002, 'Maria Lopez', 'pass456', 3112345678, 'maria@correo.com', NOW(), 2, 1);
+CALL INSERTAR_USUARIO(1003, 'Carlos Ruiz', 'pass789', 3123456789, 'carlos@correo.com', NOW(), 3, 1);
+CALL INSERTAR_USUARIO(1004, 'Ana Torres', 'pass000', 3134567890, 'ana@correo.com', NOW(), 4, 1);
 
--- 👩‍🍳CALL EMPLEADO👨‍🍳
-CALL INSERTAR_EMPLEADO(1001001001, 'Carlos Ramirez', 'O+', 3101234567, 'carlos.ramirez@wyk.com', 1, 1, 1);
-CALL INSERTAR_EMPLEADO(1002002002, 'Sofia Gomez', 'A+', 3111234567, 'sofia.gomez@wyk.com', 2, 2, 1);
-CALL INSERTAR_EMPLEADO(1003003003, 'Luis Fernandez', 'B+', 3121234567, 'luis.fernandez@wyk.com', 3, 3, 1);
-CALL INSERTAR_EMPLEADO(1004004004, 'Ana Martinez', 'AB+', 3131234567, 'ana.martinez@wyk.com', 4, 4, 1);
+-- PROCEDIMIENTO INSERTAR TAREA
+CALL INSERTAR_TAREA('Revisar inventario', 'Inventario', 'Control de materias primas', 2, 'ALTA', 'PENDIENTE', 2, 1);
+CALL INSERTAR_TAREA('Atender mostrador', 'Ventas', 'Atención al cliente y caja', 5, 'MEDIA', 'PENDIENTE', 3, 1);
+CALL INSERTAR_TAREA('Limpieza horno', 'Mantenimiento', 'Limpieza diaria', 1, 'BAJA', 'COMPLETADA', 4, 1);
+CALL INSERTAR_TAREA('Elaborar pan', 'Producción', 'Producción pan de trigo', 3, 'ALTA', 'PENDIENTE', 2, 1);
 
--- 👦CALL CLIENTE👦
-CALL INSERTAR_CLIENTE(2001001001, 'CC', 'Javier Torres', 3209876543, 'javier.torres@email.com', 5, 1);
-CALL INSERTAR_CLIENTE(2002002002, 'CE', 'Maria Rodriguez', 3219876543, 'maria.rodriguez@email.com', 6, 1);
-CALL INSERTAR_CLIENTE(99010112345, 'TI', 'Pedro Infante', 3229876543, 'pedro.infante@email.com', 7, 1);
-CALL INSERTAR_CLIENTE(2004004004, 'CC', 'Laura Sanchez', 3239876543, 'laura.sanchez@email.com', 8, 1);
+-- PROCEDIMIENTO INSERTAR PRODUCTO
+CALL INSERTAR_PRODUCTO(101, 'Pan de Trigo', 1500, 200, '2025-12-31', 'PANADERIA', 2, 1);
+CALL INSERTAR_PRODUCTO(102, 'Pastel Chocolate', 5000, 50, '2025-10-15', 'PASTELERIA', 2, 1);
+CALL INSERTAR_PRODUCTO(103, 'Jabón Liquido', 3000, 40, '2026-05-10', 'ASEO', 2, 1);
+CALL INSERTAR_PRODUCTO(104, 'Pan Integral', 2000, 100, '2025-12-20', 'PANADERIA', 2, 1);
 
--- 🥐CALL PRODUCTO🥐
-CALL INSERTAR_PRODUCTO(770001, 'Pan Frances', 1500, 50, '2025-07-15', 'PANADERIA', 'Baguette', 'Wyk Pan', 2, 1);
-CALL INSERTAR_PRODUCTO(770002, 'Torta de Chocolate', 35000, 10, '2025-07-20', 'PASTELERIA', 'Torta humeda', 'Wyk Pasteles', 2, 1);
-CALL INSERTAR_PRODUCTO(770003, 'Leche Deslactosada', 4000, 30, '2025-10-01', 'VIBERES', 'Lacteo', 'Lala', 1, 1);
-CALL INSERTAR_PRODUCTO(770004, 'Croissant de Almendras', 4500, 40, '2025-07-10', 'PANADERIA', 'Hojaldre', 'Wyk Pan', 2, 1);
+-- PROCEDIMIENTO INSERTAR VENTA
+CALL INSERTAR_VENTA(NOW(), 15000, 1, 'Venta mostrador', 3, 'PAGADA');
+CALL INSERTAR_VENTA(NOW(), 7000, 2, 'Venta mesa 2', 3, 'ENTREGADA');
+CALL INSERTAR_VENTA(NOW(), 12000, NULL, 'Pedido domicilio', 3, 'PENDIENTE');
+CALL INSERTAR_VENTA(NOW(), 20000, 3, 'Venta mesa 3', 3, 'PAGADA');
 
--- 🛍️ CALL VENTA🛍️
-CALL INSERTAR_VENTA(NOW(), 1500, 1, 'Venta de 1 Pan Frances', 'PAGADA', 3, 1);
-CALL INSERTAR_VENTA(NOW(), 35000, 2, 'Venta de 1 Torta de Chocolate', 'PENDIENTE', 3, 2);
-CALL INSERTAR_VENTA(NOW(), 4000, NULL, 'Venta de 1 Leche', 'PAGADA', 3, 3);
-CALL INSERTAR_VENTA(NOW(), 4500, 4, 'Venta de 1 Croissant cancelada', 'CANCELADA', 3, 4);
+-- PROCEDIMIENTO INSERTAR DETALLE_VENTA
+CALL INSERTAR_DETALLE_VENTA(2, 3000, 1, 101);  -- 2 panes de trigo
+CALL INSERTAR_DETALLE_VENTA(1, 5000, 2, 102);  -- 1 pastel
+CALL INSERTAR_DETALLE_VENTA(3, 6000, 3, 101);  -- 3 panes
+CALL INSERTAR_DETALLE_VENTA(2, 4000, 4, 104);  -- 2 integrales
 
--- 🛒 CALL DETALLE_VENTA🛒
-CALL INSERTAR_DETALLE_VENTA(1, 1500, 1, 770001);
-CALL INSERTAR_DETALLE_VENTA(1, 35000, 2, 770002);
-CALL INSERTAR_DETALLE_VENTA(1, 4000, 3, 770003);
-CALL INSERTAR_DETALLE_VENTA(1, 4500, 4, 770004);
+-- PROCEDIMIENTO INSERTAR AJUSTE_INVENTARIO
+CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'DAÑADO', 5, 'Producto dañado en transporte', 101, 2);
+CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'PERDIDA', 2, 'Pérdida en bodega', 102, 2);
+CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'CADUCADO', 10, 'Producto vencido', 103, 2);
+CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'MUESTRA', 1, 'Muestra a cliente', 104, 2);
 
--- 🗄️ CALL AJUSTE_INVENTARIO🗄️
-CALL INSERTAR_AJUSTE_INVENTARIO(770004, 'CADUCADO', 5, NOW(), 'Croissants expirados por baja rotacion', 3);
-CALL INSERTAR_AJUSTE_INVENTARIO(770001, 'PERDIDA', 2, NOW(), 'Panes que se quemaron en el horno', 2);
-CALL INSERTAR_AJUSTE_INVENTARIO(770003, 'DAÑADO', 1, NOW(), 'Envase de leche roto', 1);
-CALL INSERTAR_AJUSTE_INVENTARIO(770002, 'MUESTRA', 1, NOW(), 'Torta de chocolate para degustacion', 4);
+-- PROCEDIMIENTO INSERTAR MATERIA_PRIMA
+CALL INSERTAR_MATERIA_PRIMA('Harina Trigo', '2026-01-01', 500, 'Kg', 'Harina de alta calidad', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Azúcar', '2026-02-01', 300, 'Kg', 'Azúcar blanca refinada', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Levadura', '2025-11-15', 100, 'Kg', 'Levadura fresca', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Chocolate', '2026-03-10', 200, 'Kg', 'Cacao puro', 2, 1);
 
--- 👩‍💼CALL PROVEEDOR👨‍💼
-CALL INSERTAR_PROVEEDOR(800100200, 'Harinas del Valle', 6011234567, 'ventas@harinasvalle.com', 1, 1);
-CALL INSERTAR_PROVEEDOR(800200300, 'Lacteos La Pradera', 6012345678, 'contacto@lapradera.com', 1, 1);
-CALL INSERTAR_PROVEEDOR(800300400, 'Distribuidora de Azucar', 6013456789, 'info@azucardist.com', 1, 1);
-CALL INSERTAR_PROVEEDOR(800400500, 'Frutas y Verduras Frescas', 6014567890, 'pedidos@frutasfrescas.com', 1, 1);
+-- PROCEDIMIENTO INSERTAR COMPRA
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 500000, 'Proveedor Harinas', 'Harimsa', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina', 2, 'PAGADA');
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 300000, 'Proveedor Azúcar', 'Incauca', 3202345678, 'proveedor2@correo.com', 'Compra mensual azúcar', 2, 'PAGADA');
+CALL INSERTAR_COMPRA(NOW(), 'PRODUCTO TERMINADO', 200000, 'Proveedor Aseo', 'Familia', 3203456789, 'proveedor3@correo.com', 'Compra jabón líquido', 2, 'PENDIENTE');
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 150000, 'Proveedor Levadura', 'Levapan', 3204567890, 'proveedor4@correo.com', 'Compra semanal levadura', 2, 'PAGADA');
 
--- 🥣CALL MATERIA PRIMA🥣
-CALL INSERTAR_MATERIA_PRIMA('Harina de Trigo', '2026-01-15', 'Kilogramos', 100, 'Harinas del Valle', 'Bulto 50kg', 'Harina para panaderia', 1, 1);
-CALL INSERTAR_MATERIA_PRIMA('Azucar Blanca', '2026-05-20', 'Kilogramos', 80, 'Incauca', 'Bulto 50kg', 'Azucar refinada para pasteleria', 1, 1);
-CALL INSERTAR_MATERIA_PRIMA('Mantequilla', '2025-09-01', 'Kilogramos', 40, 'La Pradera', 'Bloque 5kg', 'Mantequilla sin sal', 1, 1);
-CALL INSERTAR_MATERIA_PRIMA('Levadura Fresca', '2025-08-10', 'Gramos', 1000, 'Fleischmann', 'Paquete 500g', 'Levadura para panificacion', 1, 1);
+-- PROCEDIMIENTO INSERTAR DETALLE_COMPRA_MATERIA_PRIMA
+CALL INSERTAR_DETALLE_COMPRA_MAT_PRIMA(1, 100, 100000, 1, 1, 1);
+CALL INSERTAR_DETALLE_COMPRA_MAT_PRIMA(2, 50, 50000, 2, 2, 1);
+CALL INSERTAR_DETALLE_COMPRA_MAT_PRIMA(3, 30, 30000, 4, 3, 1);
+CALL INSERTAR_DETALLE_COMPRA_MAT_PRIMA(4, 20, 20000, 1, 4, 1);
 
--- 📜CALL FACTURA COMPRA📜
-CALL INSERTAR_FACTURA_COMPRA(250000, NOW(), 'Compra de Harina de Trigo', 1, 1, 'PAGADA');
-CALL INSERTAR_FACTURA_COMPRA(180000, NOW(), 'Compra de Azucar Blanca', 1, 3, 'PENDIENTE');
-CALL INSERTAR_FACTURA_COMPRA(400000, NOW(), 'Compra de Mantequilla', 1, 2, 'PAGADA');
-CALL INSERTAR_FACTURA_COMPRA(50000, NOW(), 'Compra de Levadura Fresca', 1, 4, 'CANCELADA');
-CALL INSERTAR_FACTURA_COMPRA(120000, NOW(), 'Compra de Leche Deslactosada', 1, 2, 'PAGADA');
-CALL INSERTAR_FACTURA_COMPRA(60000, NOW(), 'Compra de Pan Frances para reventa', 1, 4, 'PAGADA');
-CALL INSERTAR_FACTURA_COMPRA(350000, NOW(), 'Compra de Tortas de Chocolate', 1, 4, 'PENDIENTE');
-CALL INSERTAR_FACTURA_COMPRA(90000, NOW(), 'Compra de Croissants de Almendras', 1, 4, 'PAGADA');
+-- PROCEDIMIENTO INSERTAR DETALLE_COMPRA_PRODUCTO
+CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(1, 10, 30000, 1, 101, 1);
+CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(2, 15, 45000, 2, 102, 1);
+CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(3, 8, 24000, 3, 103, 1);
+CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(4, 20, 60000, 4, 104, 1);
 
--- 📰CALL DETALLE_FACTURA_COMPRA_MATERIA_PRIMA📰
-CALL INSERTAR_DETALLE_FACTURA_COMPRA_MATERIA_PRIMA(1, 100, 250000, 1, 1, 1);
-CALL INSERTAR_DETALLE_FACTURA_COMPRA_MATERIA_PRIMA(2, 80, 180000, 2, 2, 1);
-CALL INSERTAR_DETALLE_FACTURA_COMPRA_MATERIA_PRIMA(3, 40, 400000, 3, 3, 1);
-CALL INSERTAR_DETALLE_FACTURA_COMPRA_MATERIA_PRIMA(4, 10, 50000, 4, 4, 0);
+-- PROCEDIMIENTO INSERTAR RECETA
+CALL INSERTAR_RECETA(101, 1, 0.5, 'Kg');
+CALL INSERTAR_RECETA(101, 3, 0.05, 'Kg');
+CALL INSERTAR_RECETA(102, 1, 0.4, 'Kg');
+CALL INSERTAR_RECETA(102, 4, 0.2, 'Kg');
 
--- 🍮CALL DETALLE_COMPRA_PRODUCTO🍮
-CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(1, 30, 120000, 5, 770003, 1);
-CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(2, 40, 60000, 6, 770001, 1);
-CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(3, 10, 350000, 7, 770002, 1);
-CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(4, 20, 90000, 8, 770004, 1);
+-- PROCEDIMIENTO INSERTAR PRODUCCION
+CALL INSERTAR_PRODUCCION('Producción Pan Trigo', 100, 'Elaboración diaria pan', 101, 2, 1);
+CALL INSERTAR_PRODUCCION('Producción Pastel Chocolate', 50, 'Elaboración semanal pastel', 102, 2, 1);
+CALL INSERTAR_PRODUCCION('Producción Pan Integral', 80, 'Producción alterna', 104, 2, 1);
+CALL INSERTAR_PRODUCCION('Producción Jabón Liquido', 20, 'Producción especial', 103, 2, 1);
 
--- 🍲CALL PRODUCCION🍲
-CALL INSERTAR_PRODUCCION('Produccion Pan Frances', 50, 'Produccion diaria de Pan Frances', 25, 1, 770001, 2, 1);
-CALL INSERTAR_PRODUCCION('Produccion Torta Choco', 10, 'Produccion semanal de Tortas', 5, 2, 770002, 2, 1);
-CALL INSERTAR_PRODUCCION('Produccion Croissant', 40, 'Produccion diaria de Croissants', 10, 3, 770004, 2, 1);
-CALL INSERTAR_PRODUCCION('Pruebas de Panaderia', 5, 'Pruebas con nueva levadura', 1, 4, 770001, 2, 0);
+-- PROCEDIMIENTO INSERTAR DETALLE_PRODUCCION
+CALL INSERTAR_DETALLE_PRODUCCION(1, 1, 50, 50);   -- Harina pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 2, 20, 20);   -- Azúcar pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 3, 10, 10);   -- Levadura pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 4, 5, 5);     -- Chocolate pan trigo
+
+CALL INSERTAR_DETALLE_PRODUCCION(2, 1, 30, 30);   -- Harina pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 2, 15, 15);   -- Azúcar pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 3, 5, 5);     -- Levadura pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 4, 20, 20);   -- Chocolate pastel
+
+CALL INSERTAR_DETALLE_PRODUCCION(3, 1, 40, 40);   -- Harina integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 2, 10, 10);   -- Azúcar integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 3, 8, 8);     -- Levadura integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 4, 2, 2);     -- Chocolate integral
+
+CALL INSERTAR_DETALLE_PRODUCCION(4, 1, 20, 20);   -- Harina jabón (ejemplo)
+CALL INSERTAR_DETALLE_PRODUCCION(4, 2, 5, 5);     -- Azúcar jabón
+CALL INSERTAR_DETALLE_PRODUCCION(4, 3, 3, 3);     -- Levadura jabón
+CALL INSERTAR_DETALLE_PRODUCCION(4, 4, 1, 1);     -- Chocolate jabón
 
 COMMIT;
-SELECT 'Todos los CALL ejecutados correctamente. COMMIT realizado.' AS Mensaje;
+SELECT 'Todos los CALL INSERTAR ejecutados correctamente. COMMIT realizado.' AS Mensaje;
 
 /*ROLLBACK; ejecutar en caso de error.*/

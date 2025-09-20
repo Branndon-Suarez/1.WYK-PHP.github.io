@@ -17,10 +17,8 @@ if (file_exists($autoloadPath)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['boton_login'])) {
-        require_once __DIR__ . '/app/controllers/LoginController.php';
-        exit();
-    } elseif (isset($_POST['boton_register'])) {
-        require_once __DIR__ . '/app/controllers/RegisterController.php';
+        $controllerLogin = new \controllers\LoginController;
+        $controllerLogin->handleLogin();
         exit();
     }
 }
@@ -49,7 +47,7 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/home.php';
             break;
         case 'dashboard':
-            if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
+            if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
                 require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
@@ -69,7 +67,7 @@ if (in_array($vista, $validViews)) {
         case 'empleados':
         case 'clientes':
         case 'productos':
-            if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['rol'])) {
+            if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 $controllerName = ucfirst($vista) . 'Controller';
                 $fullControllerName = '\\controllers\\' . $controllerName;
 

@@ -11,17 +11,17 @@ class User {
         $this->db = Connection::getConnection();
     }
 
-    public function findUserByUsername($getUserName)
+    public function findUser($numDocLogin)
     {
         try {
             $stmt = $this->db->prepare(
-                "SELECT * FROM USUARIO WHERE NOMBRE_USUARIO = :1_userName"
+                "SELECT * FROM USUARIO WHERE NUM_DOC = :num_Doc_Login"
             );
-            $stmt->bindParam(':1_userName', $getUserName);
+            $stmt->bindParam(':num_Doc_Login', $numDocLogin);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error en la función findUserByUsername: " . $e->getMessage());
+            error_log("Error en la función findUser: " . $e->getMessage());
             return false;
         }
     }

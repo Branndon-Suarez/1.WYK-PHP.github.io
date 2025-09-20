@@ -259,7 +259,7 @@ if (isset($_SESSION['error_message'])) {
             <div class="header">
                 <div>
                     <div class="s">Buenos días, 
-                        <span class="n"><?php echo $_SESSION['username']; ?></span>
+                        <span class="n"><?php echo $_SESSION['userName']; ?></span>
                     </div>
                     <div class="subtitle">Ten un buen día en el trabajo</div>
                 </div>
@@ -273,7 +273,7 @@ if (isset($_SESSION['error_message'])) {
                     </button>
                     <div class="user-info">
                         <div class="user-avatar" id="userAvatar">JD</div>
-                        <span><?php echo $_SESSION['username']; ?></span>
+                        <span><?php echo $_SESSION['userName']; ?></span>
                     </div>
                 </div>
             </div>
@@ -290,7 +290,7 @@ if (isset($_SESSION['error_message'])) {
                         </button>
                     </div>
 
-                    <div class="profile-name"><?php echo $_SESSION['username']; ?></div>
+                    <div class="profile-name"><?php echo $_SESSION['userName']; ?></div>
                     <div class="profile-company">Administrador</div>
 
                     <div class="contact-buttons">

@@ -4,7 +4,7 @@
         <?php if ($_SESSION['rol'] == 'ADMINISTRADOR') {
         ?>
             <li title="Inicio">
-                <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn class=" nav-btn <?php echo ($active_page == 'dashboard') ? 'active' : ''; ?>" aria-label="Inicio">
+                <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn <?php echo ($active_page == 'dashboard') ? 'active' : ''; ?>" aria-label="Inicio">
                     <lord-icon
                         src="https://cdn.lordicon.com/oeotfwsx.json"
                         colors="primary:#ffffff"
@@ -15,7 +15,7 @@
             </li>
 
             <li class="has-submenu" title="Usuarios">
-                <button class="nav-btn class=" nav-btn <?php echo ($active_page == 'usuarios') ? 'active' : ''; ?>" aria-label="Usuarios" aria-expanded="false">
+                <button class="nav-btn <?php echo ($active_page == 'usuarios') ? 'active' : ''; ?>"   aria-label="Usuarios" aria-expanded="false">
                     <lord-icon
                         src="https://cdn.lordicon.com/bushiqea.json"
                         trigger="hover"
@@ -175,7 +175,7 @@
         ?>
             <div class="spacer"></div>
 
-        <?php if ($_SESSION['rol'] == 'MESERO') {
+        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR' || $_SESSION['rol'] == 'MESERO') {
         ?>
             <!-- PARTE DE MESERO -->
             <li title="Pedidos">
@@ -186,15 +186,15 @@
         <?php
         }
         ?>
-            <li title="Cerrar sesión">
-                <a href="<?php echo \config\APP_URL; ?>logout" class="nav-btn" aria-label="Cerrar sesión">
-                    <lord-icon
-                        src="https://cdn.lordicon.com/vfiwitrm.json"
-                        trigger="hover"
-                        colors="primary:#ffffff,secondary:#ffffff"
-                        style="width:50px;height:50px">
-                    </lord-icon>
-                </a>
-            </li>
+        <li title="Cerrar sesión">
+            <a href="<?php echo \config\APP_URL; ?>logout" class="nav-btn" aria-label="Cerrar sesión">
+                <lord-icon
+                    src="https://cdn.lordicon.com/vfiwitrm.json"
+                    trigger="hover"
+                    colors="primary:#ffffff,secondary:#ffffff"
+                    style="width:50px;height:50px">
+                </lord-icon>
+            </a>
+        </li>
     </ul>
 </nav>

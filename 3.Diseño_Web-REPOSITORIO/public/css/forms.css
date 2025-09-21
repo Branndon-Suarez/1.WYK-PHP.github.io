@@ -7,31 +7,22 @@
     --text: #0f172a;
     --muted: #64748b;
     --shadow: 0 10px 30px rgba(24, 24, 48, .08);
+    --shadow-lg: 0 20px 40px rgba(24, 24, 48, .15);
     --radius-xl: 18px;
-    --radius-2xl: 22px;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
     font-family: Inter, sans-serif;
-    background-image: url(fondo-formulario.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: var(--text);
+    background: linear-gradient(135deg, #f6f7ff 0%, #e8eeff 100%);
     display: grid;
     grid-template-columns: 84px 1fr;
     min-height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-    background: linear-gradient(180deg, var(--primary), var(--primary-2));
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 12px;
-    color: #fff;
+    color: var(--text);
 }
 
 .logo {
@@ -43,256 +34,447 @@ body {
     place-items: center;
     font-size: 26px;
     box-shadow: var(--shadow);
+    animation: logoFloat 3s ease-in-out infinite;
 }
 
-.nav-btn {
+@keyframes logoFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.boton-nav {
     width: 48px;
     height: 48px;
     border-radius: 16px;
     display: grid;
     place-items: center;
     cursor: pointer;
-    transition: .2s;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.nav-btn:hover {
+.boton-nav::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.boton-nav:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
+.boton-nav:hover {
     background: rgba(255, 255, 255, .12);
     transform: translateY(-2px);
 }
 
-.spacer {
+.espaciador {
     flex: 1;
 }
 
-/* Main */
-.main {
-    padding: 22px;
-}
-
-.topbar {
+/* Principal */
+.principal {
+    padding: 40px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, .7);
-    border: 1px solid var(--ring);
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(8px);
+    gap: 24px;
 }
 
-.search {
-    margin-left: auto;
-    display: flex;
+/* Botón volver por fuera del formulario */
+.volver {
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: #f8fafc;
-    border: 1px solid var(--ring);
-}
-
-.search input {
-    border: none;
-    outline: none;
-    background: transparent;
-    width: 220px;
-}
-
-.search:focus,
-.search:hover {
-    outline: none;
-    border-color: rgba(108, 46, 5, 0.4);
-    background-color: #fff;
-    box-shadow: 0 0 0 6px rgba(59, 26, 2, 0.1);
-}
-
-
-.card {
-    background: #fff;
-    border: 1px solid var(--ring);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow);
-    padding: 20px;
-}
-
-.btn {
-    border: none;
-    outline: none;
-    padding: 10px 14px;
-    border-radius: 14px;
-    cursor: pointer;
+    background: white;
+    border: 2px solid var(--ring);
+    color: var(--primary-2);
     font-weight: 600;
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
 }
 
-.btn-primary {
-    background: var(--primary);
-    color: #fff;
+.volver::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
 }
 
-.btn-primary:hover {
-    filter: brightness(.95);
+.volver:hover::before {
+    left: 100%;
 }
 
+.volver i {
+    margin-right: 8px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.volver:hover i {
+    transform: translateX(-4px);
+}
+
+.volver:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(147, 62, 13, 0.15);
+}
+
+.volver:active {
+    transform: translateY(0);
+}
 
 .formulario {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 50rem;
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    animation: deslizarFormulario 0.6s ease-out;
 }
 
-.form-grupo {
+@keyframes deslizarFormulario {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.formulario::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.formulario::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(147, 62, 13, 0.02) 0%, transparent 70%);
+    pointer-events: none;
+    animation: brilloFormulario 8s ease-in-out infinite;
+}
+
+@keyframes brilloFormulario {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--primary-2);
+    font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+.grupo-formulario {
+    width: 100%;
+    display: grid;
+    gap: 24px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+.grupo-formulario label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--primary-2);
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.contenedor-input {
+    position: relative;
+}
+
+.grupo-formulario input,
+.grupo-formulario select {
+    padding: 16px 20px;
+    border: 2px solid var(--ring);
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fafbfc;
+    width: 100%;
+}
+
+.grupo-formulario input:focus,
+.grupo-formulario select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(147, 62, 13, 0.1);
+    background-color: #fff;
+    transform: translateY(-1px);
+}
+
+.grupo-formulario input:focus+.resalte-input {
+    transform: scaleX(1);
+}
+
+.campo {
     display: flex;
     flex-direction: column;
 }
 
-.form-grupo label {
-    margin-bottom: 5px;
-    font-weight: bold;
+.campo label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--primary-2);
+    font-size: 15px;
+    transition: color 0.3s ease;
 }
 
-.form-grupo input,
-.form-grupo select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.resalte-input {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    border-radius: 1px;
 }
 
-.form-grupo input:focus,
-.form-grupo input:hover {
-    outline: none;
-    border-color: rgba(108, 46, 5, 0.4);
-    background-color: #fff;
-    box-shadow: 0 0 0 6px rgba(59, 26, 2, 0.1);
+/*------------------------- Estilos del select -------------------------*/
+.grupo-formulario select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 48px;
 }
 
-/* boton de Uiverse. */
-button {
+.grupo-formulario select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23933e0d' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+.grupo-formulario select option {
+    padding: 12px;
+    background: white;
+    color: var(--text);
+}
+
+.grupo-formulario select option:hover {
+    background: #933e0d;
+}
+
+.estado-activo {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.estado-inactivo {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+button[type="submit"] {
+    width: 100%;
     font-family: inherit;
-    font-size: 20px;
-    background: rgb(135, 61, 4);
+    font-size: 18px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
     color: white;
-    padding: 0.7em 1em;
-    padding-left: 0.9em;
+    padding: 16px 1em;
     display: flex;
+    justify-content: center;
     align-items: center;
+    align-self: stretch;
     border: none;
     border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-top: 12px;
+    z-index: 2;
 }
 
-button span {
-    display: block;
-    margin-left: 0.3em;
-    transition: all 0.3s ease-in-out;
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
 }
 
-button svg {
-    display: block;
-    transform-origin: center center;
-    transition: transform 0.3s ease-in-out;
+button[type="submit"]:hover::before {
+    left: 100%;
 }
 
-button:hover .svg-wrapper {
-    animation: fly-1 0.6s ease-in-out infinite alternate;
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(147, 62, 13, 0.25);
 }
 
-button:hover svg {
-    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 16px rgba(147, 62, 13, 0.2);
 }
 
-button:hover span {
-    transform: translateX(5em);
-}
-
-button:active {
-    transform: scale(0.95);
-}
-
-@keyframes fly-1 {
-    from {
-        transform: translateY(0.1em);
+/* animacion */
+@keyframes exito {
+    0% {
+        transform: scale(1);
     }
 
-    to {
-        transform: translateY(-0.1em);
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
+.formulario-exitoso {
+    animation: exito 0.6s ease-out;
 }
 
-th,
-td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
+/*---------------------------- Responsive ----------------------------*/
+.grupo-formulario {
+    grid-template-columns: 1fr;
 }
 
-th {
-    background: #f8fafc;
-    font-weight: 600;
-    font-size: 14px;
+/*RESPONSIVE PARA PC*/
+@media (min-width: 1024px) {
+    .grupo-formulario {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.totales {
-    margin-top: 20px;
-    text-align: right;
+/*RESPONSIVE PARA TABLET*/
+@media (min-width: 768px) and (max-width: 1023px) {
+    body {
+        grid-template-columns: 1fr;
+    }
+
+    .grupo-formulario {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .principal {
+        display: grid;
+        position: absolute;
+        min-width: 100%;
+        padding: 0;
+        gap: 0;
+        top: 0;
+    }
+
+    .volver {
+        display: flow-root;
+    }
+
+    .formulario {
+        max-width: 100%;
+    }
 }
 
-.totales div {
-    margin: 6px 0;
-    font-weight: 600;
-}
+/*RESPONSIVE PARA MÓVIL*/
+@media (min-width: 0px) and (max-width: 768px) {
+    body {
+        grid-template-columns: 1fr;
+    }
 
-.totales span {
-    min-width: 100px;
-    display: inline-block;
-    text-align: right;
-}
+    .grupo-formulario {
+        grid-template-columns: repeat(1, 1fr);
+    }
 
-.tabla-factura {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-}
+    .sidebar {
+        display: none;
+    }
 
-.tabla-factura th {
-    text-align: left;
-    padding: 12px;
-    background: #f5f5f5;
-    font-weight: 700
-}
+    .principal {
+        display: grid;
+        position: absolute;
+        min-width: 100%;
+        padding: 0;
+        gap: 0;
+        top: 0;
+    }
 
-.tabla-factura td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    vertical-align: middle
-}
+    .volver {
+        display: flow-root;
+    }
 
-.acciones {
-    display: flex;
-    gap: 8px;
-}
-
-/* Fila desactivada */
-.row-disabled {
-    color: #9ca3af;
-    text-decoration: line-through;
-    background-color: #f3f4f6;
-}
-
-.row-disabled td {
-    font-style: italic;
-    /* opcional: cursiva */
+    .formulario {
+        max-width: 100%;
+    }
 }

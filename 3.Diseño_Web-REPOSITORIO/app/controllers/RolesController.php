@@ -4,24 +4,33 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \models\CargoModel;
+use \models\RolModel;
 use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class CargosController {
-    private $cargoModel;
+class RolesController {
+    private $rolModel;
 
     public function __construct() {
-        $this->cargoModel = new CargoModel();
+        $this->rolModel = new RolModel();
     }
 
+    private function checkAdminAccess() {
+        if (!isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] !== 'ADMINISTRADOR') {
+            $_SESSION['error_message'] = 'Acceso denegado. No tienes permisos de administrador.';
+            header('Location: ' . APP_URL . 'dashboard');
+            exit();
+        }
+    }
     public function reports() {
-        $dashboardDataCargos = [
-            'cargosExistentes' => $this->cargoModel->getCantCargosExistentes(),
-            'cargosActivos' => $this->cargoModel->getCantCargosActivos(),
-            'cargosInactivos' => $this->cargoModel->getCantCargosInactivos(),
-            'cargos' => $this->cargoModel->getCargos()
+        $this->checkAdminAccess();
+
+        $dashboardDataRoles = [
+            'rolesExistentes' => $this->rolModel->getCantRolesExistentes(),
+            'rolesActivos' => $this->rolModel->getCantRolesActivos(),
+            'rolesInactivos' => $this->rolModel->getCantRolesInactivos(),
+            'roles' => $this->rolModel->getRoles()
         ];
 
         // Mensajes de sesión
@@ -29,25 +38,29 @@ class CargosController {
         if (isset($_SESSION['success_message'])) { unset($_SESSION['success_message']); }
         $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
         if (isset($_SESSION['error_message'])) { unset($_SESSION['error_message']); }
+        // variable sidebar
+        $active_page = 'roles';
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/cargo/dashboardCargo.php';
+        require_once __DIR__ . '/../views/rol/dashboardRol.php';
     }
 
     public function create() {
+        $this->checkAdminAccess();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombreCargo = $_POST['Nom_Cargo'];
+            $rol = $_POST['rol'];
+            $rolClasificacion = $_POST['clasificacion_rol'];
             try {
-                if ($this->cargoModel->checkIfCargoExists($nombreCargo)) {
-                    // Si el cargo ya existe, responde con un JSON de error.
-                    echo json_encode(['success' => false, 'message' => 'El cargo ya existe.']);
+                if ($this->rolModel->checkIfRolExists($rol)) {
+                    echo json_encode(['success' => false, 'message' => 'El rol ya existe.']);
                     return;
                 }
 
-                $result = $this->cargoModel->createCargo($nombreCargo);
+                $result = $this->rolModel->createRol($rol, $rolClasificacion);
                 if ($result) {
                     // Si es exitoso, responde con un JSON de éxito.
-                    echo json_encode(['success' => true, 'message' => 'Cargo creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Rol creado exitosamente.']);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Error al crear el cargo.']);
                 }
@@ -55,33 +68,41 @@ class CargosController {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
             }
             exit();
+        } else {
+            require_once __DIR__ . '/../views/layouts/heads/headForm.php';
+            require_once __DIR__ . '/../views/rol/create.php';
         }
-        require_once __DIR__ . '/../views/cargo/create.php';
     }
 
     public function viewEdit($id) {
-        $cargo = $this->cargoModel->getCargoById($id);
-        if ($cargo) {
-            require_once __DIR__ . '/../views/cargo/update.php';
+        $this->checkAdminAccess();
+
+        $rol = $this->rolModel->getRolById($id);
+        if ($rol) {
+            require_once __DIR__ . '/../views/layouts/heads/headForm.php';
+            require_once __DIR__ . '/../views/rol/update.php';
         } else {
-            $_SESSION['error_message'] = 'Cargo no encontrado.';
-            header('Location: ' . \config\APP_URL . 'cargos');
+            $_SESSION['error_message'] = 'Rol no encontrado.';
+            header('Location: ' . \config\APP_URL . 'roles');
             exit();
         }
     }
 
     public function update() {
+        $this->checkAdminAccess();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idCargo = $_POST['Id_Cargo'];
-            $nombreCargo = $_POST['Nom_Cargo'];
-            $estadoCargo = $_POST['Estado_Cargo'];
+            $idRol = $_POST['Id_Rol'];
+            $rol = $_POST['Rol'];
+            $rolClasificacion = $_POST['Clasificacion_Rol'];
+            $rolEstado = $_POST['Estado_Rol'];
             try {
-                $result = $this->cargoModel->updateCargo($idCargo, $nombreCargo, $estadoCargo);
+                $result = $this->rolModel->updateRol($idRol, $rol, $rolClasificacion, $rolEstado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Cargo actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Rol actualizado exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el cargo.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el rol.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -92,6 +113,8 @@ class CargosController {
     }
 
     public function updateState() {
+        $this->checkAdminAccess();
+
         // 1. Verificar que la petición sea POST y que el contenido sea JSON.
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
             http_response_code(405);
@@ -109,7 +132,7 @@ class CargosController {
             
             try {
                 // 4. Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->cargoModel->updateCargoState($idCargo, $estadoCargo);
+                $result = $this->rolModel->updateCargoState($idCargo, $estadoCargo);
 
                 // 5. Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
@@ -145,7 +168,7 @@ class CargosController {
 
             try {
                 // 4. Llamar al modelo para eliminar el registro
-                $result = $this->cargoModel->deleteCargo($idCargo);
+                $result = $this->rolModel->deleteCargo($idCargo);
 
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Cargo eliminado con éxito.']);
@@ -166,7 +189,7 @@ class CargosController {
     // ----------------- REPORTE EN PDF ----------------------------
     public function generateReportPDF() {
         // 1. Obtener los datos del modelo
-        $cargos = $this->cargoModel->getCargos();
+        $cargos = $this->rolModel->getCargos();
 
         // 2. Construir el HTML
         $html = '

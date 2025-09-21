@@ -1,9 +1,9 @@
-document.getElementById('create-cargo-form').addEventListener('submit', function (e) {
+document.getElementById('create-rol-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
 
-    fetch(APP_URL + 'cargos/create', {
+    fetch(APP_URL + 'roles/create', {
         method: 'POST',
         body: formData
     })
@@ -15,7 +15,7 @@ document.getElementById('create-cargo-form').addEventListener('submit', function
                     title: '¡Éxito!',
                     text: data.message
                 }).then(() => {
-                    window.location.href = APP_URL + 'cargos'; // Se usa la constante aquí
+                    window.location.href = APP_URL + 'roles';
                 });
             } else {
                 Swal.fire({

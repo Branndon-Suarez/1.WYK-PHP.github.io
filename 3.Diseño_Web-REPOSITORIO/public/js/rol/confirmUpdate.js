@@ -1,11 +1,11 @@
-document.getElementById('update-cargo-form').addEventListener('submit', function (e) {
+document.getElementById('update-rol-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const form = this; // Guarda una referencia al formulario
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Se actualizarán los datos de este cargo.',
+        text: 'Se actualizarán los datos de este rol.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -16,7 +16,7 @@ document.getElementById('update-cargo-form').addEventListener('submit', function
         if (result.isConfirmed) {
             const formData = new FormData(form);
 
-            fetch(APP_URL + 'cargos/update', {
+            fetch(APP_URL + 'roles/update', {
                 method: 'POST',
                 body: formData
             })
@@ -34,7 +34,7 @@ document.getElementById('update-cargo-form').addEventListener('submit', function
                         title: '¡Éxito!',
                         text: data.message
                     }).then(() => {
-                        window.location.href = APP_URL + 'cargos';
+                        window.location.href = APP_URL + 'roles';
                     });
                 } else {
                     Swal.fire({

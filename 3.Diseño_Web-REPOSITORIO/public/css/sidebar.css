@@ -1,0 +1,125 @@
+/* --------------------- Sidebar --------------------- */
+.sidebar {
+    position: sticky;
+    top: 0;
+    width: 80px;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--primary), var(--primary-2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 12px;
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+
+.sidebar .logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #f59e0b, #fb923c);
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    box-shadow: var(--shadow);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.sidebar .nav-btn {
+    all: unset;
+    /* Se eliminan estilos por defecto del <button> */
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    text-decoration: none;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.sidebar .nav-btn:hover {
+    background: rgba(255, 255, 255, .12);
+    transform: translateY(-2px);
+}
+
+.sidebar .nav-btn.active {
+    background: rgba(255, 255, 255, .2);
+}
+
+.sidebar .nav-btn i {
+    pointer-events: none;
+}
+
+/* Submenús */
+.sidebar li {
+    position: relative;
+}
+
+.sidebar .submenu {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    /* aparece a la derecha del menú principal */
+    background: linear-gradient(180deg, var(--primary), var(--primary-2));
+    padding: 8px 0;
+    border: #0f172a 1px solid;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/*Para mostrar el submenu al hacer click*/
+.has-submenu.open>.submenu {
+    display: flex;
+    opacity: 1;
+}
+
+.sidebar .submenu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.sidebar .submenu li a:hover {
+    background: rgba(255, 255, 255, .2);
+}
+
+/* --------------------- Sidebar --------------------- */
+
+/* --------------------- Responsive --------------------- */
+/*RESPONSIVE PARA MÓVIL-TABLET*/
+@media (min-width: 0px) and (max-width: 1023px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+/*RESPONSIVE PARA PC*/
+@media (min-width: 1024px) {
+    .sidebar {
+        display: flex;
+    }
+}

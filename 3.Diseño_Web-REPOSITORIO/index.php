@@ -33,7 +33,7 @@ $vista = $request[0];
 $action = isset($request[1]) ? $request[1] : 'reports';
 $params = array_slice($request, 2);
 
-$validViews = ['home', 'login', 'logout', 'dashboard', 'cargos', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
+$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -62,7 +62,7 @@ if (in_array($vista, $validViews)) {
             header('Location: ' . \config\APP_URL . 'login');
             exit();
             break;
-        case 'cargos':
+        case 'roles':
         case 'usuarios':
         case 'empleados':
         case 'clientes':

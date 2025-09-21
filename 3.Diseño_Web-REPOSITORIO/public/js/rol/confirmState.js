@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkbox = switchElement.previousElementSibling;
         
         checkbox.addEventListener('change', async (event) => {
-            const cargoId = event.target.dataset.id;
+            const rolId = event.target.dataset.id;
             const nuevoEstado = event.target.checked ? 1 : 0;
 
             const result = await Swal.fire({
                 title: '¿Estás seguro?',
-                text: `¿Quieres ${nuevoEstado === 1 ? 'activar' : 'desactivar'} este cargo?`,
+                text: `¿Quieres ${nuevoEstado === 1 ? 'activar' : 'desactivar'} este rol?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                const url = `${APP_URL}cargos/updateState`;
+                const url = `${APP_URL}roles/updateState`;
 
                 try {
                     const response = await fetch(url, {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            id: cargoId,
+                            id: rolId,
                             estado: nuevoEstado
                         })
                     });

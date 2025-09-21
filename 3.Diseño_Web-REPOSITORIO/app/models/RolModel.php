@@ -116,15 +116,15 @@ class RolModel {
         }
     }
 
-    public function updateCargoState($idCargo, $estadoCargo) {
+    public function updateRolState($idRol, $estadoRol) {
         try {
             // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE CARGO SET ESTADO_CARGO = :estado WHERE ID_CARGO = :id";
+            $sql = "UPDATE ROL SET ESTADO_ROL = :estado WHERE ID_ROL = :id";
             $stmt = $this->db->prepare($sql);
 
             // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoCargo, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado', $estadoRol, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $idRol, \PDO::PARAM_INT);
             
             $stmt->execute();
 
@@ -132,19 +132,19 @@ class RolModel {
             return $stmt->rowCount() > 0;
         } catch (\PDOException $e) {
             // Registrar el error en el log de XAMPP.
-            error_log("Error al actualizar estado del cargo: " . $e->getMessage());
+            error_log("Error al actualizar estado del rol: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteCargo($idCargo) {
+    public function deleteRol($idRol) {
         try {
-            $sql = "CALL ELIMINAR_CARGO(:id_cargo)";
+            $sql = "CALL ELIMINAR_ROL(:id_rol)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_cargo', $idCargo, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función deleteCargo: " . $e->getMessage());
+            error_log("Error en la función deleteRol: " . $e->getMessage());
             return null;
         }
     }

@@ -29,7 +29,7 @@
           <label for="Clasificacion_Rol">Clasificación</label>
           <div class="contenedor-input">
             <select id="Clasificacion_Rol" name="Clasificacion_Rol" required>
-              <option value="<?php echo htmlspecialchars($rol['CLASIFICACION']); ?>"><?php echo htmlspecialchars($rol['CLASIFICACION']); ?></option>
+              <option selected value="<?php echo htmlspecialchars($rol['CLASIFICACION']); ?>"><?php echo htmlspecialchars($rol['CLASIFICACION']); ?></option>
               <option value="ADMINISTRADOR">ADMINISTRADOR</option>
               <option value="EMPLEADO">EMPLEADO</option>
             </select>
@@ -63,7 +63,7 @@
   <script src="<?php echo \config\APP_URL; ?>public/js/rol/rol.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmCreate.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmUpdate.js"></script>
 </body>
 
 </html>

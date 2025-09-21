@@ -127,31 +127,31 @@ public function getRolesAjax() {
     public function updateState() {
         $this->checkAdminAccess();
 
-        // 1. Verificar que la petición sea POST y que el contenido sea JSON.
+        //Verificar que la petición sea POST y que el contenido sea JSON.
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
             return;
         }
 
-        // 2. Decodificar el JSON del cuerpo de la petición.
+        //Decodificar el JSON del cuerpo de la petición.
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // 3. Validar que los datos necesarios (id y estado) estén presentes.
+        //Validar que los datos necesarios (id y estado) estén presentes.
         if (isset($data['id']) && isset($data['estado'])) {
-            $idCargo = $data['id'];
-            $estadoCargo = $data['estado'];
+            $idRol = $data['id'];
+            $estadoRol = $data['estado'];
             
             try {
-                // 4. Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->rolModel->updateCargoState($idCargo, $estadoCargo);
+                //Llamar al método del modelo para actualizar la base de datos.
+                $result = $this->rolModel->updateRolState($idRol, $estadoRol);
 
-                // 5. Enviar una respuesta JSON al cliente (el JavaScript).
+                //Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del cargo actualizado.']);
+                    echo json_encode(['success' => true, 'message' => 'Estado del rol actualizado.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del cargo.']);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado del rol.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -164,29 +164,30 @@ public function getRolesAjax() {
     }
     
     public function delete() {
-        // 1. Verificar que la petición sea POST y que el contenido sea JSON
+        $this->checkAdminAccess();
+        //Verificar que la petición sea POST y que el contenido sea JSON
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
             return;
         }
 
-        // 2. Leer y decodificar el JSON del cuerpo de la petición
+        //Leer y decodificar el JSON del cuerpo de la petición
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // 3. Validar que el ID esté presente
+        //Validar que el ID esté presente
         if (isset($data['id'])) {
-            $idCargo = $data['id'];
+            $idRol = $data['id'];
 
             try {
-                // 4. Llamar al modelo para eliminar el registro
-                $result = $this->rolModel->deleteCargo($idCargo);
+                //Llamar al modelo para eliminar el registro
+                $result = $this->rolModel->deleteRol($idRol);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Cargo eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Rol eliminado con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el cargo.']);
+                    echo json_encode(['error' => 'No se pudo eliminar el rol. Esta relacionado con otro(s) registros']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);

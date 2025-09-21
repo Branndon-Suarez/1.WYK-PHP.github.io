@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const deleteButtons = document.querySelectorAll('.delete-cargo');
+    const deleteButtons = document.querySelectorAll('.delete-rol');
     deleteButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
-            const targetButton = event.target.closest('.delete-cargo');
+            const targetButton = event.target.closest('.delete-rol');
             const cargoId = targetButton.dataset.id;
             
             const result = await Swal.fire({
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                const url = `${APP_URL}cargos/delete`;
+                const url = `${APP_URL}roles/delete`;
                 try {
                     const response = await fetch(url, {
                         method: 'POST',
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await response.json();
 
                     if (!response.ok) {
-                        Swal.fire('Error', data.error || 'No se pudo eliminar el cargo.', 'error');
+                        Swal.fire('Error', data.error || 'No se pudo eliminar el rol.', 'error');
                     } else {
                         Swal.fire('¡Eliminado!', data.message, 'success')
                             .then(() => {

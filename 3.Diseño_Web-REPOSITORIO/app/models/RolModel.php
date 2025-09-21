@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 use \config\Connection;
+use \PDO;
 
 class RolModel {
     private $db;
@@ -146,6 +147,48 @@ class RolModel {
         } catch (\PDOException $e) {
             error_log("Error en la función deleteRol: " . $e->getMessage());
             return null;
+        }
+    }
+
+    public function getFilteredRoles($searchText = null, $estado = null, $chipFilters = []) {
+        $sql = "SELECT * FROM ROL WHERE 1=1";
+        $params = [];
+
+        // Filtro por búsqueda de texto (ROL o CLASIFICACION)
+        if (!empty($searchText)) {
+            $sql .= " AND (ROL LIKE ? OR CLASIFICACION LIKE ?)";
+            $params[] = '%' . $searchText . '%';
+            $params[] = '%' . $searchText . '%';
+        }
+
+        // Filtro por estado del rol
+        if ($estado === 'activo') {
+            $sql .= " AND ESTADO_ROL = 1";
+        } elseif ($estado === 'inactivo') {
+            $sql .= " AND ESTADO_ROL = 0";
+        }
+
+        // Filtros de chips (por columna y valor)
+        foreach ($chipFilters as $columna => $valores) {
+            // Asegúrate de que la columna es válida para evitar inyección SQL
+            if (in_array($columna, ['ROL', 'CLASIFICACION'])) { // Agrega aquí todas las columnas que puedes filtrar con chips
+                $placeholders = implode(',', array_fill(0, count($valores), '?'));
+                $sql .= " AND " . $columna . " IN (" . $placeholders . ")";
+                // Agrega los valores a los parámetros
+                foreach ($valores as $valor) {
+                    $params[] = $valor;
+                }
+            }
+        }
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (\PDOException $e) {
+            error_log("Error al obtener roles filtrados: " . $e->getMessage());
+            return [];
         }
     }
 }

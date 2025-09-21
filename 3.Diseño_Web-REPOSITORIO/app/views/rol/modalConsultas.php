@@ -8,7 +8,7 @@
       <div class="modal-body">
 
         <!-- búsqueda rápida independiente dentro del modal -->
-        <input id="buscarRapidoModal" class="form-control mb-3" placeholder="Buscar en toda la tabla (modal)">
+        <input id="buscarRapidoModal" class="form-control mb-3" placeholder="Buscar...">
 
         <!-- botones dinámicos por columna -->
         <div id="botonesColumnas" class="mb-3"></div>

@@ -5,14 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================
   // 🔎 BÚSQUEDA RÁPIDA PRINCIPAL
   // ============================
-  document.getElementById("buscarRapido").addEventListener("keyup", function() {
+  document.getElementById("buscarRapido").addEventListener("keyup", function () {
     aplicarFiltros(); // ahora usa la función unificada
   });
 
   // =================================
   // 🔎 BÚSQUEDA RÁPIDA EN EL MODAL
   // =================================
-  document.getElementById("buscarRapidoModal").addEventListener("keyup", function() {
+  document.getElementById("buscarRapidoModal").addEventListener("keyup", function () {
     aplicarFiltros(); // también usa la misma función
   });
 
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🟢 Botón especial Estado (3 estados)
     if (estadoIndex !== -1 && index === estadoIndex) {
       const btnEstado = document.createElement("button");
-      btnEstado.textContent = "Activos";
-      btnEstado.className = "btn btn-success btn-sm me-2 mb-2";
-      btnEstado.dataset.estado = "activo";
+      btnEstado.textContent = "Todos";
+      btnEstado.className = "btn btn-warning btn-sm me-2 mb-2 text-dark";
+      btnEstado.dataset.estado = "todos";
 
       btnEstado.addEventListener("click", () => {
         if (btnEstado.dataset.estado === "activo") {
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // búsqueda interna de chips
-        card.querySelector(".filtro-columna").addEventListener("keyup", function() {
+        card.querySelector(".filtro-columna").addEventListener("keyup", function () {
           const valor = this.value.toLowerCase();
           Array.from(chipsContainer.querySelectorAll(".chip")).forEach(chip => {
             chip.style.display = chip.textContent.toLowerCase().includes(valor) ? "" : "none";

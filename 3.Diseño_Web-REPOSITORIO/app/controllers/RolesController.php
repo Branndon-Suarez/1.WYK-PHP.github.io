@@ -74,7 +74,7 @@ public function getRolesAjax() {
                     // Si es exitoso, responde con un JSON de éxito.
                     echo json_encode(['success' => true, 'message' => 'Rol creado exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el cargo.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear el rol.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
@@ -201,16 +201,33 @@ public function getRolesAjax() {
 
     // ----------------- REPORTE EN PDF ----------------------------
     public function generateReportPDF() {
-        // 1. Obtener los datos del modelo
-        $cargos = $this->rolModel->getCargos();
+        // 1. Obtener los parámetros de filtro de la URL
+        $searchText = $_GET['search'] ?? null;
+        $estadoFilter = $_GET['estado'] ?? null;
+        $chipFilters = [];
 
-        // 2. Construir el HTML
+        // Lee dinámicamente los nuevos filtros de columna enviados por el JavaScript
+        foreach ($_GET as $key => $value) {
+            if (strpos($key, 'filtro_') === 0) {
+                // El nombre de la columna es el que sigue a 'filtro_'
+                $columna = str_replace('filtro_', '', $key);
+                // Los valores vienen como una cadena separada por comas, los convertimos en un array
+                $chipFilters[strtoupper($columna)] = explode(',', $value);
+            }
+        }
+
+        // 2. Obtener los datos filtrados del modelo
+        // Pasa todos los filtros, incluyendo los chips, a la función del modelo
+        $roles = $this->rolModel->getFilteredRoles($searchText, $estadoFilter, $chipFilters);
+
+        // 3. Construir el HTML
+        // ... (el resto de tu código HTML permanece igual) ...
         $html = '
         <!DOCTYPE html>
         <html lang="es">
         <head>
             <meta charset="UTF-8">
-            <title>Reporte de Cargos</title>
+            <title>Reporte de Roles</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                 .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
@@ -223,34 +240,35 @@ public function getRolesAjax() {
             </style>
         </head>
         <body>
-        <div class="header"><h1>Reporte de Cargos - Panaderia Wyk</h1></div>
+        <div class="header"><h1>Reporte de Roles - Panaderia Wyk</h1></div>
         <div class="content">
             <table>
                 <thead>
                     <tr>
-                        <th>Cargo</th>
+                        <th>Rol</th>
+                        <th>clasificación</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>';
 
-        if (!empty($cargos)) {
-            foreach ($cargos as $cargo) {
-                // Asume que la columna de estado es 'ESTADO_CARGO' y es un valor booleano o numérico (1/0)
-                $estado = ($cargo['ESTADO_CARGO'] == 1) ? 'Activo' : 'Inactivo';
+        if (!empty($roles)) {
+            foreach ($roles as $rol) {
+                $estado = ($rol['ESTADO_ROL'] == 1) ? 'Activo' : 'Inactivo';
                 $html .= '
                 <tr>
-                    <td>' . htmlspecialchars($cargo['NOMBRE_CARGO']) . '</td>
+                    <td>' . htmlspecialchars($rol['ROL']) . '</td>
+                    <td>' . htmlspecialchars($rol['CLASIFICACION']) . '</td>
                     <td>' . $estado . '</td>
                 </tr>';
             }
         } else {
-            $html .= '<tr><td colspan="2">No se encontraron cargos</td></tr>';
+            $html .= '<tr><td colspan="3" style="text-align:center;">No se encontraron roles con los filtros aplicados.</td></tr>';
         }
 
         $html .= '</tbody></table></div></body></html>';
 
-        // 3. Configurar y generar el PDF
+        // 4. Configurar y generar el PDF
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
@@ -271,6 +289,6 @@ public function getRolesAjax() {
         ');
 
         // Envía el PDF al navegador
-        $dompdf->stream("Reporte_Cargos.pdf", array("Attachment" => false));
+        $dompdf->stream("Reporte_Roles.pdf", array("Attachment" => false));
     }
 }

@@ -103,16 +103,16 @@
                 <div class="table-header">
                   <strong>Tabla de roles</strong>
                   <div style="display:flex; gap:8px;">
-                    <a href="<?php echo \config\APP_URL . 'roles/generateReportPDF'; ?>" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
+                    <button id="generatePdfBtn" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
                       <span>Generar PDF</span>
                       <lord-icon
-                        src="https://cdn.lordicon.com/gyyhoycg.json"
-                        trigger="hover"
-                        stroke="bold"
-                        colors="primary:#fff"
-                        style="width:50px;height:50px">
+                          src="https://cdn.lordicon.com/gyyhoycg.json"
+                          trigger="hover"
+                          stroke="bold"
+                          colors="primary:#fff"
+                          style="width:50px;height:50px">
                       </lord-icon>
-                    </a>
+                    </button>
                   </div>
                 </div>
                 <thead>
@@ -197,21 +197,14 @@
     <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 
     <!-- JS para CRUD -->
-    <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script><!-- GRAFICAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/rol/modalConsultas.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmState.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmDelete.js"></script>
-    <script>document.getElementById("buscarRapido").addEventListener("keyup", function () {
-  const valor = this.value.toLowerCase();
-  const filas = document.querySelectorAll("#tablaRolesBody tr");
 
-  filas.forEach(fila => {
-    const textoFila = fila.textContent.toLowerCase();
-    fila.style.display = textoFila.includes(valor) ? "" : "none";
-  });
-});
-</script>
+    <!-- JS para busquedas personalizadas (y PDF) -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/rol/busquedaFiltro.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/rol/PDFgenerateFilter.js"></script>
 </body>
 
 </html>

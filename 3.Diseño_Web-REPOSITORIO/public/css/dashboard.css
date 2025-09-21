@@ -489,165 +489,43 @@ textarea {
     }
 }
 
-/*---------------------------------------------------- 🚀 CREAR FORMULARIO-----------------------------------------------------*/
-/*OCULTAR EL "overflow: scroll" SIN DESHABILITARLO (BARRA DE SUBIR Y BAJAR) EN EL MENÚ  {scrollbar-width: none;}*/
-.BOTON_ROL-EMPLE {
-    margin-top: 35px !important;
+.chip {
+  display: inline-block;
+  font-size: 0.95rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: #6c757d; /* gris por defecto */
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 6px;
+  position: relative;
 }
 
-#Contenedor_Botones_Crear {
-    display: flex;
-    margin: 0;
-    padding-left: 0;
+.chip:hover {
+  transform: scale(1.05);
+  background-color: #5a6268;
 }
 
-#Boton_Crear {
-    font-weight: 500;
-    cursor: url(../IMG/cursor_clic.png), auto;
-    margin-top: 35px;
+/* Estado seleccionado */
+.chip.bg-primary {
+  background-color: #0d6efd !important; /* azul Bootstrap */
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);
+  transform: scale(0.97); /* se ve presionado */
 }
 
-#Boton_Usuario {
-    font-weight: 500;
-    cursor: url(../IMG/cursor_clic.png), auto;
-    margin-top: 35px;
+/* Check dentro del chip seleccionado */
+.chip.bg-primary::before {
+  content: "✔";
+  font-size: 0.9rem;
+  margin-right: 6px;
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-select {
-    font-weight: bold;
-    font-size: 16px;
+/* Ajuste para que el texto no choque con el check */
+.chip.bg-primary {
+  padding-left: 28px;
 }
-
-
-/* Sobrescribir los estilos de .mt-5 */
-.mt-5 {
-    margin-top: 0 !important;
-    /* Eliminar margen superior */
-}
-
-/*ENCABEZADO*/
-.modal-header {
-    display: flex !important;
-    justify-content: center !important;
-    background-color: var(--primary-2) !important;
-}
-
-#encabezado-modal>b {
-    margin: 0 100px 0 100px;
-}
-
-#cerrar {
-    font-size: 30px !important;
-}
-
-.modal-header #encabezado-modal {
-    color: #fff;
-    background-color: none;
-}
-
-.modal-header #cerrar {
-    margin: 0;
-}
-
-#contenedor-info-login {
-    display: flex !important;
-    justify-content: center !important;
-}
-
-.modal-body {
-    background-color: var(--primary-3);
-    z-index: 2000;
-    scrollbar-width: none;
-}
-
-/*CONTENIDO*/
-.modal-body lord-icon {
-    margin-right: 10px;
-}
-
-#Sub_Contenido_Crear {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    /* Distribuye los elementos de manera equitativa */
-    margin-top: 10px;
-}
-
-.input-box {
-    width: calc(50% - 20px);
-    /* Calcula el ancho para que quepan dos input-box en una fila */
-    padding: 5px;
-    box-sizing: border-box;
-    /* Ajusta el padding dentro del ancho especificado */
-}
-
-.combo-box {
-    width: calc(50% - 20px);
-    /*Calcula el ancho para que quepan dos input-box en una fila*/
-    padding: 5px;
-    box-sizing: border-box;
-    /*Ajusta el padding dentro del ancho especificado*/
-}
-
-.input-box input,
-label {
-    width: 100%;
-    color: #A63754;
-    font-weight: 900;
-    margin-left: 10px;
-    margin: 5px 0;
-}
-
-#añadir {
-    display: flex;
-    align-items: center;
-    /*Centra verticalmente el label y el ícono*/
-    justify-content: space-between;
-    /*Ajusta la distribución*/
-    width: calc(25% - 20px);
-    /*Mantén el ancho calculado*/
-}
-
-#añadir>label {
-    margin-right: 5px;
-    /*Espacio entre el label y el ícono*/
-    font-weight: 900;
-    color: #A63754;
-}
-
-.combo-box label {
-    color: #A63754;
-    font-size: 20px;
-    font-weight: 900;
-    z-index: 1000;
-}
-
-.input-box label {
-    font-size: 20px;
-    text-shadow: 0.8px 0px 0.5px #faefef,
-        0.8px 0px 0.5px #faefef,
-        0.8px 0px 0.5px #faefef,
-        0.8px 0px 0.5px #faefef;
-}
-
-.input-box input {
-    background: #EEEEEE;
-    transition: 0.5s;
-}
-
-.input-box input:hover {
-    background-color: #93BBBF;
-    transition: 0.5s;
-}
-
-*select option :hover {
-    background-color: #93BBBF;
-}
-
-.input-box input,
-::placeholder {
-    color: #000000;
-    font-size: 18px;
-}
-
-/*---------------------------------------------------- 🏁 CREAR FORMULARIO-----------------------------------------------------*/

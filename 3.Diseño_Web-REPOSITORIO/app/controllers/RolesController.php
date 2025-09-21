@@ -23,6 +23,7 @@ class RolesController {
             exit();
         }
     }
+
     public function reports() {
         $this->checkAdminAccess();
 
@@ -44,6 +45,17 @@ class RolesController {
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
         require_once __DIR__ . '/../views/rol/dashboardRol.php';
     }
+
+public function getRolesAjax() {
+    header('Content-Type: application/json');
+    try {
+        $roles = $this->rolModel->getRoles();
+        echo json_encode(['success' => true, 'data' => $roles]);
+    } catch (\Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit();
+}
 
     public function create() {
         $this->checkAdminAccess();

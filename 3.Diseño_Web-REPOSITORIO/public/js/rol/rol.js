@@ -40,3 +40,4 @@ document.addEventListener('DOMContentLoaded', function () {
   // Escuchar cambios en el select
   selectEstado.addEventListener('change', actualizarColorEstado);
 });
+

@@ -201,23 +201,18 @@ public function getRolesAjax() {
 
     // ----------------- REPORTE EN PDF ----------------------------
     public function generateReportPDF() {
-        // 1. Obtener los parámetros de filtro de la URL
         $searchText = $_GET['search'] ?? null;
         $estadoFilter = $_GET['estado'] ?? null;
-        $chipFilters = [];
 
-        // Lee dinámicamente los nuevos filtros de columna enviados por el JavaScript
+        // Get the new chip filters from the URL
+        $chipFilters = [];
         foreach ($_GET as $key => $value) {
             if (strpos($key, 'filtro_') === 0) {
-                // El nombre de la columna es el que sigue a 'filtro_'
                 $columna = str_replace('filtro_', '', $key);
-                // Los valores vienen como una cadena separada por comas, los convertimos en un array
                 $chipFilters[strtoupper($columna)] = explode(',', $value);
             }
         }
 
-        // 2. Obtener los datos filtrados del modelo
-        // Pasa todos los filtros, incluyendo los chips, a la función del modelo
         $roles = $this->rolModel->getFilteredRoles($searchText, $estadoFilter, $chipFilters);
 
         // 3. Construir el HTML

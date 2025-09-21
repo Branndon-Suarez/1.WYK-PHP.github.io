@@ -118,7 +118,7 @@
                 <thead>
                   <tr>
                     <th>Rol</th>
-                    <th>Categoria</th>
+                    <th>Clasificación</th>
                     <th>Estado</th>
                     <th colspan="3" style="text-align:center">Acciones</th>
                   </tr>

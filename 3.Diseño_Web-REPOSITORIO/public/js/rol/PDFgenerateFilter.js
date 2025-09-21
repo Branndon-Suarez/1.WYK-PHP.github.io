@@ -2,42 +2,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const generatePdfBtn = document.getElementById('generatePdfBtn');
 
     generatePdfBtn.addEventListener('click', () => {
-        // --- Paso 1: Obtener todos los valores de los filtros activos ---
-
-        // 1.1. Obtener el valor de la búsqueda rápida principal
+        // --- 1. Obtener valores de los filtros de texto y estado ---
+        // El filtro de búsqueda principal toma precedencia sobre el del modal
         const searchTextPrincipal = document.getElementById('buscarRapido').value;
-
-        // 1.2. Obtener el valor de la búsqueda dentro del modal
         const searchTextModal = document.getElementById('buscarRapidoModal').value;
+        const finalSearchText = searchTextPrincipal || searchTextModal;
 
-        // 1.3. Obtener el estado del filtro de estado
+        // Obtener el estado del filtro de estado
         let estadoFilter = null;
         const btnEstado = document.querySelector("#botonesColumnas button[data-estado]");
         if (btnEstado) {
             estadoFilter = btnEstado.dataset.estado;
         }
 
-        // 1.4. Obtener los valores de los chips seleccionados (filtros de columna)
+        // --- 2. Obtener los filtros de chips (columnas de los acordeones) ---
         const chipsActivos = document.querySelectorAll(".chip.bg-primary");
         const chipFilters = {};
+
+        // Helper function to normalize strings by removing diacritics (accents)
+        const normalizeString = (str) => {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+
         chipsActivos.forEach(chip => {
             const accordionBody = chip.closest(".accordion-body");
             const colIndex = accordionBody.querySelector(".filtro-columna").dataset.col;
-            const columnaNombre = document.querySelector(`thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
             
-            if (!chipFilters[columnaNombre]) {
-                chipFilters[columnaNombre] = [];
+            // Obtener el nombre de la columna desde el encabezado de la tabla
+            const columnaNombre = document.querySelector(`#tablaRoles thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
+
+            // Normalize the column name to remove accents before creating the parameter
+            const normalizedColumnaNombre = normalizeString(columnaNombre);
+
+            // Si la columna aún no está en el objeto, la creamos como un array
+            if (!chipFilters[normalizedColumnaNombre]) {
+                chipFilters[normalizedColumnaNombre] = [];
             }
-            chipFilters[columnaNombre].push(chip.textContent.trim());
+            // Agregamos el texto del chip al array de esa columna
+            chipFilters[normalizedColumnaNombre].push(chip.textContent.trim());
         });
 
-        // --- Paso 2: Construir la cadena de consulta (query string) ---
+        // --- 3. Construir la cadena de consulta (query string) ---
         let queryString = '';
         let hasFilter = false;
-        
-        // El filtro de búsqueda principal toma precedencia sobre el del modal si ambos tienen valor
-        let finalSearchText = searchTextPrincipal || searchTextModal;
-        
+
+        // Agregar el filtro de búsqueda de texto
         if (finalSearchText) {
             queryString += `search=${encodeURIComponent(finalSearchText)}`;
             hasFilter = true;
@@ -52,12 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
             hasFilter = true;
         }
 
-        // Agregar los filtros de chips. Debemos convertirlos a un formato que PHP pueda entender.
-        // Ejemplo: &filtro_Rol=Gerente,Administrador&filtro_Clasificacion=Empleado
-        // Nota: Esto requiere que modifiques tu controlador para procesar estos nuevos parámetros
+        // Agregar los filtros de chips de los acordeones
         for (const columna in chipFilters) {
             if (chipFilters[columna].length > 0) {
-                const paramName = `filtro_${columna.replace(/\s+/g, '_')}`;
+                // Generamos un nombre de parámetro legible para PHP, p.ej. "filtro_CLASIFICACION"
+                const paramName = `filtro_${columna.replace(/\s+/g, '_').toUpperCase()}`;
                 const paramValue = chipFilters[columna].map(v => encodeURIComponent(v)).join(',');
                 if (hasFilter) {
                     queryString += `&`;
@@ -67,11 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // --- Paso 3: Redireccionar al controlador con los filtros aplicados ---
+        // --- 4. Redireccionar con la URL final ---
         if (hasFilter) {
             window.location.href = `${APP_URL}roles/generateReportPDF?${queryString}`;
         } else {
-            // Si no hay ningún filtro, generar el reporte sin parámetros
             window.location.href = `${APP_URL}roles/generateReportPDF`;
         }
     });

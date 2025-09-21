@@ -154,29 +154,32 @@ class RolModel {
         $sql = "SELECT * FROM ROL WHERE 1=1";
         $params = [];
 
-        // Filtro por búsqueda de texto (ROL o CLASIFICACION)
+        // Filter by text search (ROL or CLASIFICACION)
         if (!empty($searchText)) {
             $sql .= " AND (ROL LIKE ? OR CLASIFICACION LIKE ?)";
             $params[] = '%' . $searchText . '%';
             $params[] = '%' . $searchText . '%';
         }
 
-        // Filtro por estado del rol
+        // Filter by role status
         if ($estado === 'activo') {
             $sql .= " AND ESTADO_ROL = 1";
         } elseif ($estado === 'inactivo') {
             $sql .= " AND ESTADO_ROL = 0";
         }
 
-        // Filtros de chips (por columna y valor)
+        // Loop through the chip filters
         foreach ($chipFilters as $columna => $valores) {
-            // Asegúrate de que la columna es válida para evitar inyección SQL
-            if (in_array($columna, ['ROL', 'CLASIFICACION'])) { // Agrega aquí todas las columnas que puedes filtrar con chips
+            // Decodificar el nombre de la columna que viene de la URL
+            $columnaDecodificada = urldecode($columna);
+
+            // Validar la columna decodificada
+            if (in_array($columnaDecodificada, ['ROL', 'CLASIFICACION'])) {
                 $placeholders = implode(',', array_fill(0, count($valores), '?'));
-                $sql .= " AND " . $columna . " IN (" . $placeholders . ")";
-                // Agrega los valores a los parámetros
+                $sql .= " AND " . $columnaDecodificada . " IN (" . $placeholders . ")";
                 foreach ($valores as $valor) {
-                    $params[] = $valor;
+                    // Decodifica los valores de la URL
+                    $params[] = urldecode($valor);
                 }
             }
         }

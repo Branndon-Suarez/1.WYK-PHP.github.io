@@ -75,18 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
         card.id = acordeonId;
 
         card.innerHTML = `
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${columna}">
-              Filtrar por ${columna}
-            </button>
-          </h2>
-          <div id="collapse-${columna}" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <input type="text" class="form-control mb-2 filtro-columna" placeholder="Buscar en ${columna}" data-col="${index}">
-              <div class="chips-container"></div>
-            </div>
-          </div>
-        `;
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${columna}">
+                            Filtrar por ${columna}
+                        </button>
+                    </h2>
+                    <div id="collapse-${columna}" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <input type="text" class="form-control mb-2 filtro-columna" placeholder="Buscar en ${columna}" data-col="${index}">
+                            <div class="chips-container"></div>
+                        </div>
+                    </div>
+                `;
         accordion.appendChild(card);
 
         const valoresUnicos = [...new Set(

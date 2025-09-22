@@ -60,27 +60,7 @@ if (isset($_SESSION['error_message'])) {
                     </form>
                 </div>
 
-                    <!-- Forgot Password Form -->
-                    <div class="form-container" id="forgotForm">
-                        <h1 class="form-title">Reset Password</h1>
-                        <p class="form-subtitle">Enter your email address and we'll send you instructions to reset your password</p>
 
-                        <form id="forgotFormSubmit">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Email Address" required>
-                                <i class="fas fa-envelope"></i>
-                            </div>
-
-                            <button type="submit" class="btn-primary">
-                                <i class="fas fa-spinner loading"></i>
-                                <span class="btn-text">Send Reset Instructions</span>
-                            </button>
-                        </form>
-
-                        <div class="form-switch">
-                            Remember your password? <a href="#" onclick="showLogin()">Sign in</a>
-                        </div>
-                    </div>
                 </div>
             </div>
 

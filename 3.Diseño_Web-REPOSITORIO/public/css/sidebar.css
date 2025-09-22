@@ -1,4 +1,19 @@
 /* --------------------- Sidebar --------------------- */
+:root {
+    --primary: #933e0d;
+    --primary-2: #5e2507;
+    --primary-3: #b5a28f;
+    --color-hover-table: #d1bfae;
+    --accent: #f59e0b;
+    --bg: #f6f7ff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --ring: #e2e8f0;
+    --shadow: 0 10px 30px rgba(24, 24, 48, .08);
+    --radius-xl: 18px;
+    --radius-2xl: 22px;
+}
+
 .sidebar {
     position: sticky;
     top: 0;
@@ -69,7 +84,7 @@
 
 .sidebar .submenu {
     position: absolute;
-    top: 0;
+    top: -50;
     left: 70px;
     /* aparece a la derecha del menú principal */
     background: linear-gradient(180deg, var(--primary), var(--primary-2));

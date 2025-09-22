@@ -1,14 +1,14 @@
 <?php
 $success_message = '';
 if (isset($_SESSION['success_message'])) {
-  $success_message = $_SESSION['success_message'];
-  unset($_SESSION['success_message']);
+    $success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
 }
 
 $error_message = '';
 if (isset($_SESSION['error_message'])) {
-  $error_message = $_SESSION['error_message'];
-  unset($_SESSION['error_message']);
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
 }
 
 $active_page = 'dashboard';
@@ -16,15 +16,22 @@ $active_page = 'dashboard';
 
 <!DOCTYPE html>
 <html lang="es">
+
 <body data-theme="light">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
-
+        <!-- Icono de tareas de empleados -->
+        <?php 
+            if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+                require_once __DIR__ . '/../layouts/floatingIcon.php';
+            }
+        ?>
+        
         <div class="main-content">
             <div class="header">
                 <div>
-                    <div class="s">Buenos días, 
+                    <div class="s">Buenos días,
                         <span class="n"><?php echo $_SESSION['userName']; ?></span>
                     </div>
                     <div class="subtitle">Ten un buen día en el trabajo</div>
@@ -90,99 +97,9 @@ $active_page = 'dashboard';
                     </div>
                 </div>
 
-                <div class="tasks-card">
-                    <div class="tasks-header">
-                        <div class="tasks-title">Mis Tareas</div>
-                        <button class="add-task-btn" id="addTaskBtn">
-                            <i class="fas fa-plus"></i> Agregar Tarea
-                        </button>
-                    </div>
-
-                    <div class="progress-overview">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill" style="width: 60%"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span>Progreso general</span>
-                            <span id="progressText">60%</span>
-                        </div>
-                    </div>
-
-                    <div class="timeline" id="taskTimeline">
-                        <div class="timeline-item">
-                            <div class="timeline-dot dot-completed"></div>
-                            <div class="task-item completed" data-task-id="1">
-                                <div class="task-icon">
-                                    <i class="fas fa-truck"></i>
-                                </div>
-                                <div class="task-info">
-                                    <div class="task-name">Compras y Ventas</div>
-                                    <div class="task-description">Recibir Pedido de cocacola
-                                    </div>
-                                    <div class="task-meta">
-                                        <span><i class="fas fa-clock"></i> 1 hora</span>
-                                        <span><i class="fas fa-calendar"></i> Completado</span>
-                                    </div>
-                                </div>
-                                <div class="task-actions">
-                                    <button class="task-action-btn delete-btn" onclick="deleteTask(1)">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-dot dot-in-progress"></div>
-                            <div class="task-item in-progress" data-task-id="2">
-                                <div class="task-icon">
-                                    <i class="fas fa-calendar-week"></i>
-                                </div>
-                                <div class="task-info">
-                                    <div class="task-name">Agendar pedido mayorista</div>
-                                    <div class="task-description">pedido mayorista lunes 21
-                                    </div>
-                                    <div class="task-meta">
-                                        <span><i class="fas fa-clock"></i> 30 minutos</span>
-                                        <span><i class="fas fa-calendar"></i> En progreso</span>
-                                    </div>
-                                </div>
-
-                                <div class="task-actions">
-                                    <button class="task-action-btn complete-btn" onclick="completeTask(2)">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="task-action-btn delete-btn" onclick="deleteTask(2)">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-dot dot-pending"></div>
-                            <div class="task-item" data-task-id="3">
-                                <div class="task-icon">
-                                   <i class="fas fa-utensils"></i>
-                                </div>
-                                <div class="task-info">
-                                    <div class="task-name">Actualizar Menú</div>
-                                    <div class="task-description">Nuevo menu del fin de semana</div>
-                                    <div class="task-meta">
-                                        <span><i class="fas fa-clock"></i> 1 hora</span>
-                                        <span><i class="fas fa-calendar"></i> Pendiente</span>
-                                    </div>
-                                </div>
-                                <div class="task-actions">
-                                    <button class="task-action-btn complete-btn" onclick="completeTask(3)">
-                                        <i class="fas fa-play"></i>
-                                    </button>
-                                    <button class="task-action-btn delete-btn" onclick="deleteTask(3)">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="main-content">
+                    <div id="tarea-empleado-container" class="hidden-panel">
+                        <?php require_once __DIR__ . '/../tarea/viewTareaEmpleado.php'; ?>
                     </div>
                 </div>
             </div>
@@ -254,7 +171,6 @@ $active_page = 'dashboard';
                             <option value="baja">Baja</option>
                             <option value="media">Media</option>
                             <option value="alta">Alta</option>
-                            <option value="urgente">Urgente</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -305,31 +221,78 @@ $active_page = 'dashboard';
         </div>
     </div>
 
-  <!-- JS Toads y var global -->
-  <script>
-    const APP_URL = "<?php echo \config\APP_URL; ?>";
+    <!-- JS Toads y var global -->
+    <script>
+        const APP_URL = "<?php echo \config\APP_URL; ?>";
 
-    const successMessage = "<?php echo $success_message; ?>";
-    const errorMessage = "<?php echo $error_message; ?>";
-  </script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
+        const successMessage = "<?php echo $success_message; ?>";
+        const errorMessage = "<?php echo $error_message; ?>";
+    </script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 
-  <!-- JS para CRUD -->
-  <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
-  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
-  
-  <!-- LIBRERIAS -->
-  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
-  <!-- <script src="https://unpkg.com/feather-icons"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="https://cdn.lordicon.com/lordicon.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"
-    integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
-    crossorigin="anonymous">
-  </script>
+    <!-- JS para CRUD -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
 
+    <!-- LIBRERIAS -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+    <!-- <script src="https://unpkg.com/feather-icons"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"
+        integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
+        crossorigin="anonymous">
+    </script>
+
+<?php if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO'): ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const floatingIcon = document.querySelector('.floating-icon');
+        const tareasContainer = document.getElementById('tarea-empleado-container');
+        let hasLoaded = false;
+
+        if (floatingIcon && tareasContainer) {
+            floatingIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                if (!hasLoaded) {
+                    // La URL de la API se genera aquí en PHP antes de que la página se envíe al navegador.
+                    const apiUrl = "<?php echo \config\APP_URL; ?>api/tareas";
+                    
+                    fetch(apiUrl)
+                        .then(response => {
+                            if (!response.ok) {
+                                // Intenta leer el mensaje de error del servidor si está disponible
+                                return response.text().then(text => { throw new Error(text || 'Error en la respuesta de la red'); });
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            tareasContainer.innerHTML = html;
+                            hasLoaded = true;
+                            // Aplica la clase para la animación una vez que el contenido esté cargado
+                            tareasContainer.classList.add('show');
+                        })
+                        .catch(error => {
+                            console.error('Error al cargar las tareas:', error);
+                            // Muestra un SweetAlert en caso de error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message || 'No se pudieron cargar las tareas.'
+                            });
+                        });
+                } else {
+                    // Si el contenido ya está cargado, solo alternar la visibilidad
+                    tareasContainer.classList.toggle('show');
+                }
+            });
+        }
+    });
+    </script>
+<?php endif; ?>
 </body>
 
 </html>

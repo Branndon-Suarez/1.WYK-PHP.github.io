@@ -15,13 +15,6 @@ if (file_exists($autoloadPath)) {
     die("Error: No se puede encontrar autoload.php");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['boton_login'])) {
-        $controllerLogin = new \controllers\LoginController;
-        $controllerLogin->handleLogin();
-        exit();
-    }
-}
 /**Notas:
  * 1. rtrim($_GET['views'], '/'): Remueve cualquier barra diagonal (/) al final de la cadena de texto.
  * 2. explode('/', ...): Divide la cadena en un array usando '/' como delimitador.
@@ -32,8 +25,29 @@ $request = isset($_GET['views']) ? explode('/', rtrim($_GET['views'], '/')) : ['
 $vista = $request[0];
 $action = isset($request[1]) ? $request[1] : 'reports';
 $params = array_slice($request, 2);
+/*-----------------------------------------------------------------------------------------------*/
 
-$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'empleados', 'clientes', 'productos', 'ventas'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['boton_login'])) {
+        $controllerLogin = new \controllers\LoginController;
+        $controllerLogin->handleLogin();
+        exit();
+    }
+}
+
+if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
+    // Verificar que el usuario sea empleado (si lo deseas)
+    if (isset($_SESSION['userId']) && isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+        $controller = new \controllers\TareasController();
+        $controller->viewTareas();
+    } else {
+        http_response_code(403); // Forbidden
+        echo "Acceso denegado.";
+    }
+    exit;
+}
+
+$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'tareas', 'productos', 'ventas'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -64,9 +78,9 @@ if (in_array($vista, $validViews)) {
             break;
         case 'roles':
         case 'usuarios':
-        case 'empleados':
-        case 'clientes':
+        case 'tareas':
         case 'productos':
+        case 'ventas':
             if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 $controllerName = ucfirst($vista) . 'Controller';
                 $fullControllerName = '\\controllers\\' . $controllerName;
@@ -95,7 +109,9 @@ if (in_array($vista, $validViews)) {
                             $controller->viewEdit($params[0]);
                         } elseif ($action === 'generateReportPDF' && method_exists($controller, 'generateReportPDF')) {
                             $controller->generateReportPDF();
-                        } else {
+                        } elseif ($action === 'viewTareas' && method_exists($controller, 'viewTareas')) {
+                            $controller->viewTareas();
+                        }else {
                             http_response_code(404);
                             require_once __DIR__ . '/config/error_404-500/404.php';
                             exit();

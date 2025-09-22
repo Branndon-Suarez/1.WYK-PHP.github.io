@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>usuarios_empleados">
+                        <a href="<?php echo \config\APP_URL; ?>tareas">
                             <lord-icon
                                 src="https://cdn.lordicon.com/wwcdwkaf.json"
                                 trigger="hover"

@@ -523,9 +523,3 @@ textarea {
     grid-template-columns: 1fr;
     gap: 18px;
 }
-
-@media (min-width: 1100px) {
-    .layout {
-        grid-template-columns: 2fr 1fr;
-    }
-}

@@ -37,18 +37,6 @@ if (isset($_SESSION['error_message'])) {
 
                         <div class="input-field">
                             <lord-icon
-                                src="https://cdn.lordicon.com/fmasbomy.json"
-                                trigger="hover"
-                                stroke="bold"
-                                colors="primary:#000000,secondary:#a63754,tertiary:#eeca66"
-                                style="width:50px;height:50px"
-                                id="icon_2-candado">
-                            </lord-icon>
-                            <input type="email" name="email_login" class="form-control" placeholder="Correo electrónico" autocomplete="email" required>
-                        </div>
-
-                        <div class="input-field">
-                            <lord-icon
                                 src="https://cdn.lordicon.com/zbbefawl.json"
                                 trigger="hover"
                                 style="width:50px;height:50px"

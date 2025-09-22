@@ -13,10 +13,9 @@ class LoginController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['boton_login'])) {
 
             $numDocLogin = htmlspecialchars(trim($_POST['num_doc_login']));
-            $emailLogin = htmlspecialchars(trim($_POST['email_login']));
             $passwordLogin = htmlspecialchars(trim($_POST['password_login']));
 
-            if (empty($numDocLogin) || empty($emailLogin) || empty($passwordLogin)) {
+            if (empty($numDocLogin) || empty($passwordLogin)) {
                 $_SESSION['error_message'] = 'Inicio de sesión fallida.';
             header('Location: ' . APP_URL . 'login');
                 exit();
@@ -27,7 +26,7 @@ class LoginController {
 
                 $user = $user_model->findUser($numDocLogin);
 
-                if ($user && $user['EMAIL_USUARIO'] === $emailLogin && $user['PASSWORD_USUARIO'] === $passwordLogin /* password_verify($passwordLogin, $user['PASSWORD_USUARIO']) */) {
+                if ($user && $user['PASSWORD_USUARIO'] === $passwordLogin /* password_verify($passwordLogin, $user['PASSWORD_USUARIO']) */) {
                     if ($user['ESTADO_USUARIO']) {
                         //Campos de la tabla ROL según el USUARIO correspondiente
                         $_SESSION['rolId'] = $user['ID_ROL'];

@@ -175,7 +175,7 @@
         ?>
             <div class="spacer"></div>
 
-        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR' || $_SESSION['rol'] == 'MESERO') {
+        <?php if ($_SESSION['rol'] == 'MESERO') {
         ?>
             <!-- PARTE DE MESERO -->
             <li title="Pedidos">

@@ -535,47 +535,38 @@ body {
     }
 }
 
-@media (max-width: 768px) {
-    .app {
-        grid-template-columns: 1fr;
-    }
+/*---------------------------- Responsive ----------------------------*/
+.grupo-formulario {
+    grid-template-columns: 1fr;
+}
 
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -84px;
-        z-index: 200;
-        transition: left 0.3s ease;
+/*RESPONSIVE PARA PC*/
+@media (min-width: 1024px) {
+    .grupo-formulario {
+        grid-template-columns: repeat(2, 1fr);
     }
+}
 
-    .sidebar.open {
-        left: 0;
-    }
-
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-
+/*RESPONSIVE PARA TABLET*/
+@media (min-width: 768px) and (max-width: 1023px) {
     .main-content {
-        padding: 20px;
+        display: grid;
+        position: absolute;
+        min-width: 100%;
+        padding: 0;
+        gap: 0;
+        top: 0;
     }
+}
 
-    .header {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-
-    .header-actions {
-        justify-content: center;
-    }
-
-    .notifications-panel {
-        width: calc(100% - 40px);
-        right: -100%;
-    }
-
-    .notifications-panel.open {
-        right: 20px;
+/*RESPONSIVE PARA MÓVIL*/
+@media (min-width: 0px) and (max-width: 768px) {
+    .main-content {
+        display: grid;
+        position: absolute;
+        min-width: 100%;
+        padding: 0;
+        gap: 0;
+        top: 0;
     }
 }

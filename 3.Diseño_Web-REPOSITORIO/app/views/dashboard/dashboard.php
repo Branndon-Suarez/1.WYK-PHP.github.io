@@ -245,8 +245,6 @@ $active_page = 'dashboard';
     <!-- JS para CRUD -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
 
     <!-- LIBRERIAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>

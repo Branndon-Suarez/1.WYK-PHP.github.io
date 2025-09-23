@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
     header('Content-Type: application/json'); // Aseguramos que la respuesta es JSON
     if (isset($_SESSION['userId']) && isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
-        require_once __DIR__ . '/app/controllers/TareasController.php'; // Cambiado de TareaController a TareasController
+        require_once __DIR__ . '/app/controllers/TareasController.php';
         $controller = new \controllers\TareasController();
 
         $actionApi = $_GET['action'] ?? null;
@@ -61,7 +61,7 @@ if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
     exit;
 }
 
-$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'tareas', 'productos', 'ventas'];
+$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'tareas', 'productos', 'ventas', 'pedidos'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -74,14 +74,21 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/layouts/headers/headerHome.php';
             require_once __DIR__ . '/app/views/home.php';
             break;
+        /* Para mostrar el apartado de tareas existentes en la interfaz de inicio dashboard y pedidos */
         case 'dashboard':
+        case 'pedidos':
             if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 require_once __DIR__ . '/app/controllers/TareasController.php';
                 $tareaController = new \controllers\TareasController();
                 $tareas = $tareaController->getTareasParaVista();
 
-                require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
-                require_once __DIR__ . '/app/views/dashboard/dashboard.php';
+                if ($vista === 'dashboard') {
+                    require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
+                    require_once __DIR__ . '/app/views/dashboard/dashboard.php';
+                } elseif ($vista === 'pedidos') {
+                    require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
+                    require_once __DIR__ . '/app/views/pedido/dashboardPedido.php';
+                }
             } else {
                 header('Location: ' . \config\APP_URL . 'login');
                 exit();

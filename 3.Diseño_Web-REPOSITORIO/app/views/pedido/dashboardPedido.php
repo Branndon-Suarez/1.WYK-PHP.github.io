@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Mesas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --primary: #933e0d;
+            --primary-2: #5e2507;
+            --accent: #f59e0b;
+            --bg: #f6f7ff;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --ring: #e2e8f0;
+            --shadow: 0 10px 30px rgba(24, 24, 48, .08);
+            --radius-xl: 18px;
+            --radius-2xl: 22px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fff, #eef2ff 50%, #f8fafc);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar izquierdo */
+        .sidebar-left {
+            width: 84px;
+            background: linear-gradient(180deg, var(--primary), var(--primary-2));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 18px 12px;
+            color: white;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #f59e0b, #fb923c);
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: .2s;
+            margin: 8px 0;
+        }
+
+        .nav-icon:hover {
+            background: rgba(255, 255, 255, .12);
+            transform: translateY(-2px);
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 22px;
+            overflow-y: auto;
+        }
+
+        /* Topbar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, .7);
+            border: 1px solid #eef2ff;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow);
+        }
+
+        .search-box {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid var(--ring);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 220px;
+            font: inherit;
+            color: var(--text);
+        }
+
+        /* Table Tabs - Corregido para mostrar todas las mesas */
+        .table-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            border: 1px solid #e0e7ff;
+            backdrop-filter: blur(8px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .table-tab {
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            height: 50px;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .table-tab.active {
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            color: white;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .table-tab:not(.active) {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: #D2B48C;
+        }
+
+        .table-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .table-tab-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .table-tab-title {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: 0.5px;
+        }
+
+        /* From Uiverse.io by srinivasaiml */
+        .pill-radio-container {
+            --main-color: #ff6ec4;
+            --secondary-color: #7873f5;
+            --text-color: #ddd;
+            --pill-bg: #1a1a1a;
+            --total-options: 8;
+
+            display: flex;
+            position: relative;
+            background: var(--pill-bg);
+            border-radius: 3rem;
+            padding: 0.5rem;
+            gap: 1rem;
+            box-shadow: 0 0 20px #000 inset;
+            width: fit-content;
+        }
+
+        .pill-radio-container input {
+            display: none;
+        }
+
+        .pill-radio-container label {
+            position: relative;
+            padding: 0.6rem 1.5rem;
+            border-radius: 3rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: color 0.3s ease-in-out;
+            z-index: 2;
+        }
+
+        .pill-radio-container input:checked+label {
+            color: #fff;
+        }
+
+        .pill-radio-container label:hover {
+            color: var(--main-color);
+        }
+
+        .pill-indicator {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            height: 4px;
+            width: calc(100% / var(--total-options));
+            background: linear-gradient(to right,
+                    var(--main-color),
+                    var(--secondary-color));
+            border-radius: 2px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1;
+        }
+
+        /* Sliding effect */
+        #pill-free:checked~.pill-indicator {
+            transform: translateX(70%);
+        }
+
+        #pill-basic:checked~.pill-indicator {
+            transform: translateX(300%);
+        }
+
+        #pill-premium:checked~.pill-indicator {
+            transform: translateX(600%);
+        }
+
+
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Dropdown de estado - CORREGIDO para mayor visibilidad */
+        .status-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .status-indicator {
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            min-width: 75px;
+            justify-content: center;
+            white-space: nowrap;
+            height: 26px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1001;
+        }
+
+        .status-indicator:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-indicator::after {
+            content: '▼';
+            font-size: 8px;
+            margin-left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .status-dropdown.open .status-indicator::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            background: white;
+            min-width: 140px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 99999;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            overflow: visible;
+            animation: fadeInDown 0.2s ease;
+            margin-top: 5px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-option {
+            color: #1f2937;
+            padding: 10px 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f3f4f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: white;
+        }
+
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-option:hover {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .dropdown-option::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .dropdown-option:hover::before {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .status-preparing {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            color: #92400e;
+        }
+
+        .status-preparing .status-dot {
+            background: #f59e0b;
+
+        }
+
+        .status-ready {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+        }
+
+        .status-ready .status-dot {
+            background: #10b981;
+        }
+
+        .status-delivered {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: #475569;
+        }
+
+        .status-delivered .status-dot {
+            background: #64748b;
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            color: #dc2626;
+        }
+
+        .status-cancelled .status-dot {
+            background: #ef4444;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left-panel {
+            flex: 1;
+        }
+
+        .right-panel {
+            width: 320px;
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--ring);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: #eef2ff;
+            border-radius: 12px;
+            border: 1px solid #e0e7ff;
+        }
+
+        .section-header h3 {
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .section-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Product Cards */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--ring);
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .product-card h4 {
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+        }
+
+        .product-price {
+            color: #923d07;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+
+        /* From Uiverse.i0 */
+        .Btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border-radius: calc(45px/2);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: .3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background: linear-gradient(144deg, #f68503, #ab3d06 50%, #d3620b);
+        }
+
+        /* plus sign */
+        .sign {
+            width: 100%;
+            font-size: 2.2em;
+            color: white;
+            transition-duration: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* text */
+        .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.4em;
+            font-weight: 500;
+            transition-duration: .3s;
+        }
+
+        /* hover effect on button width */
+        .Btn:hover {
+            width: 125px;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: .3s;
+            padding-left: 15px;
+        }
+
+        /* hover effect button's text */
+        .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: .3s;
+            padding-right: 15px;
+        }
+
+        /* button click effect*/
+        .Btn:active {
+            transform: translate(2px, 2px);
+        }
+
+        /* Cart */
+        .cart-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cart-icon {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .cart-title {
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .item-total {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-total span {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 16px;
+            text-align: right;
+            padding: 12px 0;
+            border-top: 2px solid #e2e8f0;
+        }
+
+
+        /* From Uiverse.io by chase2k25 */
+        /* Button Container */
+        .pay-btn-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 30px;
+            border: none;
+            background: linear-gradient(to bottom,
+                    #e67009,
+                    #a34405);
+            border-radius: 25px;
+            box-shadow:
+                inset 0 5px 10px rgba(196, 101, 7, 0.632),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: perspective(500px) rotateX(5deg);
+            transform-style: preserve-3d;
+        }
+
+        .pay-btn-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                    rgba(139, 90, 43, 0.1) 25%,
+                    transparent 25%,
+                    transparent 75%,
+                    rgba(139, 90, 43, 0.1) 75%);
+            background-size: 10px 10px;
+            opacity: 0.5;
+            border-radius: 25px;
+            transition: all 0.4s ease;
+            transform: translateZ(-1px);
+        }
+
+        /* SVG Icon */
+        .pay-btn-button svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            fill: #ffffff;
+            /* Dark brown color for icon */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(10px);
+        }
+
+        /* Text */
+        .button-text {
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            /* Dark brown color for text */
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(10px);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hover State */
+        .pay-btn-button:hover {
+            transform: perspective(500px) rotateX(0deg) translateY(-3px);
+            box-shadow:
+                inset 0 6px 12px rgba(231, 96, 5, 0.6),
+                inset 0 -6px 12px rgba(0, 0, 0, 0.25),
+                0 8px 20px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(to bottom, #c15e08, #9c4104);
+        }
+
+        .pay-btn-button:hover svg {
+            transform: translateZ(15px) scale(1.2) rotate(5deg);
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        .pay-btn-button:hover .button-text {
+            transform: translateZ(15px) translateX(5px);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Active/Clicked State */
+        .pay-btn-button:active {
+            transform: perspective(500px) rotateX(2deg) translateY(2px);
+            box-shadow:
+                inset 0 3px 6px rgba(255, 255, 255, 0.3),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.15),
+                0 2px 8px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #e0c49c, #c19a6b);
+        }
+
+        .pay-btn-button:active svg {
+            transform: translateZ(5px) scale(0.9) rotate(-5deg);
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+        }
+
+        .pay-btn-button:active .button-text {
+            transform: translateZ(5px) translateY(1px);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: var(--muted);
+            font-style: italic;
+            padding: 20px 0;
+        }
+
+        /* Responsive - Mejorado */
+        @media (max-width: 768px) {
+            .content-layout {
+                flex-direction: column;
+            }
+
+            .right-panel {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
+
+            .table-tabs {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                max-height: 280px;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .table-tab {
+                height: 52px;
+                font-size: 12px;
+                padding: 12px 14px;
+            }
+
+            .status-indicator {
+                min-width: 80px;
+                font-size: 9px;
+                height: 28px;
+                padding: 6px 8px;
+            }
+
+            .table-tab-title {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table-tabs {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 8px;
+            }
+
+            .table-tab {
+                height: 48px;
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
+    <!-- Icono de tareas de empleados -->
+    <?php
+    if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+        require_once __DIR__ . '/../layouts/floatingIcon.php';
+    }
+    ?>
+    <!-- Lista de tareas para empleados -->
+    <div class="tasks-panel" id="tasksPanel">
+        <div class="tasks-header">
+            <h2 class="tasks-title">Mis Tareas</h2>
+            <button class="close-tasks-btn" id="closeTasksBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="tareas-content" class="tasks-content-wrapper">
+            <?php require_once 'app/views/tarea/viewTareaEmpleado.php'; ?>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+            <strong>PANADERIA WYK— Gestión de Pedido de Mesas</strong>
+            <div class="search-box">
+                <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
+                <input type="text" placeholder="Buscar productos">
+            </div>
+        </div>
+
+        <div class="table-tabs">
+            <button class="table-tab active" data-table="1">
+                <div class="table-tab-content">
+                    <span class="status-dot status-preparing"></span>
+                    <span class="table-tab-title">Mesa 1</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="2">
+                <div class="table-tab-content">
+                    <span class="status-dot status-ready"></span>
+                    <span class="table-tab-title">Mesa 2</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="3">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 3</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="4">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 4</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="5">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 5</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="6">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 6</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="7">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 7</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="8">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 8</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="9">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 9</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="10">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 10</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="11">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 11</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="12">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 12</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="13">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 13</span>
+                </div>
+            </button>
+            <button class="table-tab" data-table="14">
+                <div class="table-tab-content">
+                    <span class="status-dot status-delivered"></span>
+                    <span class="table-tab-title">Mesa 14</span>
+                </div>
+            </button>
+        </div>
+
+        <div class="content-layout">
+            <div class="left-panel">
+                <!-- Productos de Cocina (Requieren Preparación) -->
+                <div class="section-header">
+                    <i data-feather="chef-hat" style="color: var(--primary);"></i>
+                    <h3>Productos de Cocina</h3>
+                    <span class="section-badge">Requieren Preparación</span>
+                </div>
+
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="IMAGENES/CALDO_COSTILLA.jpg" class="product-img" alt="Caldo de Costilla">
+                        <h4>Caldo de Costilla</h4>
+                        <div class="product-price">$10000</div>
+                        <button class="Btn" onclick="addToCart('Caldo de Costilla', 10000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/CALDO_PAJARILLA.jpg" class="product-img" alt="Caldo de Pajarilla">
+                        <h4>Caldo de pajarilla</h4>
+                        <div class="product-price">$10000</div>
+                        <button class="Btn" onclick="addToCart('Caldo de Pajarilla', 10000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/CALENTADO_PAISA.jpg" class="product-img" alt="Calentado Paisa">
+                        <h4>Calentado Paisa</h4>
+                        <div class="product-price">$17000</div>
+                        <button class="Btn" onclick="addToCart('Calentado Paisa', 17000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/MUTE_MAIZ.jpg" class="product-img" alt="Mute de Maiz">
+                        <h4>Mute de Maiz</h4>
+                        <div class="product-price">$10000</div>
+                        <button class="Btn" onclick="addToCart('Mute de Maiz', 10000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/MOÑONA.jpg" class="product-img" alt="Moñona">
+                        <h4>Moñona</h4>
+                        <div class="product-price">$17000</div>
+                        <button class="Btn" onclick="addToCart('Moñona', 17000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Productos Terminados -->
+                <div class="section-header">
+                    <i data-feather="package" style="color: var(--accent);"></i>
+                    <h3>Productos Terminados</h3>
+                    <span class="section-badge" style="background: var(--accent);">Listos para Servir</span>
+                </div>
+
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="IMAGENES/capuchino.jpg" class="product-img" alt="Capuchino">
+                        <h4>Capuchino</h4>
+                        <div class="product-price">$6000</div>
+                        <button class="Btn" onclick="addToCart('Capuchino', 6000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/granizado_cafe.jpg" class="product-img" alt="Granizado">
+                        <h4>Granizado de Café</h4>
+                        <div class="product-price">$6000</div>
+                        <button class="Btn" onclick="addToCart('Granizado', 6000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/mocachino.jpg" class="product-img" alt="Mocachino">
+                        <h4>Mocachino</h4>
+                        <div class="product-price">$7500</div>
+                        <button class="Btn" onclick="addToCart('Mocachino', 7500)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/mocachino.jpg" class="product-img" alt="mocachino">
+                        <h4>Mocachino</h4>
+                        <div class="product-price">$7500</div>
+                        <button class="Btn" onclick="addToCart('Chocolate Caliente', 7500)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="IMAGENES/mocachino.jpg" class="product-img" alt="mocachino">
+                        <h4>Mocachino</h4>
+                        <div class="product-price">$7500</div>
+                        <button class="Btn" onclick="addToCart('Chocolate Caliente', 7500)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=300&fit=crop"
+                            class="product-img" alt="Pretzel">
+                        <h4>Pretzel</h4>
+                        <div class="product-price">$6000</div>
+                        <button class="Btn" onclick="addToCart('Chocolate Caliente', 6000)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop"
+                            class="product-img" alt="Café Americano">
+                        <h4>Café Americano</h4>
+                        <div class="product-price">$3500</div>
+                        <button class="Btn" onclick="addToCart('Chocolate Caliente', 3500)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop"
+                            class="product-img" alt="Chocolate Caliente">
+                        <h4>Chocolate Caliente</h4>
+                        <div class="product-price">$4500</div>
+                        <button class="Btn" onclick="addToCart('Chocolate Caliente', 4500)">
+                            <div class="sign">+</div>
+                            <div class="text">Agregar</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="cart-header">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-title">Carrito - <span id="currentTable">Mesa 1</span></span>
+                </div>
+
+                <div class="cart-items" id="cartItems">
+                    <div class="empty-cart">
+                        No hay productos en el carrito
+                    </div>
+                </div>
+
+                <div class="cart-total" id="cartTotal">
+                    Total: $0
+                </div>
+
+                <button class="pay-btn-button" onclick="processPayment()">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 0 0 0 21.42 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z">
+                        </path>
+                    </svg>
+                    <span class="button-text">Enviar Pedido</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIBRERIAS -->
+    <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Variables globales
+        let currentTableNumber = 1;
+        let tableCarts = {}; // Objeto para almacenar los carritos de cada mesa
+
+        // Inicializar carritos vacíos para todas las mesas
+        for (let i = 1; i <= 14; i++) {
+            tableCarts[i] = {
+                items: [],
+                total: 0
+            };
+        }
+
+        // Funciones del carrito
+        function addToCart(itemName, price) {
+            const currentCart = tableCarts[currentTableNumber];
+
+            // Verificar si el producto ya existe en el carrito
+            const existingItemIndex = currentCart.items.findIndex(item => item.name === itemName);
+
+            if (existingItemIndex > -1) {
+                // Si existe, incrementar cantidad
+                currentCart.items[existingItemIndex].quantity += 1;
+                currentCart.items[existingItemIndex].totalPrice += price;
+            } else {
+                // Si no existe, agregar nuevo item
+                currentCart.items.push({
+                    name: itemName,
+                    price: price,
+                    quantity: 1,
+                    totalPrice: price
+                });
+            }
+
+            // Actualizar total del carrito
+            currentCart.total += price;
+
+            // Actualizar la vista
+            updateCartDisplay();
+        }
+
+        function removeFromCart(itemName, price) {
+            const currentCart = tableCarts[currentTableNumber];
+            const itemIndex = currentCart.items.findIndex(item => item.name === itemName);
+
+            if (itemIndex > -1) {
+                const item = currentCart.items[itemIndex];
+
+                if (item.quantity > 1) {
+                    // Si hay más de uno, decrementar cantidad
+                    item.quantity -= 1;
+                    item.totalPrice -= price;
+                    currentCart.total -= price;
+                } else {
+                    // Si solo hay uno, remover completamente
+                    currentCart.total -= item.totalPrice;
+                    currentCart.items.splice(itemIndex, 1);
+                }
+
+                updateCartDisplay();
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const currentCart = tableCarts[currentTableNumber];
+
+            // Limpiar carrito
+            cartItems.innerHTML = '';
+
+            if (currentCart.items.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">No hay productos en el carrito</div>';
+            } else {
+                currentCart.items.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div>
+                            <span class="item-name">${item.name}</span>
+                            <small style="display: block; color: #64748b;">x${item.quantity}</small>
+                        </div>
+                        <div class="item-total">
+                            <span>${item.totalPrice.toLocaleString()}</span>
+                            <button class="remove-btn" onclick="removeFromCart('${item.name}', ${item.price})">×</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+            }
+
+            // Actualizar total
+            cartTotal.textContent = `Total: ${currentCart.total.toLocaleString()}`;
+        }
+
+        function processPayment() {
+            const currentCart = tableCarts[currentTableNumber];
+
+            if (currentCart.total > 0) {
+                alert(`Procesando pedido para Mesa ${currentTableNumber} por ${currentCart.total.toLocaleString()}\n¡Pedido enviado a cocina!`);
+
+                // Cambiar estado de la mesa a "Preparando"
+                updateTableStatusAfterOrder();
+
+                // Limpiar carrito después del pedido
+                tableCarts[currentTableNumber] = {
+                    items: [],
+                    total: 0
+                };
+                updateCartDisplay();
+            } else {
+                alert('El carrito está vacío');
+            }
+        }
+
+        function updateTableStatusAfterOrder() {
+            const activeTab = document.querySelector(`[data-table="${currentTableNumber}"]`);
+            const statusDot = activeTab.querySelector('.status-dot');
+            const statusIndicator = activeTab.querySelector('.status-indicator');
+
+            // Añadir animación de cambio de estado
+            statusIndicator.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                statusDot.className = 'status-dot status-preparing';
+                statusIndicator.className = 'status-indicator status-preparing';
+                statusIndicator.innerHTML = 'Preparando';
+                statusIndicator.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Funciones de las pestañas de mesas
+        document.querySelectorAll('.table-tab').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                // Evitar que el click en el dropdown active la pestaña
+                if (e.target.closest('.status-dropdown')) {
+                    return;
+                }
+
+                document.querySelectorAll('.table-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                currentTableNumber = parseInt(this.dataset.table);
+                document.getElementById('currentTable').textContent = `Mesa ${currentTableNumber}`;
+
+                updateCartDisplay();
+            });
+        });
+
+        function changeStatus(el, statusClass, text) {
+            let mesaDiv = el.closest(".mesa");
+            let button = mesaDiv.querySelector(".status-dropdown button");
+
+            // Cambiar texto del botón
+            button.textContent = text + " ▼";
+
+            // Quitar estados anteriores
+            mesaDiv.classList.remove("preparando", "listo", "entregado", "cancelado");
+
+            // Agregar el nuevo estado
+            mesaDiv.classList.add(statusClass);
+
+            // Cerrar dropdown
+            mesaDiv.querySelector(".status-dropdown").classList.remove("show");
+        }
+
+
+        function changeStatus(element, statusType, statusText, tableNumber) {
+            const tab = document.querySelector(`[data-table="${tableNumber}"]`);
+            const statusDot = tab.querySelector('.status-dot');
+            const statusIndicator = tab.querySelector('.status-indicator');
+
+            // Actualizar clases
+            statusDot.className = `status-dot status-${statusType}`;
+            statusIndicator.className = `status-indicator status-${statusType}`;
+            statusIndicator.innerHTML = statusText;
+
+            // Cerrar dropdown
+            const dropdown = element.closest('.dropdown-content');
+            dropdown.classList.remove('show');
+            dropdown.style.display = 'none';
+            element.closest('.status-dropdown').classList.remove('open');
+        }
+
+        // Cerrar dropdowns al hacer click fuera
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.status-dropdown')) {
+                document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+                document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('open');
+                });
+            }
+        });
+
+        // Inicializar la vista
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartDisplay();
+        });
+
+        // Funcionalidad de búsqueda
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+
+            productCards.forEach(card => {
+                const productName = card.querySelector('h4').textContent.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

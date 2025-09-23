@@ -1,21 +1,20 @@
 <nav aria-label="Menú de navegación" class="sidebar">
     <div class="logo">🥐</div>
     <ul>
+        <li title="Inicio">
+            <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn <?php echo ($active_page == 'dashboard') ? 'active' : ''; ?>" aria-label="Inicio">
+                <lord-icon
+                    src="https://cdn.lordicon.com/oeotfwsx.json"
+                    colors="primary:#ffffff"
+                    trigger="hover"
+                    style="width:40px;height:40px">
+                </lord-icon>
+            </a>
+        </li>
         <?php if ($_SESSION['rol'] == 'ADMINISTRADOR') {
         ?>
-            <li title="Inicio">
-                <a href="<?php echo \config\APP_URL; ?>dashboard" class="nav-btn <?php echo ($active_page == 'dashboard') ? 'active' : ''; ?>" aria-label="Inicio">
-                    <lord-icon
-                        src="https://cdn.lordicon.com/oeotfwsx.json"
-                        colors="primary:#ffffff"
-                        trigger="hover"
-                        style="width:40px;height:40px">
-                    </lord-icon>
-                </a>
-            </li>
-
             <li class="has-submenu" title="Usuarios">
-                <button class="nav-btn <?php echo ($active_page == 'usuarios') ? 'active' : ''; ?>"   aria-label="Usuarios" aria-expanded="false">
+                <button class="nav-btn <?php echo ($active_page == 'usuarios') ? 'active' : ''; ?>" aria-label="Usuarios" aria-expanded="false">
                     <lord-icon
                         src="https://cdn.lordicon.com/bushiqea.json"
                         trigger="hover"
@@ -173,14 +172,14 @@
         <?php
         }
         ?>
-            <div class="spacer"></div>
+        <div class="spacer"></div>
 
-        <?php if ($_SESSION['rol'] == 'MESERO') {
+        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR' || $_SESSION['rol'] == 'MESERO') {
         ?>
             <!-- PARTE DE MESERO -->
             <li title="Pedidos">
                 <a href="<?php echo \config\APP_URL; ?>pedidos" class="nav-btn" aria-label="Pedidos">
-                    <img src="<?php echo \config\APP_URL?>public/images/sidebar/pedidos.png" alt="Pedidos" width="50rem 50rem´x">
+                    <img src="<?php echo \config\APP_URL ?>public/images/sidebar/pedidos.png" alt="Pedidos" width="50rem 50rem´x">
                 </a>
             </li>
         <?php

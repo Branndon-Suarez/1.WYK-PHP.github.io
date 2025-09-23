@@ -33,6 +33,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controllerLogin->handleLogin();
         exit();
     }
+
+    if ($vista === 'pedidos' && $action === 'guardar') {
+        header('Content-Type: application/json');
+        try {
+            $controller = new \controllers\PedidosController();
+            $respuesta = $controller->guardar();
+            
+            echo json_encode($respuesta);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "message" => "Error al guardar el pedido: " . $e->getMessage()
+            ]);
+        }
+        exit();
+    }
+
 }
 
 // NUEVO BLOQUE DE CÓDIGO PARA MANEJAR LAS PETICIONES DE LA API
@@ -86,7 +104,7 @@ if (in_array($vista, $validViews)) {
                     require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
                     require_once __DIR__ . '/app/views/dashboard/dashboard.php';
                 } elseif ($vista === 'pedidos') {
-                    require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
+                    require_once __DIR__ . '/app/views/layouts/heads/headPedidosMesero.php';
                     require_once __DIR__ . '/app/views/pedido/dashboardPedido.php';
                 }
             } else {
@@ -136,6 +154,8 @@ if (in_array($vista, $validViews)) {
                             $controller->generateReportPDF();
                         } elseif ($action === 'viewTareas' && method_exists($controller, 'viewTareas')) {
                             $controller->viewTareas();
+                        } elseif ($action === 'listar' && method_exists($controller, 'listar')) {
+                            $controller->listar();
                         } else {
                             http_response_code(404);
                             require_once __DIR__ . '/config/error_404-500/404.php';

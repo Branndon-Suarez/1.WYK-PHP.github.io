@@ -1,197 +1,109 @@
 <?php
 namespace models;
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 use \config\Connection;
 use \PDO;
+use \PDOException;
 
 class PedidoModel {
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Connection::getConnection();
     }
 
-    public function getRoles() {
+    /**
+     * Guardar un pedido con sus productos
+     */
+    public function guardarPedido($data) {
         try {
-            $sql = "CALL CONSULTAR_ROL";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            error_log("Error en la función getRoles: " . $e->getMessage());
-            return [];
-        }
-    }
+            // Inicia una transacción para asegurar la integridad de los datos
+            $this->db->beginTransaction();
 
-    public function getCantRolesExistentes() {
-        try {
-            $sql = "SELECT COUNT(*) AS total FROM ROL";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchColumn();
-        } catch (\PDOException $e) {
-            error_log("Error en la función getCantRolesExistentes: " . $e->getMessage());
-            return 0;
-        }
-    }
+            // 1. Insertar en la tabla 'VENTA'
+            $stmtVenta = $this->db->prepare("INSERT INTO VENTA (FECHA_HORA_VENTA, NUMERO_MESA, DESCRIPCION, ID_USUARIO_FK_VENTA, ESTADO_VENTA, TOTAL_VENTA) VALUES (:fecha_hora_venta, :numero_mesa, :descripcion, :id_usuario_fk_venta, :estado_venta, :total_venta)");
 
-    public function getCantRolesActivos() {
-        try {
-            $sql = "SELECT COUNT(*) AS total FROM ROL WHERE ESTADO_ROL = 1";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchColumn();
-        } catch (\PDOException $e) {
-            error_log("Error en la función getCantRolesActivos: " . $e->getMessage());
-            return 0;
-        }
-    }
-
-    public function getCantRolesInactivos() {
-        try {
-            $sql = "SELECT COUNT(*) AS total FROM ROL WHERE ESTADO_ROL = 0";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchColumn();
-        } catch (\PDOException $e) {
-            error_log("Error en la función getCantRolesInactivos: " . $e->getMessage());
-            return 0;
-        }
-    }
-
-    public function checkIfRolExists($rol) {
-        try {
-            $sql = "SELECT COUNT(*) FROM ROL WHERE ROL = :rol";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':rol', $rol, \PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetchColumn() > 0;
-        } catch (\PDOException $e) {
-            error_log("Error en checkIfRolExists: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function createRol($rol, $rolClasificacion) {
-        try {
-            $sql = "CALL INSERTAR_ROL(:rol, :rol_clasificacion, :rol_estado)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':rol', $rol, \PDO::PARAM_STR);
-            $stmt->bindParam(':rol_clasificacion', $rolClasificacion, \PDO::PARAM_STR);
-            $stmt->bindValue(':rol_estado', 1, \PDO::PARAM_INT); // Estado activo por defecto
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            error_log("Error en la función createCargo: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function getRolById($idRol) {
-        try {
-            $sql = "SELECT * FROM ROL WHERE ID_ROL = :id_rol";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            error_log("Error en la función getRolById: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function updateRol($idRol, $rol, $rolCategoria, $rolEstado) {
-        try {
-            $sql = "CALL ACTUALIZAR_ROL(:id_rol, :rol, :rol_clasificacion, :rol_estado)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
-            $stmt->bindParam(':rol', $rol, \PDO::PARAM_STR);
-            $stmt->bindParam(':rol_clasificacion', $rolCategoria, \PDO::PARAM_STR);
-            $stmt->bindValue(':rol_estado', $rolEstado, \PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            error_log("Error en la función updateRol: " . $e->getMessage());
-            return null;
-        }
-    }
-
-    public function updateRolState($idRol, $estadoRol) {
-        try {
-            // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE ROL SET ESTADO_ROL = :estado WHERE ID_ROL = :id";
-            $stmt = $this->db->prepare($sql);
-
-            // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoRol, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idRol, \PDO::PARAM_INT);
+            $stmtVenta->bindValue(':fecha_hora_venta', $data['fecha']);
+            $stmtVenta->bindValue(':numero_mesa', $data['mesa']);
+            $stmtVenta->bindValue(':descripcion', $data['descripcion']);
+            $stmtVenta->bindValue(':id_usuario_fk_venta', $data['usuarioId']);
+            $stmtVenta->bindValue(':estado_venta', $data['estado']);
             
-            $stmt->execute();
+            // Convierte el total a un entero antes de insertarlo
+            $stmtVenta->bindValue(':total_venta', intval($data['total']));
+            $stmtVenta->execute();
 
-            // Verificar si se actualizó al menos una fila.
-            return $stmt->rowCount() > 0;
-        } catch (\PDOException $e) {
-            // Registrar el error en el log de XAMPP.
-            error_log("Error al actualizar estado del rol: " . $e->getMessage());
-            return false;
+            // Obtener el ID de la última venta insertada
+            $idVenta = $this->db->lastInsertId();
+
+            if (!$idVenta) {
+                throw new \Exception("Error al insertar la venta.");
+            }
+
+            // 2. Insertar los productos en la tabla 'DETALLE_VENTA'
+            $stmtDetalle = $this->db->prepare("INSERT INTO DETALLE_VENTA (CANTIDAD, SUB_TOTAL, ID_VENTA_FK_DET_VENTA, ID_PRODUCTO_FK_DET_VENTA) VALUES (:cantidad, :sub_total, :id_venta, :id_producto)");
+
+            foreach ($data['productos'] as $producto) {
+                // Asegura que cantidad y precio sean enteros antes de la multiplicación
+                $cantidad = intval($producto['cantidad']);
+                $precio = intval($producto['precio']);
+                $subTotal = $cantidad * $precio;
+                
+                $stmtDetalle->bindValue(':cantidad', $cantidad);
+                $stmtDetalle->bindValue(':sub_total', $subTotal);
+                $stmtDetalle->bindValue(':id_venta', $idVenta);
+                $stmtDetalle->bindValue(':id_producto', $producto['id']);
+                $stmtDetalle->execute();
+            }
+
+            // 3. Confirmar la transacción
+            $this->db->commit();
+
+            return $idVenta;
+
+        } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
+            $this->db->rollBack();
+            // Relanza la excepción para que el controlador la capture
+            throw $e;
         }
     }
 
-    public function deleteRol($idRol) {
-        try {
-            $sql = "CALL ELIMINAR_ROL(:id_rol)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (\PDOException $e) {
-            error_log("Error en la función deleteRol: " . $e->getMessage());
+    /**
+     * Obtener todos los pedidos
+     */
+    public function obtenerPedidos() {
+        $sql = "SELECT * FROM VENTA ORDER BY FECHA_HORA_VENTA DESC";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Obtener un pedido con su detalle
+     */
+    public function obtenerPedidoPorId($idVenta) {
+        // Info de la venta
+        $sqlVenta = "SELECT * FROM VENTA WHERE ID_VENTA = :idVenta";
+        $stmtVenta = $this->db->prepare($sqlVenta);
+        $stmtVenta->execute([':idVenta' => $idVenta]);
+        $venta = $stmtVenta->fetch(PDO::FETCH_ASSOC);
+
+        if (!$venta) {
             return null;
         }
-    }
 
-    public function getFilteredRoles($searchText = null, $estado = null, $chipFilters = []) {
-        $sql = "SELECT * FROM ROL WHERE 1=1";
-        $params = [];
+        // Detalles de la venta
+        $sqlDetalle = "SELECT dv.*, p.NOMBRE_PRODUCTO
+                       FROM DETALLE_VENTA dv
+                       INNER JOIN PRODUCTO p 
+                           ON dv.ID_PRODUCTO_FK_DET_VENTA = p.ID_PRODUCTO
+                       WHERE dv.ID_VENTA_FK_DET_VENTA = :idVenta";
+        $stmtDetalle = $this->db->prepare($sqlDetalle);
+        $stmtDetalle->execute([':idVenta' => $idVenta]);
+        $detalles = $stmtDetalle->fetchAll(PDO::FETCH_ASSOC);
 
-        // Filter by text search (ROL or CLASIFICACION)
-        if (!empty($searchText)) {
-            $sql .= " AND (ROL LIKE ? OR CLASIFICACION LIKE ?)";
-            $params[] = '%' . $searchText . '%';
-            $params[] = '%' . $searchText . '%';
-        }
-
-        // Filter by role status
-        if ($estado === 'activo') {
-            $sql .= " AND ESTADO_ROL = 1";
-        } elseif ($estado === 'inactivo') {
-            $sql .= " AND ESTADO_ROL = 0";
-        }
-
-        // Loop through the chip filters
-        foreach ($chipFilters as $columna => $valores) {
-            // Decodificar el nombre de la columna que viene de la URL
-            $columnaDecodificada = urldecode($columna);
-
-            // Validar la columna decodificada
-            if (in_array($columnaDecodificada, ['ROL', 'CLASIFICACION'])) {
-                $placeholders = implode(',', array_fill(0, count($valores), '?'));
-                $sql .= " AND " . $columnaDecodificada . " IN (" . $placeholders . ")";
-                foreach ($valores as $valor) {
-                    // Decodifica los valores de la URL
-                    $params[] = urldecode($valor);
-                }
-            }
-        }
-
-        try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        } catch (\PDOException $e) {
-            error_log("Error al obtener roles filtrados: " . $e->getMessage());
-            return [];
-        }
+        $venta['detalles'] = $detalles;
+        return $venta;
     }
 }

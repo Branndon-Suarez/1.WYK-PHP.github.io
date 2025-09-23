@@ -14,9 +14,6 @@ class PedidosController
         $this->pedidoModel = new PedidoModel();
     }
 
-    /**
-     * Listar todos los pedidos
-     */
     public function listar()
     {
         try {
@@ -34,9 +31,6 @@ class PedidosController
         }
     }
 
-    /**
-     * Guardar un nuevo pedido
-     */
     public function guardar() {
         try {
             $data = json_decode(file_get_contents("php://input"), true);
@@ -64,9 +58,6 @@ class PedidosController
         }
     }
 
-    /**
-     * Mostrar un pedido por ID
-     */
     public function ver($idVenta)
     {
         try {

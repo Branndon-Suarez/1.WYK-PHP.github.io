@@ -45,16 +45,23 @@ function actualizarTabla() {
     tdCantidad.appendChild(inputCantidad);
 
     const tdPrecio = document.createElement("td");
-    tdPrecio.textContent = `$${Number(p.precio).toFixed(2)}`;
+    tdPrecio.textContent = `$${Number(p.precio).toFixed(0)}`;
 
     const tdSubtotal = document.createElement("td");
-    tdSubtotal.textContent = `$${(subtotal).toFixed(2)}`;
+    tdSubtotal.textContent = `$${(subtotal).toFixed(0)}`;
 
     const tdAcciones = document.createElement("td");
     const btnEliminar = document.createElement("button");
     btnEliminar.className = "btn-rojo";
     btnEliminar.type = "button";
-    btnEliminar.textContent = "❌";
+    btnEliminar.innerHTML = `
+        <lord-icon
+            src="https://cdn.lordicon.com/hfacemai.json"
+            trigger="hover"
+            stroke="light"
+            colors="primary:#121331,secondary:#c71f16,tertiary:#ebe6ef"
+            style="width:30px;height:30px">
+        </lord-icon>`;
     btnEliminar.addEventListener("click", () => {
       productosSeleccionados.splice(i, 1);
       actualizarTabla();
@@ -70,7 +77,7 @@ function actualizarTabla() {
     tablaProductos.appendChild(tr);
   });
 
-  totalGeneralEl.textContent = Number(total).toFixed(2);
+  totalGeneralEl.textContent = Number(total).toFixed(0);
 }
 
 // ------------------ MODAL ------------------
@@ -113,12 +120,18 @@ function renderizarProductos(filtro = "") {
     tdNombre.textContent = p.nombre;
 
     const tdPrecio = document.createElement("td");
-    tdPrecio.textContent = `$${Number(p.precio).toFixed(2)}`;
+    tdPrecio.textContent = `$${Number(p.precio).toFixed(0)}`;
 
     const tdAccion = document.createElement("td");
     const btn = document.createElement("button");
     btn.className = "btn-verde";
-    btn.textContent = "➕";
+    btn.innerHTML = `
+        <lord-icon
+            src="https://cdn.lordicon.com/ueoydrft.json"
+            trigger="hover"
+            stroke="light"
+            style="width:30px;height:30px">
+        </lord-icon>`;
     btn.type = "button";
     btn.addEventListener("click", () => agregarProducto(p));
     tdAccion.appendChild(btn);
@@ -219,7 +232,7 @@ btnGuardarPedido.addEventListener("click", async () => {
   btnGuardarPedido.textContent = "Guardando...";
 
   try {
-    const url = APP_URL + 'pedidos/guardar'; // 🔥 corregido (plural)
+    const url = APP_URL + 'pedidos/guardar';
     console.log("➡️ Fetch guardar pedido:", url, payload);
 
     const res = await fetch(url, {

@@ -18,4 +18,6 @@
     const APP_URL = '<?= rtrim(\config\APP_URL, "/") . '/' ?>';
     const USER_ID = <?= isset($_SESSION['userId']) ? (int)$_SESSION['userId'] : 'null' ?>;
   </script>
+  <!-- Lord icon aquí para que se inicialice antes de llamar 'pedidosMesero.js' para que se logre poner los iconos en ese js -->
+  <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
 </head>

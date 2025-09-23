@@ -78,7 +78,7 @@ $active_page = 'dashboard';
                     <div class="profile-name"><?php echo $_SESSION['userName']; ?></div>
                     <div class="profile-company"><?php echo $_SESSION['rol']; ?></div>
 
-                    <div class="contact-buttons">
+                    <!-- <div class="contact-buttons">
                         <button class="contact-btn phone" onclick="makeCall()" title="Llamar">
                             <i class="fas fa-phone"></i>
                         </button>
@@ -91,7 +91,7 @@ $active_page = 'dashboard';
                         <button class="contact-btn location" onclick="showLocation()" title="Ubicación">
                             <i class="fas fa-map-marker-alt"></i>
                         </button>
-                    </div>
+                    </div> -->
 
                     <div class="contact-info">
                         <div class="contact-item">

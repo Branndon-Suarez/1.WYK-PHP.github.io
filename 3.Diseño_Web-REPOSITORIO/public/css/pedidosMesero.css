@@ -191,6 +191,22 @@ button {
   margin-bottom: 10px;
 }
 
+/* Nuevo: Estilos para el estado del stock en el modal */
+.low-stock {
+    background-color: #ffe8e8; /* Rojo muy tenue */
+}
+
+.no-stock {
+    background-color: #ffcccc; /* Rojo un poco más fuerte */
+    opacity: 0.6; /* Para indicar que no se puede seleccionar */
+}
+
+.no-stock .btn-verde {
+    pointer-events: none; /* Deshabilita el clic */
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .form-grid { grid-template-columns: repeat(1, 1fr); }

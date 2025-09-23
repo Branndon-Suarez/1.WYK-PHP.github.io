@@ -155,6 +155,7 @@ if (!isset($_SESSION['userId'])) {
                                     <tr>
                                         <th>Nombre</th>
                                         <th style="width:120px">Precio</th>
+                                        <th style="width:120px">Quedan</th>
                                         <th style="width:90px">Acción</th>
                                     </tr>
                                 </thead>

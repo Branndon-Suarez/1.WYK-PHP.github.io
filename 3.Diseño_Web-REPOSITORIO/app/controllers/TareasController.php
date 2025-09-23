@@ -46,22 +46,32 @@ class TareasController {
         require_once __DIR__ . '/../views/rol/dashboardRol.php';
     }
 
-    public function viewTareas() {
+    public function getTareasParaVista() {
         if (!isset($_SESSION['userId'])) {
-            http_response_code(401); // Unauthorized
-            echo "Error: No autorizado.";
-            exit;
+            return [];
         }
-
-        $userId = $_SESSION['userId'];
-        $tareas = $this->tareaModel->getTareasByUsuarioId($userId);
-        
-        // Incluir la vista, que solo contiene el HTML de la lista de tareas.
-        // NO ES NECESARIO ENVIAR LA VISTA COMPLETA, SOLO LA PARTE DEL CONTENIDO.
-        include_once __DIR__ . '/../views/tarea/viewTareaEmpleado.php';
+        $id_usuario = $_SESSION['userId'];
+        return $this->tareaModel->getTareasByUsuario($id_usuario);
     }
 
-    public function getRolesAjax() {
+    public function completarTarea($id) {
+        if ($this->tareaModel->completarTarea($id)) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al completar la tarea']);
+        }
+    }
+
+    // Método para deshacer la acción (cambiar a PENDIENTE)
+    public function revertirTarea($id) {
+        if ($this->tareaModel->revertirTarea($id)) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al deshacer la acción']);
+        }
+    }
+
+/*     public function getRolesAjax() {
         header('Content-Type: application/json');
         try {
             $roles = $this->rolModel->getRoles();
@@ -70,7 +80,7 @@ class TareasController {
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
         exit();
-    }
+    } */
 
     public function create() {
         $this->checkAdminAccess();

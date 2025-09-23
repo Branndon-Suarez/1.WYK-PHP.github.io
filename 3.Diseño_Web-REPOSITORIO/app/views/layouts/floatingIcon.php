@@ -1,5 +1,5 @@
 <div class="floating-icon-container">
-    <a title="Tareas" href="#" class="floating-icon">
+    <a title="Tareas" href="#" class="floating-icon" id="openTasksBtn">
         <lord-icon
             src="https://cdn.lordicon.com/wwcdwkaf.json"
             trigger="hover"

@@ -7,7 +7,7 @@ session_start();
 
 require_once __DIR__ . '/config/app.php';
 $autoloadPath = __DIR__ . '/app/autoload.php';
-require_once __DIR__ . '/vendor/autoload.php';//Generar PDF con Dompdf
+require_once __DIR__ . '/vendor/autoload.php'; //Generar PDF con Dompdf
 
 if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
@@ -35,14 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// NUEVO BLOQUE DE CÓDIGO PARA MANEJAR LAS PETICIONES DE LA API
 if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
-    // Verificar que el usuario sea empleado (si lo deseas)
+    header('Content-Type: application/json'); // Aseguramos que la respuesta es JSON
     if (isset($_SESSION['userId']) && isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+        require_once __DIR__ . '/app/controllers/TareasController.php'; // Cambiado de TareaController a TareasController
         $controller = new \controllers\TareasController();
-        $controller->viewTareas();
+
+        $actionApi = $_GET['action'] ?? null;
+        $taskId = $_GET['id'] ?? null;
+
+        if ($actionApi === 'complete' && $taskId) {
+            $controller->completarTarea($taskId);
+        } elseif ($actionApi === 'undo' && $taskId) {
+            $controller->revertirTarea($taskId);
+        } else {
+            // Manejamos el caso de acción no permitida para empleados
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Acción no permitida para este rol.']);
+        }
     } else {
-        http_response_code(403); // Forbidden
-        echo "Acceso denegado.";
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Acceso denegado.']);
     }
     exit;
 }
@@ -62,6 +76,10 @@ if (in_array($vista, $validViews)) {
             break;
         case 'dashboard':
             if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
+                require_once __DIR__ . '/app/controllers/TareasController.php';
+                $tareaController = new \controllers\TareasController();
+                $tareas = $tareaController->getTareasParaVista();
+
                 require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
                 require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
@@ -102,16 +120,16 @@ if (in_array($vista, $validViews)) {
                     } else {
                         // Las peticiones GET solo cargan las vistas.
                         if ($action === 'reports' && method_exists($controller, 'reports')) {
-                             $controller->reports();
+                            $controller->reports();
                         } elseif ($action === 'create' && method_exists($controller, 'create')) {
                             $controller->create();
-                        }elseif ($action === 'viewEdit' && !empty($params) && method_exists($controller, 'viewEdit')) {
+                        } elseif ($action === 'viewEdit' && !empty($params) && method_exists($controller, 'viewEdit')) {
                             $controller->viewEdit($params[0]);
                         } elseif ($action === 'generateReportPDF' && method_exists($controller, 'generateReportPDF')) {
                             $controller->generateReportPDF();
                         } elseif ($action === 'viewTareas' && method_exists($controller, 'viewTareas')) {
                             $controller->viewTareas();
-                        }else {
+                        } else {
                             http_response_code(404);
                             require_once __DIR__ . '/config/error_404-500/404.php';
                             exit();
@@ -130,7 +148,7 @@ if (in_array($vista, $validViews)) {
     }
 } else {
     http_response_code(404);
-    
+
     if (file_exists(__DIR__ . '/config/error_404-500/404.php')) {
         require_once __DIR__ . '/config/error_404-500/404.php';
     } else {
@@ -140,4 +158,3 @@ if (in_array($vista, $validViews)) {
     }
     exit;
 }
-

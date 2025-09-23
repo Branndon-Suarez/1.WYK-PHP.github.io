@@ -22,12 +22,24 @@ $active_page = 'dashboard';
         <!-- Sidebar -->
         <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
         <!-- Icono de tareas de empleados -->
-        <?php 
-            if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
-                require_once __DIR__ . '/../layouts/floatingIcon.php';
-            }
+        <?php
+        if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+            require_once __DIR__ . '/../layouts/floatingIcon.php';
+        }
         ?>
-        
+        <!-- Lista de tareas para empleados -->
+        <div class="tasks-panel" id="tasksPanel">
+            <div class="tasks-header">
+                <h2 class="tasks-title">Mis Tareas</h2>
+                <button class="close-tasks-btn" id="closeTasksBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="tareas-content" class="tasks-content-wrapper">
+                <?php include 'app/views/tarea/viewTareaEmpleado.php'; ?>
+            </div>
+        </div>
+
         <div class="main-content">
             <div class="header">
                 <div>
@@ -231,8 +243,8 @@ $active_page = 'dashboard';
     <script src="<?php echo \config\APP_URL; ?>public/js/toads-sweetalert2.js"></script>
 
     <!-- JS para CRUD -->
-    <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script> <!-- GRAFICAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmState.js"></script>
     <script src="<?php echo \config\APP_URL; ?>public/js/cargo/confirmDelete.js"></script>
 
@@ -245,54 +257,6 @@ $active_page = 'dashboard';
         integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="
         crossorigin="anonymous">
     </script>
-
-<?php if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO'): ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const floatingIcon = document.querySelector('.floating-icon');
-        const tareasContainer = document.getElementById('tarea-empleado-container');
-        let hasLoaded = false;
-
-        if (floatingIcon && tareasContainer) {
-            floatingIcon.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                if (!hasLoaded) {
-                    // La URL de la API se genera aquí en PHP antes de que la página se envíe al navegador.
-                    const apiUrl = "<?php echo \config\APP_URL; ?>api/tareas";
-                    
-                    fetch(apiUrl)
-                        .then(response => {
-                            if (!response.ok) {
-                                // Intenta leer el mensaje de error del servidor si está disponible
-                                return response.text().then(text => { throw new Error(text || 'Error en la respuesta de la red'); });
-                            }
-                            return response.text();
-                        })
-                        .then(html => {
-                            tareasContainer.innerHTML = html;
-                            hasLoaded = true;
-                            // Aplica la clase para la animación una vez que el contenido esté cargado
-                            tareasContainer.classList.add('show');
-                        })
-                        .catch(error => {
-                            console.error('Error al cargar las tareas:', error);
-                            // Muestra un SweetAlert en caso de error
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: error.message || 'No se pudieron cargar las tareas.'
-                            });
-                        });
-                } else {
-                    // Si el contenido ya está cargado, solo alternar la visibilidad
-                    tareasContainer.classList.toggle('show');
-                }
-            });
-        }
-    });
-    </script>
-<?php endif; ?>
 </body>
 
 </html>

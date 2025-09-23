@@ -1,34 +1,292 @@
-/* Estilos para el contenedor de tareas */
-#tarea-empleado-container {
+.tasks-panel {
     position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
-    width: 0;
-    overflow-x: hidden;
-    background-color: #f7f9fc; /* o el color de fondo de tu dashboard */
-    padding: 0;
-    transition: width 0.5s ease-in-out, padding 0.5s ease-in-out;
+    right: -35rem;/*Posición inicial, fuera de la vista */
+    width: 35rem;
+    height: 100vh;
+    background: var(--background-secondary);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 1000;
+    padding: 25px;
 }
 
-/* Estilos para el estado "mostrado" */
-#tarea-empleado-container.show {
-    width: 70%; /* Ajusta el ancho según tu diseño */
+.tasks-panel.open {
+    right: 0;
+}
+
+/* Estilos para el encabezado del panel */
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--background-primary);
+}
+
+.tasks-content-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.close-tasks-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-tasks-btn:hover {
+    color: var(--accent-color);
+}
+/* -------------------------------------- tasks-card (Contenido de viewTareaEmpleado.php) -------------------------------------- */
+.tasks-card {
+    background: var(--background-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.tasks-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.add-task-btn {
+    background: var(--secondary-color);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.add-task-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.progress-overview {
+    background: var(--background-primary);
     padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
 }
 
-/* Opcional: Estilos para el contenido de las tareas */
-#tarea-empleado-container #tareas-content {
-    /* Oculta el contenido al principio para evitar que parpadee */
-    display: none; 
-    /* Y lo muestra con un pequeño retraso cuando la animación de ancho comienza */
-    transition: opacity 0.3s ease 0.2s;
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--background-primary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color), var(--secondary-color));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.timeline {
+    position: relative;
+    margin-left: 25px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--success-color) 0%, var(--secondary-color) 50%, var(--background-primary) 100%);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
     opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
 }
 
-/* Estilos para el estado "mostrado" */
-#tarea-empleado-container.show #tareas-content {
-    display: block;
+.timeline-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.timeline-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.timeline-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--background-secondary);
+    border: 4px solid;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.dot-completed {
+    border-color: var(--success-color);
+    background: var(--success-color);
+}
+
+.dot-in-progress {
+    border-color: var(--warning-color);
+    background: var(--warning-color);
+    animation: pulse 2s infinite;
+}
+
+.dot-pending {
+    border-color: var(--text-secondary);
+}
+
+/* -------------------------------------- task-item -------------------------------------- */
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin: 15px 0;
+    background: var(--background-primary);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-item:hover {
+    background: var(--secondary-color);
+    color: white;
+    transform: translateY(-0.5rem);
+}
+
+.task-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--success-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.task-item:hover::before {
     opacity: 1;
 }
+
+.task-item.completed::before {
+    background: var(--success-color);
+    opacity: 1;
+}
+
+.task-item.in-progress::before {
+    background: var(--warning-color);
+    opacity: 1;
+}
+
+.task-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    margin-right: 20px;
+    transition: all 0.3s ease;
+}
+
+.task-item:hover .task-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.task-info {
+    flex: 1;
+}
+
+.task-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.task-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.task-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.task-item:hover .task-actions {
+    opacity: 1;
+}
+
+.task-action-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.complete-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.delete-btn {
+    background: var(--accent-color);
+    color: white;
+}
+
+.task-action-btn:hover {
+    transform: scale(1.1);
+}
+/* -------------------------------------- task-item -------------------------------------- */

@@ -26,16 +26,41 @@ class TareaModel {
         }
     }
 
-    public function getTareasByUsuarioId($idUsuario) {
+    public function getTareasByUsuario($id_usuario) {
         try {
-            $sql = "SELECT * FROM TAREA WHERE USUARIO_ASIGNADO_FK = :idUsuario ORDER BY PRIORIDAD DESC, ESTADO_TAREA ASC";
+            $sql = "SELECT ID_TAREA, TAREA, DESCRIPCION, TIEMPO_ESTIMADO_HORAS, ESTADO_TAREA, USUARIO_CREADOR_FK FROM TAREA WHERE USUARIO_ASIGNADO_FK = :id_usuario ORDER BY ID_TAREA DESC";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
+            $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Asegurarse de que siempre se retorne un array
+            return is_array($result) ? $result : [];
         } catch (\PDOException $e) {
-            error_log("Error en la función getTareasByUsuarioId: " . $e->getMessage());
+            // Manejar o registrar el error
+            error_log("Error en la función getTareasByUsuario: " . $e->getMessage());
             return [];
+        }
+    }
+
+    public function completarTarea($id_tarea) {
+        try {
+            $sql = "UPDATE TAREA SET ESTADO_TAREA = 'COMPLETADA' WHERE ID_TAREA = :id_tarea";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id_tarea', $id_tarea, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+    
+    public function revertirTarea($id_tarea) {
+        try {
+            $sql = "UPDATE TAREA SET ESTADO_TAREA = 'PENDIENTE' WHERE ID_TAREA = :id_tarea";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id_tarea', $id_tarea, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            return false;
         }
     }
 

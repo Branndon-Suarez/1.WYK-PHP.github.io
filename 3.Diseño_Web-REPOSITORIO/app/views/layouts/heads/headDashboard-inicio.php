@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/dashboard-inicio.css"/>
   <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/sidebar.css"/>
   <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/floatingIcon.css"/>
+  <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/viewTareaEmpleado.css"/>
   <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/toggleSwitches.css"/>
   <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/sweetalert2.min.css">
 </head>

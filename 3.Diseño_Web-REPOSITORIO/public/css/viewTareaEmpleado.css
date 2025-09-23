@@ -1,7 +1,8 @@
 .tasks-panel {
     position: fixed;
     top: 0;
-    right: -35rem;/*Posición inicial, fuera de la vista */
+    right: -35rem;
+    /*Posición inicial, fuera de la vista */
     width: 35rem;
     height: 100vh;
     background: var(--background-secondary);
@@ -9,6 +10,9 @@
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 1000;
     padding: 25px;
+    overflow: scroll;
+    scrollbar-width: none;
+
 }
 
 .tasks-panel.open {
@@ -42,6 +46,7 @@
 .close-tasks-btn:hover {
     color: var(--accent-color);
 }
+
 /* -------------------------------------- tasks-card (Contenido de viewTareaEmpleado.php) -------------------------------------- */
 .tasks-card {
     background: var(--background-secondary);
@@ -72,6 +77,55 @@
     transform: translateY(-2px);
 }
 
+/* -------------------------------------- Estilos del botón de estado -------------------------------------- */
+.status-btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    border: none;
+    cursor: default;
+}
+
+.status-pendiente {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.status-completada {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.status-cancelada {
+    background-color: #757575;
+    color: #fff;
+}
+
+.task-item.cancelada {
+    background-color: #424242;
+    opacity: 0.7;
+    pointer-events: none;
+    /*Deshabilitar clics */
+}
+
+.task-item.cancelada .task-info,
+.task-item.cancelada .task-icon,
+.task-item.cancelada .task-actions {
+    filter: grayscale(100%);
+    /* Poner en escala de grises */
+}
+
+.task-item.cancelada .task-name,
+.task-item.cancelada .task-description,
+.task-item.cancelada .task-meta,
+.task-item.cancelada .task-icon i {
+    color: #fff;
+    /* Texto e icono en blanco para mayor legibilidad */
+}
+
+/* -------------------------------------- progress-overview -------------------------------------- */
 .progress-overview {
     background: var(--background-primary);
     padding: 20px;
@@ -102,67 +156,6 @@
     font-size: 14px;
 }
 
-.timeline {
-    position: relative;
-    margin-left: 25px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 25px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--success-color) 0%, var(--secondary-color) 50%, var(--background-primary) 100%);
-    border-radius: 2px;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 25px;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.timeline-item:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.timeline-item:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.timeline-item:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.timeline-dot {
-    position: absolute;
-    left: 16px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--background-secondary);
-    border: 4px solid;
-    z-index: 1;
-    transition: all 0.3s ease;
-}
-
-.dot-completed {
-    border-color: var(--success-color);
-    background: var(--success-color);
-}
-
-.dot-in-progress {
-    border-color: var(--warning-color);
-    background: var(--warning-color);
-    animation: pulse 2s infinite;
-}
-
-.dot-pending {
-    border-color: var(--text-secondary);
-}
 
 /* -------------------------------------- task-item -------------------------------------- */
 
@@ -276,17 +269,8 @@
     justify-content: center;
 }
 
-.complete-btn {
-    background: var(--success-color);
-    color: white;
-}
-
-.delete-btn {
-    background: var(--accent-color);
-    color: white;
-}
-
 .task-action-btn:hover {
     transform: scale(1.1);
 }
+
 /* -------------------------------------- task-item -------------------------------------- */

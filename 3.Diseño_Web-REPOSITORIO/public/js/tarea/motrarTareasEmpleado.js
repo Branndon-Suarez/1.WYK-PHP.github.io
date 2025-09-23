@@ -3,21 +3,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const openTasksBtn = document.getElementById('openTasksBtn');
     const tasksPanel = document.getElementById('tasksPanel');
     const closeTasksBtn = document.getElementById('closeTasksBtn');
-    const timeline = document.getElementById('taskTimeline');
 
-    // Función para abrir el panel de tareas
+    // ---- Funciones para el panel de tareas ----
     function openTasksPanel() {
-        tasksPanel.classList.add('open');
+        if (tasksPanel) {
+            tasksPanel.classList.add('open');
+        }
     }
 
-    // Función para cerrar el panel de tareas
     function closeTasksPanel() {
-        tasksPanel.classList.remove('open');
+        if (tasksPanel) {
+            tasksPanel.classList.remove('open');
+        }
+    }
+
+    // ---- Funciones para la barra de progreso ----
+    function updateProgressBar() {
+        const totalTasks = document.querySelectorAll('.task-item').length;
+        // Cuenta tanto las tareas completadas como las canceladas
+        const completedTasks = document.querySelectorAll('.task-item.completada, .task-item.cancelada').length;
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        if (totalTasks > 0) {
+            const percentage = Math.round((completedTasks / totalTasks) * 100);
+            if (progressFill) {
+                progressFill.style.width = `${percentage}%`;
+            }
+            if (progressText) {
+                progressText.textContent = `${percentage}%`;
+            }
+        } else {
+            if (progressFill) {
+                progressFill.style.width = `0%`;
+            }
+            if (progressText) {
+                progressText.textContent = `0%`;
+            }
+        }
     }
 
     // ---- Funciones para manejar las peticiones a la base de datos ----
-    
-    // Función para revertir el estado de una tarea
     window.undoTask = async function(taskId) {
         Swal.fire({
             title: '¿Estás seguro?',
@@ -31,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                // Lógica para revertir la tarea
                 fetch(`${APP_URL}api/tareas?action=undo&id=${taskId}`, {
                     method: 'POST'
                 })
@@ -48,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             'La tarea ha sido marcada como pendiente.',
                             'success'
                         ).then(() => {
-                             location.reload(); 
+                            location.reload(); 
                         });
                     } else {
                         Swal.fire(
@@ -70,21 +95,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Función para completar una tarea con confirmación de SweetAlert
     window.completeTask = async function(taskId) {
         Swal.fire({
             title: '¿Estás seguro?',
             text: "Esta acción marcará la tarea como completada.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#4CAF50', // Color verde
-            cancelButtonColor: '#d33', // Color rojo
+            confirmButtonColor: '#4CAF50',
+            cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, completar',
             cancelButtonText: 'Cancelar',
-            allowOutsideClick: false // Evita cerrar el modal al hacer clic afuera
+            allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                // Lógica para completar la tarea
                 fetch(`${APP_URL}api/tareas?action=complete&id=${taskId}`, {
                     method: 'POST'
                 })
@@ -123,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // ---- Eventos para el panel ----
+    // ---- Eventos para el panel y la barra de progreso ----
     if (openTasksBtn) {
         openTasksBtn.addEventListener('click', openTasksPanel);
     }
@@ -131,26 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
         closeTasksBtn.addEventListener('click', closeTasksPanel);
     }
     document.addEventListener('click', function(event) {
-        const isClickInsidePanel = tasksPanel.contains(event.target);
-        const isClickOnOpenBtn = openTasksBtn.contains(event.target);
-        if (!isClickInsidePanel && !isClickOnOpenBtn && tasksPanel.classList.contains('open')) {
-            closeTasksPanel();
+        if (tasksPanel && openTasksBtn) {
+            const isClickInsidePanel = tasksPanel.contains(event.target);
+            const isClickOnOpenBtn = openTasksBtn.contains(event.target);
+            if (!isClickInsidePanel && !isClickOnOpenBtn && tasksPanel.classList.contains('open')) {
+                closeTasksPanel();
+            }
         }
     });
 
-    // Agregar event listeners a los botones de la línea de tiempo
-    if (timeline) {
-        timeline.addEventListener('click', function(event) {
-            const completeBtn = event.target.closest('.complete-btn');
-            const undoBtn = event.target.closest('.undo-btn');
-
-            if (completeBtn) {
-                const taskId = completeBtn.closest('.task-item').dataset.taskId;
-                window.completeTask(taskId);
-            } else if (undoBtn) {
-                const taskId = undoBtn.closest('.task-item').dataset.taskId;
-                window.undoTask(taskId);
-            }
-        });
-    }
+    // Actualiza la barra de progreso al cargar la página
+    updateProgressBar();
 });

@@ -28,7 +28,7 @@ class TareaModel {
 
     public function getTareasByUsuario($id_usuario) {
         try {
-            $sql = "SELECT ID_TAREA, TAREA, DESCRIPCION, TIEMPO_ESTIMADO_HORAS, ESTADO_TAREA, USUARIO_CREADOR_FK FROM TAREA WHERE USUARIO_ASIGNADO_FK = :id_usuario ORDER BY ID_TAREA DESC";
+            $sql = "SELECT ID_TAREA, TAREA, DESCRIPCION, TIEMPO_ESTIMADO_HORAS, ESTADO_TAREA, USUARIO_CREADOR_FK FROM TAREA WHERE USUARIO_ASIGNADO_FK = :id_usuario ORDER BY ID_TAREA";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
             $stmt->execute();

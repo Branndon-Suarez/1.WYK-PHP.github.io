@@ -157,7 +157,10 @@ if (in_array($vista, $validViews)) {
                             $controller->viewTareas();
                         } elseif ($action === 'listar' && method_exists($controller, 'listar')) {
                             $controller->listar();
-                        } else {
+                        } elseif (strpos($action, 'Ajax') !== false && method_exists($controller, $action)) {
+                            $controller->$action();
+                            exit();
+                        }else {
                             http_response_code(404);
                             require_once __DIR__ . '/config/error_404-500/404.php';
                             exit();

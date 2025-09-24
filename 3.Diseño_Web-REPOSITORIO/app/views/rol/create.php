@@ -38,7 +38,7 @@
 
       <button type="submit">
         <i data-feather="plus-circle" style="margin-right: 8px; width: 20px; height: 20px;"></i>
-        Crear Cargo
+        Crear Rol
       </button>
     </form>
   </main>

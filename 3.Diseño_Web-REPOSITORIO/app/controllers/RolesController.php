@@ -46,16 +46,17 @@ class RolesController {
         require_once __DIR__ . '/../views/rol/dashboardRol.php';
     }
 
-public function getRolesAjax() {
-    header('Content-Type: application/json');
-    try {
-        $roles = $this->rolModel->getRoles();
-        echo json_encode(['success' => true, 'data' => $roles]);
-    } catch (\Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    public function getRolesAjax() {
+        $this->checkAdminAccess();
+        header('Content-Type: application/json');
+        try {
+            $roles = $this->rolModel->getRoles();
+            echo json_encode(['success' => true, 'data' => $roles]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+        exit();
     }
-    exit();
-}
 
     public function create() {
         $this->checkAdminAccess();

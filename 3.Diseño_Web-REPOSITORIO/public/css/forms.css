@@ -302,6 +302,17 @@ h1::after {
     border-radius: 1px;
 }
 
+.boton-busqueda-cafe {
+    background-color: #45341f;
+    border-color: #45341f;
+    color: #fff;
+}
+
+.boton-busqueda-cafe:hover {
+    background-color: #5d4a36;
+    border-color: #5d4a36;
+}
+
 /*------------------------- Estilos del select -------------------------*/
 .grupo-formulario select {
     cursor: pointer;

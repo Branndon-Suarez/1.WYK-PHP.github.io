@@ -1,151 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Factura de Venta - Panadería</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="<?php echo \config\APP_URL; ?>public/css/forms.css">
-</head>
+<title>Crear Usuario</title>
 
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">🥐</div>
-    <div class="nav-btn" title="Inicio"><i data-feather="home"></i></div>
-    <div class="nav-btn" title="Formularios"><i data-feather="file-text"></i></div>
-    <div class="nav-btn" title="Ventas"><i data-feather="shopping-bag"></i></div>
-    <div class="nav-btn" title="Pedidos"><i data-feather="shopping-cart"></i></div>
-    <div class="nav-btn" title="Productos"><i data-feather="package"></i></div>
-    <div class="nav-btn" title="Clientes"><i data-feather="users"></i></div>
-    <div class="spacer"></div>
-    <div class="nav-btn" title="Ajustes"><i data-feather="settings"></i></div>
-  </aside>
+  <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
 
-  <!-- Main -->
-  <main class="main">
-    <div class="topbar">
-      <strong>Factura de Venta</strong>
-      <div class="search">
-        <i data-feather="search" style="width:18px;height:18px;color:#94a3b8"></i>
-        <input placeholder="Buscar cliente…">
-      </div>
-    </div>
+  <main class="principal">
+    <button type="button" class="volver" onclick="history.back()">
+      <i data-feather="arrow-left"></i> Volver
+    </button>
 
-    <!-- Formulario factura -->
-    <form id="formFactura" class="formulario">
+    <form id="create-usuario-form" class="formulario" action="<?php echo \config\APP_URL; ?>usuarios/create" method="POST">
+      <h1>Crear Usuario</h1>
 
-      <div class="form-grupo">
-        <label for="fecha">Fecha y Hora</label>
-        <input type="datetime-local" id="fecha" required>
-      </div>
-
-      <div class="form-grupo">
-        <label for="descripcion">Descripción:</label>
-        <input type="text" id="descripcion" maxlength="200" required>
-      </div>
-
-      <div class="form-grupo">
-        <label for="empleado">Empleado (ID):</label>
-        <input type="number" id="empleado" required>
-      </div>
-
-      <div class="form-grupo">
-        <label for="pedido">Pedido (ID):</label>
-        <input type="number" id="pedido" required>
-      </div>
-
-      <div class="form-grupo">
-        <label for="cliente">Cliente (ID):</label>
-        <input type="number" id="cliente" required>
-      </div>
-
-      <div class="form-grupo">
-        <label for="subtotal">Subtotal:</label>
-        <input type="number" step="0.01" id="subtotal" required>
-      </div>
-
-      <!-- Muestro IVA y Total en el formulario (readonly) para ver el cálculo antes de agregar -->
-      <div class="form-grupo">
-        <label for="iva">IVA (19%):</label>
-        <input type="number" id="iva" readonly>
-      </div>
-
-      <div class="form-grupo">
-        <label for="total">Total:</label>
-        <input type="number" id="total" readonly>
-      </div>
-
-      <div class="form-grupo">
-        <label for="estado">Estado:</label>
-        <select id="estado" required>
-          <option value="PENDIENTE">Pendiente</option>
-          <option value="PAGADA">Pagada</option>
-          <option value="CANCELADA">Cancelada</option>
-        </select>
-      </div>
-
-      <!--boton de enviar de universe (submit)-->
-      <button type="submit">
-        <div class="svg-wrapper-1">
-          <div class="svg-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-              <path fill="none" d="M0 0h24v24H0z"></path>
-              <path fill="currentColor"
-                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z">
-              </path>
-            </svg>
+      <div class="grupo-formulario">
+        <div class="campo">
+          <label for="num_doc_usuario">N° Documento (Único)</label>
+          <div class="contenedor-input">
+            <input type="number" id="num_doc_usuario" name="num_doc_usuario" placeholder="Ingresa el N° de documento" required>
+            <div class="resalte-input"></div>
           </div>
         </div>
-        <span>Enviar Formulario</span>
-      </button>
 
+        <div class="campo">
+          <label for="nom_usuario">Nombre (Único)</label>
+          <div class="contenedor-input">
+            <input type="text" id="nom_usuario" name="nom_usuario" placeholder="Ingresa el nombre" required>
+            <div class="resalte-input"></div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="password_usuario">Contraseña</label>
+          <div class="contenedor-input">
+            <input type="password" id="password_usuario" name="password_usuario" placeholder="Ingresa la contraseña" required>
+            <div class="resalte-input"></div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="tel_usuario">Teléfono</label>
+          <div class="contenedor-input">
+            <input type="number" id="tel_usuario" name="tel_usuario" placeholder="Ingresa el teléfono" required>
+            <div class="resalte-input"></div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="email_usuario">Email</label>
+          <div class="contenedor-input">
+            <input type="email" id="email_usuario" name="email_usuario" placeholder="Ingresa el email" required>
+            <div class="resalte-input"></div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="fech_Reg_usuario">Fecha Registro</label>
+          <div class="contenedor-input">
+            <input type="datetime-local" id="fech_Reg_usuario" name="fech_Reg_usuario" value="<?php echo date('Y-m-d\TH:i'); ?>" placeholder="Ingresa la fecha de registro" required>
+            <div class="resalte-input"></div>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="rol_fk">Rol</label>
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary input-group-text boton-busqueda-cafe" id="select-rol-btn" data-bs-toggle="modal" data-bs-target="#modalRoles">
+              <i data-feather="search"></i>
+            </button>
+            <input type="text" id="rol_display" class="form-control" placeholder="Selecciona un rol" readonly required>
+            <input type="hidden" id="rol_fk" name="rol_fk">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit">
+        <i data-feather="plus-circle" style="margin-right: 8px; width: 20px; height: 20px;"></i>
+        Crear usuario
+      </button>
     </form>
-
-    <!-- Tabla -->
-    <table id="tablaFactura" class="tabla-factura" aria-live="polite">
-      <thead>
-        <tr>
-          <th style="width:90px">Fecha Factura</th>
-          <th>Descripción</th>
-          <th style="width:110px">Empleado</th>
-          <th style="width:110px">Pedido</th>
-          <th style="width:110px">Cliente</th>
-          <th style="width:110px">Estado</th>
-          <th style="width:140px">Subtotal</th>
-          <th style="width:200px">Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <td class="acciones" style="text-align:center">
-      <button class="btn-accion btn-update" title="Actualizar">
-        <i data-feather="edit-2"></i>
-      </button>
-      <button class="btn-accion btn-delete" title="Eliminar">
-        <i data-feather="trash-2"></i>
-      </button>
-      <button class="btn-accion btn-toggle" title="Desactivar/activar">
-        <i data-feather="slash"></i>
-      </button>
-    </td>
-
-
-    <!-- Totales (globales) -->
-    <div class="totales">
-      <div class="muted">Subtotal: <span id="subtotalGlobal">$0.00</span></div>
-      <div class="muted">IVA (19%): <span id="ivaGlobal">$0.00</span></div>
-      <div>Total: <span id="totalGlobal">$0.00</span></div>
-    </div>
-
   </main>
 
+  <div class="modal fade" id="modalRoles" tabindex="-1" aria-labelledby="modalRolesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalRolesLabel">Seleccionar Rol</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-hover" id="tablaRolesModal">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Rol</th>
+                  <th>Clasificación</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    const APP_URL = '<?php echo \config\APP_URL; ?>';
+  </script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/rol/rol.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/usuario/confirmCreate.js"></script>
+  <script src="<?php echo \config\APP_URL; ?>public/js/usuario/selectRolModal.js"></script>
 </body>
 
 </html>

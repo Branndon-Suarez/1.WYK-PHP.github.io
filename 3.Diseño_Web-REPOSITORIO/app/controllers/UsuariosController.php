@@ -14,7 +14,6 @@ use \Dompdf\Options;
 class UsuariosController
 {
     private $usuarioModel;
-    private $rolModel;
 
     public function __construct()
     {

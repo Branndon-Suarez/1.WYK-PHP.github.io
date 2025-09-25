@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>materia_prima">
+                        <a href="<?php echo \config\APP_URL; ?>materiasPrimas">
                             <lord-icon
                                 src="https://cdn.lordicon.com/jhiqqftv.json"
                                 trigger="hover"
@@ -159,7 +159,7 @@
             </li>
 
             <li title="Producción">
-                <a href="<?php echo \config\APP_URL; ?>pedidos" class="nav-btn" aria-label="Pedidos">
+                <a href="<?php echo \config\APP_URL; ?>produccion" class="nav-btn" aria-label="Pedidos">
                     <lord-icon
                         src="https://cdn.lordicon.com/asyunleq.json"
                         trigger="hover"

@@ -45,10 +45,10 @@ CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'CADUCADO', 10, 'Producto vencido', 103, 
 CALL INSERTAR_AJUSTE_INVENTARIO(NOW(), 'MUESTRA', 1, 'Muestra a cliente', 104, 2);
 
 -- PROCEDIMIENTO INSERTAR MATERIA_PRIMA
-CALL INSERTAR_MATERIA_PRIMA('Harina Trigo', '2026-01-01', 500, 'Kg', 'Harina de alta calidad', 2, 1);
-CALL INSERTAR_MATERIA_PRIMA('Azúcar', '2026-02-01', 300, 'Kg', 'Azúcar blanca refinada', 2, 1);
-CALL INSERTAR_MATERIA_PRIMA('Levadura', '2025-11-15', 100, 'Kg', 'Levadura fresca', 2, 1);
-CALL INSERTAR_MATERIA_PRIMA('Chocolate', '2026-03-10', 200, 'Kg', 'Cacao puro', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Harina Trigo', 20000, '2026-01-01', 500, 'Kg', 'Harina de alta calidad', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Azúcar', 15000, '2026-02-01', 300, 'Kg', 'Azúcar blanca refinada', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Levadura', 18000, '2025-11-15', 100, 'Kg', 'Levadura fresca', 2, 1);
+CALL INSERTAR_MATERIA_PRIMA('Chocolate', 30000, '2026-03-10', 200, 'Kg', 'Cacao puro', 2, 1);
 
 -- PROCEDIMIENTO INSERTAR COMPRA
 CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 500000, 'Proveedor Harinas', 'Harimsa', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina', 2, 'PAGADA');

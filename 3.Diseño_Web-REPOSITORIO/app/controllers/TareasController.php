@@ -1,5 +1,7 @@
 <?php
+
 namespace controllers;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -9,14 +11,17 @@ use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class TareasController {
+class TareasController
+{
     private $tareaModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->tareaModel = new TareaModel();
     }
 
-    private function checkAdminAccess() {
+    private function checkAdminAccess()
+    {
         if (!isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] !== 'ADMINISTRADOR') {
             $_SESSION['error_message'] = 'Acceso denegado. No tienes permisos de administrador.';
             header('Location: ' . APP_URL . 'dashboard');
@@ -24,29 +29,37 @@ class TareasController {
         }
     }
 
-    public function reports() {
+    public function reports()
+    {
         $this->checkAdminAccess();
 
         $dashboardDataTareas = [
             'tareasExistentes' => $this->tareaModel->getCantTareasExistentes(),
-            'tareasActivos' => $this->tareaModel->getCantTareasActivos(),
-            'tareasInactivos' => $this->tareaModel->getCantTareasInactivos(),
+            'tareasPendientes' => $this->tareaModel->getCantTareasPendientes(),
+            'tareasCopletadas' => $this->tareaModel->getCantTareasCompletadas(),
+            'tareasCanceladas' => $this->tareaModel->getCantTareasCanceladas(),
             'tareas' => $this->tareaModel->getTareas()
         ];
 
         // Mensajes de sesión
         $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-        if (isset($_SESSION['success_message'])) { unset($_SESSION['success_message']); }
+        if (isset($_SESSION['success_message'])) {
+            unset($_SESSION['success_message']);
+        }
         $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-        if (isset($_SESSION['error_message'])) { unset($_SESSION['error_message']); }
+        if (isset($_SESSION['error_message'])) {
+            unset($_SESSION['error_message']);
+        }
         // variable sidebar
         $active_page = 'tareas';
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/rol/dashboardRol.php';
+        require_once __DIR__ . '/../views/tarea/dashboardTarea.php';
     }
 
-    public function getTareasParaVista() {
+    /* ---------------------------------------- LISTADO TAREAS A EMPLEADOS ---------------------------------------- */
+    public function getTareasParaVista()
+    {
         if (!isset($_SESSION['userId'])) {
             return [];
         }
@@ -54,7 +67,8 @@ class TareasController {
         return $this->tareaModel->getTareasByUsuario($id_usuario);
     }
 
-    public function completarTarea($id) {
+    public function completarTarea($id)
+    {
         if ($this->tareaModel->completarTarea($id)) {
             echo json_encode(['success' => true]);
         } else {
@@ -62,44 +76,51 @@ class TareasController {
         }
     }
 
-    // Método para deshacer la acción (cambiar a PENDIENTE)
-    public function revertirTarea($id) {
-        if ($this->tareaModel->revertirTarea($id)) {
+public function revertirTarea($id)
+{
+    if (isset($_SESSION['userId'])) {
+        $id_usuario = $_SESSION['userId'];
+        if ($this->tareaModel->revertirTarea($id, $id_usuario)) {
             echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Error al deshacer la acción']);
+            echo json_encode(['success' => false, 'message' => 'Error al deshacer la acción o tarea no asignada a este usuario.']);
         }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Sesión no iniciada.']);
     }
+}
+    /* ---------------------------------------- LISTADO TAREAS A EMPLEADOS ---------------------------------------- */
 
-/*     public function getRolesAjax() {
-        header('Content-Type: application/json');
-        try {
-            $roles = $this->rolModel->getRoles();
-            echo json_encode(['success' => true, 'data' => $roles]);
-        } catch (\Exception $e) {
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-        }
-        exit();
-    } */
-
-    public function create() {
+    public function create()
+    {
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $rol = $_POST['rol'];
-            $rolClasificacion = $_POST['clasificacion_rol'];
+            $tarea = $_POST['tarea'];
+            $categoria = $_POST['categoria'];
+            $descripcion = $_POST['descripcion'];
+            $tiempo = $_POST['tiempo'];
+            $prioridad = $_POST['prioridad'];
+            $user_asignado = $_POST['user_asignado'];
+            $estado = $_POST['user_asignado'];
             try {
-                if ($this->rolModel->checkIfRolExists($rol)) {
-                    echo json_encode(['success' => false, 'message' => 'El rol ya existe.']);
+                if ($this->tareaModel->checkIfTareaExists($tarea)) {
+                    echo json_encode(['success' => false, 'message' => 'La tarea ya existe.']);
                     return;
                 }
 
-                $result = $this->rolModel->createRol($rol, $rolClasificacion);
+                if (empty($user_asignado)) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'El usuario asignado es un campo requerido.']);
+                    return;
+                }
+
+                $result = $this->tareaModel->createTarea($tarea, $categoria, $descripcion, $tiempo, $prioridad, $user_asignado, $estado);
                 if ($result) {
                     // Si es exitoso, responde con un JSON de éxito.
-                    echo json_encode(['success' => true, 'message' => 'Rol creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Tarea creada exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el rol.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear la tarea.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
@@ -107,39 +128,51 @@ class TareasController {
             exit();
         } else {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/rol/create.php';
+            require_once __DIR__ . '/../views/tarea/create.php';
         }
     }
 
-    public function viewEdit($id) {
+    public function viewEdit($id)
+    {
         $this->checkAdminAccess();
 
-        $rol = $this->rolModel->getRolById($id);
-        if ($rol) {
+        $tarea = $this->tareaModel->getTareaById($id);
+        if ($tarea) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/rol/update.php';
+            require_once __DIR__ . '/../views/tarea/update.php';
         } else {
-            $_SESSION['error_message'] = 'Rol no encontrado.';
-            header('Location: ' . \config\APP_URL . 'roles');
+            $_SESSION['error_message'] = 'Tarea no encontrado.';
+            header('Location: ' . \config\APP_URL . 'tareas');
             exit();
         }
     }
 
-    public function update() {
+    public function update()
+    {
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idRol = $_POST['Id_Rol'];
-            $rol = $_POST['Rol'];
-            $rolClasificacion = $_POST['Clasificacion_Rol'];
-            $rolEstado = $_POST['Estado_Rol'];
+            $idTarea = $_POST['id_tarea'];
+            $tarea = $_POST['tarea'];
+            $categoria = $_POST['categoria'];
+            $descripcion = $_POST['descripcion'];
+            $tiempo = $_POST['tiempo'];
+            $prioridad = $_POST['prioridad'];
+            $estado = $_POST['estado_tarea'];
+            $user_asignado = $_POST['user_asignado'];
+
             try {
-                $result = $this->rolModel->updateRol($idRol, $rol, $rolClasificacion, $rolEstado);
+                if (empty($user_asignado)) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'El usuario asignado es un campo requerido.']);
+                    return;
+                }
+                $result = $this->tareaModel->updateProducto($idTarea, $tarea, $categoria, $descripcion, $tiempo, $prioridad, $estado, $user_asignado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Rol actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Tarea actualizada exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el rol.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el tarea.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -149,46 +182,8 @@ class TareasController {
         }
     }
 
-    public function updateState() {
-        $this->checkAdminAccess();
-
-        //Verificar que la petición sea POST y que el contenido sea JSON.
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
-            http_response_code(405);
-            echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
-            return;
-        }
-
-        //Decodificar el JSON del cuerpo de la petición.
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        //Validar que los datos necesarios (id y estado) estén presentes.
-        if (isset($data['id']) && isset($data['estado'])) {
-            $idRol = $data['id'];
-            $estadoRol = $data['estado'];
-            
-            try {
-                //Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->rolModel->updateRolState($idRol, $estadoRol);
-
-                //Enviar una respuesta JSON al cliente (el JavaScript).
-                if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del rol actualizado.']);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del rol.']);
-                }
-            } catch (\Exception $e) {
-                http_response_code(500);
-                echo json_encode(['error' => 'Error en el servidor: ' . $e->getMessage()]);
-            }
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'Datos incompletos.']);
-        }
-    }
-    
-    public function delete() {
+    public function delete()
+    {
         $this->checkAdminAccess();
         //Verificar que la petición sea POST y que el contenido sea JSON
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
@@ -202,17 +197,17 @@ class TareasController {
 
         //Validar que el ID esté presente
         if (isset($data['id'])) {
-            $idRol = $data['id'];
+            $idTarea = $data['id'];
 
             try {
                 //Llamar al modelo para eliminar el registro
-                $result = $this->rolModel->deleteRol($idRol);
+                $result = $this->tareaModel->deleteTarea($idTarea);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Rol eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Trea eliminada con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el rol. Esta relacionado con otro(s) registros']);
+                    echo json_encode(['error' => 'No se pudo eliminarla tarea. Esta relacionada con otro(s) registros']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -225,7 +220,8 @@ class TareasController {
     }
 
     // ----------------- REPORTE EN PDF ----------------------------
-    public function generateReportPDF() {
+    public function generateReportPDF()
+    {
         $searchText = $_GET['search'] ?? null;
         $estadoFilter = $_GET['estado'] ?? null;
 
@@ -238,7 +234,7 @@ class TareasController {
             }
         }
 
-        $roles = $this->rolModel->getFilteredRoles($searchText, $estadoFilter, $chipFilters);
+        $roles = $this->tareaModel->getFilteredRoles($searchText, $estadoFilter, $chipFilters);
 
         // 3. Construir el HTML
         // ... (el resto de tu código HTML permanece igual) ...

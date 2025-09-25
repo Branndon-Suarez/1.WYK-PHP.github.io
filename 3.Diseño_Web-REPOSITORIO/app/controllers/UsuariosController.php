@@ -56,6 +56,18 @@ class UsuariosController
         require_once __DIR__ . '/../views/usuario/dashboardUsuario.php';
     }
 
+    public function getUsuariosAjax() {
+        $this->checkAdminAccess();
+        header('Content-Type: application/json');
+        try {
+            $usuario = $this->usuarioModel->getUsuarios();
+            echo json_encode(['success' => true, 'data' => $usuario]);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+        exit();
+    }
+
     public function create()
     {
         $this->checkAdminAccess();

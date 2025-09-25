@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // NUEVO BLOQUE DE CÓDIGO PARA MANEJAR LAS PETICIONES DE LA API
 if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
     header('Content-Type: application/json'); // Aseguramos que la respuesta es JSON
-    if (isset($_SESSION['userId']) && isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
+    if (isset($_SESSION['userId']) && isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] === 'EMPLEADO') {
         require_once __DIR__ . '/app/controllers/TareasController.php';
         $controller = new \controllers\TareasController();
 
@@ -66,7 +66,7 @@ if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
 
         if ($actionApi === 'complete' && $taskId) {
             $controller->completarTarea($taskId);
-        } elseif ($actionApi === 'undo' && $taskId) {
+        } elseif ($actionApi === 'reset' && $taskId) {
             $controller->revertirTarea($taskId);
         } else {
             // Manejamos el caso de acción no permitida para empleados

@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`${APP_URL}api/tareas?action=undo&id=${taskId}`, {
+                fetch(`${APP_URL}api/tareas?action=reset&id=${taskId}`, {
                     method: 'POST'
                 })
                 .then(response => {

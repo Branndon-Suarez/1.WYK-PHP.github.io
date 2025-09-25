@@ -25,7 +25,7 @@
             <i data-feather="sliders" style="width:18px;height:18px;color:#94a3b8;"></i>
           </button>
         </div>
-        <a href="<?php echo \config\APP_URL; ?>roles/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo rol</button></a>
+        <a href="<?php echo \config\APP_URL; ?>tareas/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nueva tarea</button></a>
       </header>
 
       <div class="layout">
@@ -51,8 +51,8 @@
           <section class="stats">
             <div class="stat">
               <div>
-                <div class="muted">Roles existentes</div>
-                <div class="kpi"><?php echo $dashboardDataRoles['rolesExistentes']; ?></div>
+                <div class="muted">Tareas existentes</div>
+                <div class="kpi"><?php echo $dashboardDataTareas['tareasExistentes']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -66,8 +66,8 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Roles activos</div>
-                <div class="kpi"><?php echo $dashboardDataRoles['rolesActivos']; ?></div>
+                <div class="muted">Tareas pendientes</div>
+                <div class="kpi"><?php echo $dashboardDataTareas['tareasPendientes']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -81,8 +81,23 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Roles inactivos</div>
-                <div class="kpi"><?php echo $dashboardDataRoles['rolesInactivos']; ?></div>
+                <div class="muted">Tareas completadas</div>
+                <div class="kpi"><?php echo $dashboardDataTareas['tareasCopletadas']; ?></div>
+              </div>
+              <div class="icon">
+                <lord-icon
+                  src="https://cdn.lordicon.com/oqhqyeud.json"
+                  trigger="hover"
+                  stroke="bold"
+                  colors="primary:#933e0d,secondary:#933e0d"
+                  style="width:40px;height:40px">
+                </lord-icon>
+              </div>
+            </div>
+            <div class="stat">
+              <div>
+                <div class="muted">Tareas canceladas</div>
+                <div class="kpi"><?php echo $dashboardDataTareas['tareasCanceladas']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -96,12 +111,12 @@
             </div>
           </section><br><br>
 
-          <!-- Tabla de roles -->
+          <!-- Tabla de Tareas -->
           <div class="section-reportes">
-            <table id="tablaRoles" class="tabla-consultas">
+            <table id="tablaTareas" class="tabla-consultas">
               <tbody>
                 <div class="table-header">
-                  <strong>Tabla de roles</strong>
+                  <strong>Tabla de Tareas</strong>
                   <div style="display:flex; gap:8px;">
                     <button id="generatePdfBtn" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
                       <span>Generar PDF</span>
@@ -117,31 +132,33 @@
                 </div>
                 <thead>
                   <tr>
-                    <th>Rol</th>
-                    <th>Clasificación</th>
+                    <th>Tarea</th>
+                    <th>Categoria</th>
+                    <th>Descripción</th>
+                    <th>Tiempo (horas)</th>
+                    <th>Prioridad</th>
+                    <th>Asignado a</th>
+                    <th>Registrado por</th>
                     <th>Estado</th>
                     <th colspan="3" style="text-align:center">Acciones</th>
                   </tr>
                 </thead>
                 <?php
 
-                if ($dashboardDataRoles['roles']) {
-                  foreach ($dashboardDataRoles['roles'] as $rol) {
-                    $switchIdRol = "switch_" . $rol['ID_ROL'];
-                    $estado = $rol['ESTADO_ROL'] == 1 ? true : false;
+                if ($dashboardDataTareas['tareas']) {
+                  foreach ($dashboardDataTareas['tareas'] as $tarea) {
                 ?>
                     <tr>
-                      <td> <?php echo htmlspecialchars($rol['ROL']); ?></td>
-                      <td> <?php echo htmlspecialchars($rol['CLASIFICACION']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['TAREA']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['CATEGORIA']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['DESCRIPCION']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['TIEMPO_ESTIMADO_HORAS']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['PRIORIDAD']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['USUARIO_ASIGNADO']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['USUARIO_CREADOR']); ?></td>
+                      <td> <?php echo htmlspecialchars($tarea['ESTADO_TAREA']); ?></td>
                       <td>
-                        <input id="<?php echo $switchIdRol; ?>" type="checkbox" <?php echo $estado ? 'checked' : ''; ?>
-                          data-id="<?php echo htmlspecialchars($rol['ID_ROL']); ?>" ;>
-                        <label for="<?php echo $switchIdRol; ?>" class="check-trail">
-                          <span class="check-handler"></span>
-                        </label>
-                      </td>
-                      <td>
-                        <a href="<?php echo \config\APP_URL . 'roles/viewEdit/' . htmlspecialchars($rol['ID_ROL']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
+                        <a href="<?php echo \config\APP_URL . 'tareas/viewEdit/' . htmlspecialchars($tarea['ID_TAREA']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
                           <lord-icon
                             src="https://cdn.lordicon.com/ibckyoan.json"
                             trigger="hover"
@@ -150,7 +167,7 @@
                           </lord-icon>
                         </a>
                       </td>
-                      <td><button data-id="<?= $rol['ID_ROL'] ?>" class='btn btn-sm btn-danger delete-rol'>
+                      <td><button data-id="<?= $tarea['ID_TAREA'] ?>" class='btn btn-sm btn-danger delete-tarea'>
                           <lord-icon
                             src="https://cdn.lordicon.com/oqeixref.json"
                             trigger="morph"
@@ -165,7 +182,7 @@
                 } else {
                   ?>
                   <tr>
-                    <td colspan='5' style="text-align:center;">No hay roles disponibles.</td>
+                    <td colspan='5' style="text-align:center;">No hay tareas disponibles.</td>
                   </tr>
                 <?php
                 }
@@ -199,12 +216,13 @@
     <!-- JS para CRUD -->
     <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script><!-- GRAFICAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmState.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/rol/confirmDelete.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/tarea/selectUserModal.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/tarea/confirmState.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/tarea/confirmDelete.js"></script>
 
     <!-- JS para busquedas personalizadas (y PDF) -->
-    <script src="<?php echo \config\APP_URL; ?>public/js/rol/busquedaFiltro.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/rol/PDFgenerateFilter.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/tarea/busquedaFiltro.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/tarea/PDFgenerateFilter.js"></script>
 </body>
 
 </html>

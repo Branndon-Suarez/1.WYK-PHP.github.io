@@ -98,7 +98,7 @@
 
           <!-- Tabla de usuarios -->
           <div class="section-reportes">
-            <table id="tablaRoles" class="tabla-consultas">
+            <table id="tablaUsuarios" class="tabla-consultas">
               <tbody>
                 <div class="table-header">
                   <strong>Tabla de usuarios</strong>
@@ -117,7 +117,7 @@
                 </div>
                 <thead>
                   <tr>
-                    <th>N° Documento</th>
+                    <th>Documento</th>
                     <th>Nombre</th>
                     <th>Teléfono</th>
                     <th>Email</th>

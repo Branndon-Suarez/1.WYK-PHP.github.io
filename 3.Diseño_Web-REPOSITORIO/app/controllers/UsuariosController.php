@@ -1,5 +1,7 @@
 <?php
+
 namespace controllers;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -9,15 +11,18 @@ use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class UsuariosController {
+class UsuariosController
+{
     private $usuarioModel;
     private $rolModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->usuarioModel = new UsuarioModel();
     }
 
-    private function checkAdminAccess() {
+    private function checkAdminAccess()
+    {
         if (!isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] !== 'ADMINISTRADOR') {
             $_SESSION['error_message'] = 'Acceso denegado. No tienes permisos de administrador.';
             header('Location: ' . APP_URL . 'dashboard');
@@ -25,7 +30,8 @@ class UsuariosController {
         }
     }
 
-    public function reports() {
+    public function reports()
+    {
         $this->checkAdminAccess();
 
         $dashboardDataUsuarios = [
@@ -37,17 +43,22 @@ class UsuariosController {
 
         // Mensajes de sesión
         $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-        if (isset($_SESSION['success_message'])) { unset($_SESSION['success_message']); }
+        if (isset($_SESSION['success_message'])) {
+            unset($_SESSION['success_message']);
+        }
         $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-        if (isset($_SESSION['error_message'])) { unset($_SESSION['error_message']); }
+        if (isset($_SESSION['error_message'])) {
+            unset($_SESSION['error_message']);
+        }
         // variable sidebar
-        $active_page = 'roles';
+        $active_page = 'usuarios';
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
         require_once __DIR__ . '/../views/usuario/dashboardUsuario.php';
     }
 
-    public function create() {
+    public function create()
+    {
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -81,35 +92,42 @@ class UsuariosController {
         }
     }
 
-    public function viewEdit($id) {
+    public function viewEdit($id)
+    {
         $this->checkAdminAccess();
 
-        $rol = $this->usuarioModel->getRolById($id);
-        if ($rol) {
+        $usuario = $this->usuarioModel->getUsuarioById($id);
+        if ($usuario) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/rol/update.php';
+            require_once __DIR__ . '/../views/usuario/update.php';
         } else {
-            $_SESSION['error_message'] = 'Rol no encontrado.';
-            header('Location: ' . \config\APP_URL . 'roles');
+            $_SESSION['error_message'] = 'Usuario no encontrado.';
+            header('Location: ' . \config\APP_URL . 'usuarios');
             exit();
         }
     }
 
-    public function update() {
+    public function update()
+    {
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idRol = $_POST['Id_Rol'];
-            $rol = $_POST['Rol'];
-            $rolClasificacion = $_POST['Clasificacion_Rol'];
-            $rolEstado = $_POST['Estado_Rol'];
+            $idUsuario = $_POST['Id_Usuario'];
+            $numDocUsuario = $_POST['num_doc_usuario'];
+            $nomUsuario = $_POST['nom_usuario'];
+            $passwordUsuario = $_POST['password_usuario'];
+            $telUsuario = $_POST['tel_usuario'];
+            $emailUsuario = $_POST['email_usuario'];
+            $fechRegUsuario = $_POST['fech_Reg_usuario'];
+            $rolUsuario = $_POST['rol_fk'];
+            $usuarioEstado = $_POST['Estado_Usuario'];
             try {
-                $result = $this->usuarioModel->updateRol($idRol, $rol, $rolClasificacion, $rolEstado);
+                $result = $this->usuarioModel->updateUsuario($idUsuario, $numDocUsuario, $nomUsuario, $passwordUsuario, $telUsuario, $emailUsuario, $fechRegUsuario, $rolUsuario, $usuarioEstado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Rol actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Usuario actualizado exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el rol.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el usuario.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -119,7 +137,8 @@ class UsuariosController {
         }
     }
 
-    public function updateState() {
+    public function updateState()
+    {
         $this->checkAdminAccess();
 
         //Verificar que la petición sea POST y que el contenido sea JSON.
@@ -134,19 +153,19 @@ class UsuariosController {
 
         //Validar que los datos necesarios (id y estado) estén presentes.
         if (isset($data['id']) && isset($data['estado'])) {
-            $idRol = $data['id'];
-            $estadoRol = $data['estado'];
-            
+            $idUsuario = $data['id'];
+            $estadoUsuario = $data['estado'];
+
             try {
                 //Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->usuarioModel->updateRolState($idRol, $estadoRol);
+                $result = $this->usuarioModel->updateUsuariosState($idUsuario, $estadoUsuario);
 
                 //Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del rol actualizado.']);
+                    echo json_encode(['success' => true, 'message' => 'Estado del usuario actualizado.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del rol.']);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado del usuario.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -157,8 +176,9 @@ class UsuariosController {
             echo json_encode(['error' => 'Datos incompletos.']);
         }
     }
-    
-    public function delete() {
+
+    public function delete()
+    {
         $this->checkAdminAccess();
         //Verificar que la petición sea POST y que el contenido sea JSON
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
@@ -195,90 +215,89 @@ class UsuariosController {
     }
 
     // ----------------- REPORTE EN PDF ----------------------------
-    public function generateReportPDF() {
-        $searchText = $_GET['search'] ?? null;
-        $estadoFilter = $_GET['estado'] ?? null;
+    public function generateReportPDF()
+    {
+        // Captura todos los parámetros GET para pasarlos al modelo
+        $filtros = $_GET;
 
-        // Get the new chip filters from the URL
-        $chipFilters = [];
-        foreach ($_GET as $key => $value) {
-            if (strpos($key, 'filtro_') === 0) {
-                $columna = str_replace('filtro_', '', $key);
-                $chipFilters[strtoupper($columna)] = explode(',', $value);
-            }
-        }
+        // Llama al modelo para obtener los datos filtrados
+        $this->usuarioModel = new \models\UsuarioModel();
+        $usuarios = $this->usuarioModel->getFilteredUsuarios($filtros);
 
-        $roles = $this->usuarioModel->getFilteredRoles($searchText, $estadoFilter, $chipFilters);
-
-        // 3. Construir el HTML
-        // ... (el resto de tu código HTML permanece igual) ...
+        // Generación del HTML para el PDF con los datos filtrados
         $html = '
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <title>Reporte de Roles</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-                .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
-                .footer { width: 100%; text-align: center; position: fixed; bottom: 0px; font-size: 10px; color: #555; }
-                .content { margin-top: 60px; margin-bottom: 30px; padding: 20px; }
-                h1 { font-size: 20px; color: #333; }
-                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; word-wrap: break-word; }
-                th { background-color: #45341fd8; color: white; }
-            </style>
-        </head>
-        <body>
-        <div class="header"><h1>Reporte de Roles - Panaderia Wyk</h1></div>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reporte de Usuarios</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            .header { width: 100%; text-align: center; position: fixed; top: 0px; background-color: #f0f0f0; padding: 10px 0; }
+            .footer { width: 100%; text-align: center; position: fixed; bottom: 0px; font-size: 10px; color: #555; }
+            .content { margin-top: 60px; margin-bottom: 30px; padding: 20px; }
+            h1 { font-size: 20px; color: #333; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; word-wrap: break-word; }
+            th { background-color: #45341fd8; color: white; }
+        </style>
+    </head>
+    <body>
+        <div class="header"><h1>Reporte de Usuarios - Panaderia Wyk</h1></div>
         <div class="content">
             <table>
                 <thead>
                     <tr>
+                        <th>Documento</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
                         <th>Rol</th>
-                        <th>clasificación</th>
                         <th>Estado</th>
+                        <th>Fecha de Registro</th>
                     </tr>
                 </thead>
                 <tbody>';
 
-        if (!empty($roles)) {
-            foreach ($roles as $rol) {
-                $estado = ($rol['ESTADO_ROL'] == 1) ? 'Activo' : 'Inactivo';
+        if (!empty($usuarios)) {
+            foreach ($usuarios as $usuario) {
+                $estado = ($usuario['ESTADO_USUARIO'] == 1) ? 'Activo' : 'Inactivo';
                 $html .= '
-                <tr>
-                    <td>' . htmlspecialchars($rol['ROL']) . '</td>
-                    <td>' . htmlspecialchars($rol['CLASIFICACION']) . '</td>
-                    <td>' . $estado . '</td>
-                </tr>';
+            <tr>
+                <td>' . htmlspecialchars($usuario['NUM_DOC']) . '</td>
+                <td>' . htmlspecialchars($usuario['NOMBRE']) . '</td>
+                <td>' . htmlspecialchars($usuario['TEL_USUARIO']) . '</td>
+                <td>' . htmlspecialchars($usuario['EMAIL_USUARIO']) . '</td>
+                <td>' . htmlspecialchars($usuario['NOMBRE_ROL']) . '</td>
+                <td>' . $estado . '</td>
+                <td>' . htmlspecialchars($usuario['FECHA_REGISTRO']) . '</td>
+            </tr>';
             }
         } else {
-            $html .= '<tr><td colspan="3" style="text-align:center;">No se encontraron roles con los filtros aplicados.</td></tr>';
+            $html .= '<tr><td colspan="7" style="text-align:center;">No se encontraron usuarios con los filtros aplicados.</td></tr>';
         }
 
         $html .= '</tbody></table></div></body></html>';
 
-        // 4. Configurar y generar el PDF
+        // Configuración y generación del PDF con Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
         $dompdf = new Dompdf($options);
 
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper('letter', 'landscape');
         $dompdf->render();
 
-        // Manejo de la paginación
         $dompdf->getCanvas()->page_script('
-            $font = $fontMetrics->getFont("Arial", "normal");
-            $size = 10;
-            $page_text = "Página " . $PAGE_NUM . " de " . $PAGE_COUNT;
-            $y = $pdf->get_height() - 25;
-            $x = $pdf->get_width() - 150;
-            $pdf->text($x, $y, $page_text, $font, $size);
-        ');
+        $font = $fontMetrics->getFont("Arial", "normal");
+        $size = 10;
+        $page_text = "Página " . $PAGE_NUM . " de " . $PAGE_COUNT;
+        $y = $pdf->get_height() - 25;
+        $x = $pdf->get_width() - 150;
+        $pdf->text($x, $y, $page_text, $font, $size);
+    ');
 
-        // Envía el PDF al navegador
-        $dompdf->stream("Reporte_Roles.pdf", array("Attachment" => false));
+        $dompdf->stream("Reporte_Usuarios.pdf", array("Attachment" => false));
     }
 }

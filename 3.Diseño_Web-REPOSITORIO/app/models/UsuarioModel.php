@@ -1,5 +1,7 @@
 <?php
+
 namespace models;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -7,14 +9,17 @@ error_reporting(E_ALL);
 use \config\Connection;
 use \PDO;
 
-class UsuarioModel {
+class UsuarioModel
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Connection::getConnection();
     }
 
-    public function getUsuarios() {
+    public function getUsuarios()
+    {
         try {
             $sql = "CALL CONSULTAR_USUARIO";
             $stmt = $this->db->prepare($sql);
@@ -26,7 +31,8 @@ class UsuarioModel {
         }
     }
 
-    public function getCantUsuariosExistentes() {
+    public function getCantUsuariosExistentes()
+    {
         try {
             $sql = "SELECT COUNT(*) AS total FROM USUARIO";
             $stmt = $this->db->prepare($sql);
@@ -38,7 +44,8 @@ class UsuarioModel {
         }
     }
 
-    public function getCantUsuariosActivos() {
+    public function getCantUsuariosActivos()
+    {
         try {
             $sql = "SELECT COUNT(*) AS total FROM USUARIO WHERE ESTADO_USUARIO = 1";
             $stmt = $this->db->prepare($sql);
@@ -50,7 +57,8 @@ class UsuarioModel {
         }
     }
 
-    public function getCantUsuariosInactivos() {
+    public function getCantUsuariosInactivos()
+    {
         try {
             $sql = "SELECT COUNT(*) AS total FROM USUARIO WHERE ESTADO_USUARIO = 0";
             $stmt = $this->db->prepare($sql);
@@ -62,7 +70,8 @@ class UsuarioModel {
         }
     }
 
-    public function checkIfUsuarioExists($numDocUsuario, $nomUsuario) {
+    public function checkIfUsuarioExists($numDocUsuario, $nomUsuario)
+    {
         try {
             $sql = "SELECT COUNT(*) FROM USUARIO WHERE NUM_DOC = :num_doc_usuario OR NOMBRE = :name_usuario";
             $stmt = $this->db->prepare($sql);
@@ -76,7 +85,8 @@ class UsuarioModel {
         }
     }
 
-    public function createUsuario($numDocUsuario, $nomUsuario, $passwordUsuario, $telUsuario, $emailUsuario, $fechRegUsuario, $rolUsuario) {
+    public function createUsuario($numDocUsuario, $nomUsuario, $passwordUsuario, $telUsuario, $emailUsuario, $fechRegUsuario, $rolUsuario)
+    {
         try {
             $sql = "CALL INSERTAR_USUARIO(:num_doc_usuario, :nom_usuario, :password_usuario, :tel_email, :email_usuario, :fech_reg_usuario, :rol_usuario, :rol_estado)";
             $stmt = $this->db->prepare($sql);
@@ -90,49 +100,72 @@ class UsuarioModel {
             $stmt->bindValue(':rol_estado', 1, \PDO::PARAM_INT); // Estado activo por defecto
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función createCargo: " . $e->getMessage());
+            error_log("Error en la función createUsuario: " . $e->getMessage());
             return null;
         }
     }
 
-    public function getRolById($idRol) {
+    public function getUsuarioById($idUsuario)
+    {
         try {
-            $sql = "SELECT * FROM ROL WHERE ID_ROL = :id_rol";
+            $sql = "SELECT 
+                    U.ID_USUARIO,
+                    U.NUM_DOC,
+                    U.NOMBRE,
+                    U.PASSWORD_USUARIO,
+                    U.TEL_USUARIO,
+                    U.EMAIL_USUARIO,
+                    U.FECHA_REGISTRO,
+                    U.ROL_FK_USUARIO,
+                    R.ROL AS NOMBRE_ROL,
+                    U.ESTADO_USUARIO
+                FROM USUARIO U
+                INNER JOIN ROL R ON U.ROL_FK_USUARIO = R.ID_ROL
+                WHERE U.ID_USUARIO = :id_usuario
+                ORDER BY U.ID_USUARIO;
+            ";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_usuario', $idUsuario, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getRolById: " . $e->getMessage());
+            error_log("Error en la función getUsuarioById: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateRol($idRol, $rol, $rolCategoria, $rolEstado) {
+    public function updateUsuario($idUsuario, $numDocUsuario, $nomUsuario, $passwordUsuario, $telUsuario, $emailUsuario, $fechRegUsuario, $rolUsuario, $usuarioEstado)
+    {
         try {
-            $sql = "CALL ACTUALIZAR_ROL(:id_rol, :rol, :rol_clasificacion, :rol_estado)";
+            $sql = "CALL ACTUALIZAR_USUARIO(:id_usuario, :num_doc_usuario, :nom_usuario, :password_usuario, :tel_usuario, :email_usuario, :fech_reg_usuario, :rol_usuario, :usuario_estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idRol, \PDO::PARAM_INT);
-            $stmt->bindParam(':rol', $rol, \PDO::PARAM_STR);
-            $stmt->bindParam(':rol_clasificacion', $rolCategoria, \PDO::PARAM_STR);
-            $stmt->bindValue(':rol_estado', $rolEstado, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_usuario', $idUsuario, \PDO::PARAM_INT);
+            $stmt->bindParam(':num_doc_usuario', $numDocUsuario, \PDO::PARAM_INT);
+            $stmt->bindParam(':nom_usuario', $nomUsuario, \PDO::PARAM_STR);
+            $stmt->bindParam(':password_usuario', $passwordUsuario, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel_usuario', $telUsuario, \PDO::PARAM_INT);
+            $stmt->bindParam(':email_usuario', $emailUsuario, \PDO::PARAM_STR);
+            $stmt->bindParam(':fech_reg_usuario', $fechRegUsuario, \PDO::PARAM_STR);
+            $stmt->bindParam(':rol_usuario', $rolUsuario, \PDO::PARAM_STR);
+            $stmt->bindValue(':usuario_estado', $usuarioEstado, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función updateRol: " . $e->getMessage());
+            error_log("Error en la función updateUsuario: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateRolState($idRol, $estadoRol) {
+    public function updateUsuariosState($idUsuario, $estadoUsuario)
+    {
         try {
             // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE ROL SET ESTADO_ROL = :estado WHERE ID_ROL = :id";
+            $sql = "UPDATE USUARIO SET ESTADO_USUARIO = :estado WHERE ID_USUARIO = :id";
             $stmt = $this->db->prepare($sql);
 
             // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoRol, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idRol, \PDO::PARAM_INT);
-            
+            $stmt->bindParam(':estado', $estadoUsuario, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $idUsuario, \PDO::PARAM_INT);
+
             $stmt->execute();
 
             // Verificar si se actualizó al menos una fila.
@@ -144,7 +177,8 @@ class UsuarioModel {
         }
     }
 
-    public function deleteUsuario($idRol) {
+    public function deleteUsuario($idRol)
+    {
         try {
             $sql = "CALL ELIMINAR_USUARIO(:id_rol)";
             $stmt = $this->db->prepare($sql);
@@ -156,48 +190,102 @@ class UsuarioModel {
         }
     }
 
-    public function getFilteredRoles($searchText = null, $estado = null, $chipFilters = []) {
-        $sql = "SELECT * FROM ROL WHERE 1=1";
-        $params = [];
+public function getFilteredUsuarios($filtros = [])
+{
+    $sql = "SELECT U.*, R.ROL AS NOMBRE_ROL FROM USUARIO U JOIN ROL R ON U.ROL_FK_USUARIO = R.ID_ROL";
+    $whereClauses = [];
+    $params = [];
 
-        // Filter by text search (ROL or CLASIFICACION)
-        if (!empty($searchText)) {
-            $sql .= " AND (ROL LIKE ? OR CLASIFICACION LIKE ?)";
-            $params[] = '%' . $searchText . '%';
-            $params[] = '%' . $searchText . '%';
+    // Filtro de búsqueda de texto global
+    if (!empty($filtros['search'])) {
+        $searchText = '%' . $filtros['search'] . '%';
+        $whereClauses[] = "(U.NUM_DOC LIKE ? OR U.NOMBRE LIKE ? OR U.TEL_USUARIO LIKE ? OR U.EMAIL_USUARIO LIKE ? OR R.ROL LIKE ?)";
+        $params[] = $searchText;
+        $params[] = $searchText;
+        $params[] = $searchText;
+        $params[] = $searchText;
+        $params[] = $searchText;
+    }
+
+    // Filtro de estado
+    if (isset($filtros['estado'])) {
+        if ($filtros['estado'] === 'activo') {
+            $whereClauses[] = "U.ESTADO_USUARIO = 1";
+        } elseif ($filtros['estado'] === 'inactivo') {
+            $whereClauses[] = "U.ESTADO_USUARIO = 0";
         }
+    }
 
-        // Filter by role status
-        if ($estado === 'activo') {
-            $sql .= " AND ESTADO_ROL = 1";
-        } elseif ($estado === 'inactivo') {
-            $sql .= " AND ESTADO_ROL = 0";
-        }
+    // Filtros por chips y rangos
+    foreach ($filtros as $key => $value) {
+        if (strpos($key, 'filtro_') === 0) {
+            $columna = str_replace('filtro_', '', $key);
+            $valores = explode(',', $value);
+            
+            $columnaDB = "";
+            switch (strtoupper($columna)) {
+                case 'DOCUMENTO':
+                    $columnaDB = 'U.NUM_DOC';
+                    break;
+                case 'NOMBRE':
+                    $columnaDB = 'U.NOMBRE';
+                    break;
+                case 'TELEFONO':
+                    $columnaDB = 'U.TEL_USUARIO';
+                    break;
+                case 'CORREO':
+                case 'EMAIL': // Añadido para manejar el caso que enviaste en la URL
+                    $columnaDB = 'U.EMAIL_USUARIO';
+                    break;
+                case 'ROL':
+                    $columnaDB = 'R.ROL';
+                    break;
+                case 'FECHA_REGISTRO':
+                    $columnaDB = 'U.FECHA_REGISTRO';
+                    break;
+            }
 
-        // Loop through the chip filters
-        foreach ($chipFilters as $columna => $valores) {
-            // Decodificar el nombre de la columna que viene de la URL
-            $columnaDecodificada = urldecode($columna);
-
-            // Validar la columna decodificada
-            if (in_array($columnaDecodificada, ['ROL', 'CLASIFICACION'])) {
+            if (!empty($columnaDB) && !empty($valores)) {
                 $placeholders = implode(',', array_fill(0, count($valores), '?'));
-                $sql .= " AND " . $columnaDecodificada . " IN (" . $placeholders . ")";
-                foreach ($valores as $valor) {
-                    // Decodifica los valores de la URL
-                    $params[] = urldecode($valor);
+                $whereClauses[] = $columnaDB . " IN (" . $placeholders . ")";
+                foreach ($valores as $val) {
+                    $params[] = $val;
                 }
             }
         }
+    }
 
+    // Filtro de rango de fechas
+    if (isset($filtros['fecha_inicio']) && isset($filtros['fecha_fin'])) {
         try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $fechaInicio = new \DateTime($filtros['fecha_inicio']);
+            $fechaFin = new \DateTime($filtros['fecha_fin']);
 
-        } catch (\PDOException $e) {
-            error_log("Error al obtener roles filtrados: " . $e->getMessage());
-            return [];
+            if (isset($filtros['diaCompleto']) && $filtros['diaCompleto'] === 'true') {
+                $fechaFin->setTime(23, 59, 59);
+            }
+
+            $whereClauses[] = "U.FECHA_REGISTRO BETWEEN ? AND ?";
+            $params[] = $fechaInicio->format('Y-m-d H:i:s');
+            $params[] = $fechaFin->format('Y-m-d H:i:s');
+
+        } catch (\Exception $e) {
+            error_log("Error al procesar fechas de filtro: " . $e->getMessage());
         }
     }
+
+    // Construye la cláusula WHERE si hay filtros
+    if (!empty($whereClauses)) {
+        $sql .= " WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    try {
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    } catch (\PDOException $e) {
+        error_log("Error al obtener usuarios filtrados: " . $e->getMessage());
+        return [];
+    }
+}
 }

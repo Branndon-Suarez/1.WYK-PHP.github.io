@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const deleteButtons = document.querySelectorAll('.delete-empleado');
+    const deleteButtons = document.querySelectorAll('.delete-matPrima');
     deleteButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
-            const targetButton = event.target.closest('.delete-empleado');
-            const empleadoId = targetButton.dataset.id;
+            const targetButton = event.target.closest('.delete-matPrima');
+            const matPrimaId = targetButton.dataset.id;
             
             const result = await Swal.fire({
                 title: '¿Estás seguro?',
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                const url = `${APP_URL}empleados/delete`;
+                const url = `${APP_URL}materiasPrimas/delete`;
                 try {
                     const response = await fetch(url, {
                         method: 'POST',
@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            id: empleadoId
+                            id: matPrimaId
                         })
                     });
 
                     const data = await response.json();
 
                     if (!response.ok) {
-                        Swal.fire('Error', data.error || 'No se pudo eliminar el empleado porque esta conectado con otro(s) registros.', 'error');
+                        Swal.fire('Error', data.error || 'No se pudo eliminar la materia porque esta conectada con otro(s) registros.', 'error');
                     } else {
                         Swal.fire('¡Eliminado!', data.message, 'success')
                             .then(() => {

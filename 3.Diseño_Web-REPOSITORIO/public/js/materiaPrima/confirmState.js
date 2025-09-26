@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkbox = switchElement.previousElementSibling;
         
         checkbox.addEventListener('change', async (event) => {
-            const empleadoId = event.target.dataset.id;
+            const Id = event.target.dataset.id;
             const nuevoEstado = event.target.checked ? 1 : 0;
 
             const result = await Swal.fire({
                 title: '¿Estás seguro?',
-                text: `¿Quieres ${nuevoEstado === 1 ? 'activar' : 'desactivar'} este empleado?`,
+                text: `¿Quieres ${nuevoEstado === 1 ? 'activar' : 'desactivar'} esta materia prima?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                const url = `${APP_URL}empleados/updateState`;
+                const url = `${APP_URL}materiasPrimas/updateState`;
 
                 try {
                     const response = await fetch(url, {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            id: empleadoId,
+                            id: Id,
                             estado: nuevoEstado
                         })
                     });
@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } catch (error) {
                     console.error('Error en la petición fetch:', error);
+                    // Si la petición falla por problemas de conexión.
                     event.target.checked = !event.target.checked;
                     Swal.fire({
                         icon: 'error',
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
             } else {
+                // Si el usuario cancela, revierte el estado del switch.
                 event.target.checked = !event.target.checked;
             }
         });

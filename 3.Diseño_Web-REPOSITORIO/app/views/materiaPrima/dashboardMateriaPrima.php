@@ -25,7 +25,7 @@
             <i data-feather="sliders" style="width:18px;height:18px;color:#94a3b8;"></i>
           </button>
         </div>
-        <a href="<?php echo \config\APP_URL; ?>productos/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nuevo producto</button></a>
+        <a href="<?php echo \config\APP_URL; ?>materiasPrimas/create" rel="noopener noreferrer"><button type="button" class="btn btn-primary">+ Nueva materia prima</button></a>
       </header>
 
       <div class="layout">
@@ -51,8 +51,8 @@
           <section class="stats">
             <div class="stat">
               <div>
-                <div class="muted">Productos existentes</div>
-                <div class="kpi"><?php echo $dashboardDataProductos['productosExistentes']; ?></div>
+                <div class="muted">Materias primas existentes</div>
+                <div class="kpi"><?php echo $dashboardDataMatPrimas['matPrimasExistentes']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -66,8 +66,8 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Productos activos</div>
-                <div class="kpi"><?php echo $dashboardDataProductos['productosActivos']; ?></div>
+                <div class="muted">Materias primas activas</div>
+                <div class="kpi"><?php echo $dashboardDataMatPrimas['matPrimasActivas']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -81,8 +81,8 @@
             </div>
             <div class="stat">
               <div>
-                <div class="muted">Productos inactivos</div>
-                <div class="kpi"><?php echo $dashboardDataProductos['productosInactivos']; ?></div>
+                <div class="muted">Materias primas inactivas</div>
+                <div class="kpi"><?php echo $dashboardDataMatPrimas['matPrimasInactivas']; ?></div>
               </div>
               <div class="icon">
                 <lord-icon
@@ -96,12 +96,12 @@
             </div>
           </section><br><br>
 
-          <!-- Tabla de productos -->
+          <!-- Tabla de materias primas -->
           <div class="section-reportes">
-            <table id="tablaProductos" class="tabla-consultas">
+            <table id="tablaMatPrimas" class="tabla-consultas">
               <tbody>
                 <div class="table-header">
-                  <strong>Tabla de productos</strong>
+                  <strong>Tabla de Materias Primas</strong>
                   <div style="display:flex; gap:8px;">
                     <button id="generatePdfBtn" style="display:flex; align-items:center;" class="btn btn-ghost btp-personalizado">
                       <span>Generar PDF</span>
@@ -119,9 +119,10 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Valor unitario</th>
-                    <th>Cantidad Existente</th>
                     <th>Fecha Vencimiento</th>
-                    <th>Tipo</th>
+                    <th>Cantidad Existente</th>
+                    <th>Presentación</th>
+                    <th>Descipción</th>
                     <th>Registrado por</th>
                     <th>Estado</th>
                     <th colspan="3" style="text-align:center">Acciones</th>
@@ -129,27 +130,28 @@
                 </thead>
                 <?php
 
-                if ($dashboardDataProductos['productos']) {
-                  foreach ($dashboardDataProductos['productos'] as $producto) {
-                    $switchIdRol = "switch_" . $producto['ID_PRODUCTO'];
-                    $estado = $producto['ESTADO_PRODUCTO'] == 1 ? true : false;
+                if ($dashboardDataMatPrimas['matPrimas']) {
+                  foreach ($dashboardDataMatPrimas['matPrimas'] as $matPrima) {
+                    $switchIdRol = "switch_" . $matPrima['ID_MATERIA_PRIMA'];
+                    $estado = $matPrima['ESTADO_MATERIA_PRIMA'] == 1 ? true : false;
                 ?>
                     <tr>
-                      <td> <?php echo htmlspecialchars($producto['NOMBRE_PRODUCTO']); ?></td>
-                      <td> <?php echo htmlspecialchars($producto['VALOR_UNITARIO_PRODUCTO']); ?></td>
-                      <td> <?php echo htmlspecialchars($producto['CANT_EXIST_PRODUCTO']); ?></td>
-                      <td> <?php echo htmlspecialchars($producto['FECHA_VENCIMIENTO_PRODUCTO']); ?></td>
-                      <td> <?php echo htmlspecialchars($producto['TIPO_PRODUCTO']); ?></td>
-                      <td> <?php echo htmlspecialchars($producto['USUARIO_REGISTRO']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['NOMBRE_MATERIA_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['VALOR_UNITARIO_MAT_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['FECHA_VENCIMIENTO_MATERIA_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['CANTIDAD_EXIST_MATERIA_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['PRESENTACION_MATERIA_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['DESCRIPCION_MATERIA_PRIMA']); ?></td>
+                      <td> <?php echo htmlspecialchars($matPrima['USUARIO_REGISTRO']); ?></td>
                       <td>
                         <input id="<?php echo $switchIdRol; ?>" type="checkbox" <?php echo $estado ? 'checked' : ''; ?>
-                          data-id="<?php echo htmlspecialchars($producto['ID_PRODUCTO']); ?>" ;>
+                          data-id="<?php echo htmlspecialchars($matPrima['ID_MATERIA_PRIMA']); ?>" ;>
                         <label for="<?php echo $switchIdRol; ?>" class="check-trail">
                           <span class="check-handler"></span>
                         </label>
                       </td>
                       <td>
-                        <a href="<?php echo \config\APP_URL . 'productos/viewEdit/' . htmlspecialchars($producto['ID_PRODUCTO']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
+                        <a href="<?php echo \config\APP_URL . 'materiasPrimas/viewEdit/' . htmlspecialchars($matPrima['ID_MATERIA_PRIMA']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
                           <lord-icon
                             src="https://cdn.lordicon.com/ibckyoan.json"
                             trigger="hover"
@@ -158,7 +160,7 @@
                           </lord-icon>
                         </a>
                       </td>
-                      <td><button data-id="<?= $producto['ID_PRODUCTO'] ?>" class='btn btn-sm btn-danger delete-producto'>
+                      <td><button data-id="<?= $matPrima['ID_MATERIA_PRIMA'] ?>" class='btn btn-sm btn-danger delete-matPrima'>
                           <lord-icon
                             src="https://cdn.lordicon.com/oqeixref.json"
                             trigger="morph"
@@ -173,7 +175,7 @@
                 } else {
                   ?>
                   <tr>
-                    <td colspan='5' style="text-align:center;">No hay productos disponibles.</td>
+                    <td colspan='5' style="text-align:center;">No hay materia prima disponible.</td>
                   </tr>
                 <?php
                 }
@@ -207,12 +209,12 @@
     <!-- JS para CRUD -->
     <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script><!-- GRAFICAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/confirmState.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/confirmDelete.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/materiaPrima/confirmState.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/materiaPrima/confirmDelete.js"></script>
 
     <!-- JS para busquedas personalizadas (y PDF) -->
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/busquedaFiltro.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/PDFgenerateFilter.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/materiaPrima/busquedaFiltro.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/materiaPrima/PDFgenerateFilter.js"></script>
 </body>
 
 </html>

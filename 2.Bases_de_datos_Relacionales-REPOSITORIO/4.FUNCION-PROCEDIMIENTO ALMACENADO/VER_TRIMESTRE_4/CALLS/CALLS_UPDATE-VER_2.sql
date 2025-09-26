@@ -33,7 +33,7 @@ CALL ACTUALIZAR_AJUSTE_INVENTARIO(2, NOW(), 'PERDIDA', 3, 'Pérdida ajustada', 1
 
 -- CALL PROCEDIMIENTO ACTUALIZAR MATERIA_PRIMA
 -- Ejemplo: actualizar cantidad y estado
-CALL ACTUALIZAR_MATERIA_PRIMA(1, 'Harina Trigo', '2026-01-01', 480, 'Kg', 'Harina de alta calidad', 2, 1);
+CALL ACTUALIZAR_MATERIA_PRIMA(1, 'Harina TrigoSS', 55555, '2026-01-01', 480, 'Kg', 'Harina de alta calidad', 2, 1);
 
 -- CALL PROCEDIMIENTO ACTUALIZAR COMPRA
 -- Ejemplo: actualizar total y estado factura

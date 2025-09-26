@@ -6,27 +6,27 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \models\ProductoModel;
+use \models\MateriaPrimaModel;
 use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class ProductosController
+class MateriasPrimasController
 {
-    private $productoModel;
+    private $materiaPrimaModel;
 
     public function __construct()
     {
-        $this->productoModel = new ProductoModel();
+        $this->materiaPrimaModel = new MateriaPrimaModel();
     }
 
     public function listar()
     {
         try {
-            $productos = $this->productoModel->listarProductos();
+            $materiasPrimas = $this->materiaPrimaModel->listarMateriasPrimas();
 
             header('Content-Type: application/json');
-            echo json_encode($productos);
+            echo json_encode($materiasPrimas);
         } catch (\Exception $e) {
             http_response_code(500);
             echo json_encode([
@@ -50,11 +50,11 @@ class ProductosController
     {
         $this->checkAdminAccess();
 
-        $dashboardDataProductos = [
-            'productosExistentes' => $this->productoModel->getCantProdExistentes(),
-            'productosActivos' => $this->productoModel->getCantProdActivos(),
-            'productosInactivos' => $this->productoModel->getCanProdInactivos(),
-            'productos' => $this->productoModel->getProductos()
+        $dashboardDataMatPrimas = [
+            'matPrimasExistentes' => $this->materiaPrimaModel->getCantMatPrimaExistentes(),
+            'matPrimasActivas' => $this->materiaPrimaModel->getCantMatPrimaActivos(),
+            'matPrimasInactivas' => $this->materiaPrimaModel->getCanMatPrimaInactivos(),
+            'matPrimas' => $this->materiaPrimaModel->getMatPrimas()
         ];
 
         // Mensajes de sesión
@@ -70,19 +70,7 @@ class ProductosController
         $active_page = 'usuarios';
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/producto/dashboardProducto.php';
-    }
-
-    public function getProductosAjax() {
-        $this->checkAdminAccess();
-        header('Content-Type: application/json');
-        try {
-            $productos = $this->productoModel->getProductos();
-            echo json_encode(['success' => true, 'data' => $productos]);
-        } catch (\Exception $e) {
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-        }
-        exit();
+        require_once __DIR__ . '/../views/materiaPrima/dashboardMateriaPrima.php';
     }
 
     public function create()
@@ -90,24 +78,24 @@ class ProductosController
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProd = $_POST['id_prod'];
-            $nombreProd = $_POST['name_prod'];
-            $valorUnitProd = $_POST['valor_unit_prod'];
-            $cantExistProd = $_POST['cant_exist_prod'];
-            $fechVencProd = $_POST['fech_venc_prod'];
-            $tipoProd = $_POST['tipo_prod'];
+            $nombre = $_POST['nombre'];
+            $valorUnitario = $_POST['valor_unit'];
+            $fechVenc = $_POST['fech_venc'];
+            $cantExist = $_POST['cant_exist'];
+            $presentacion = $_POST['presentacion'];
+            $descripcion = $_POST['descripcion'];
             try {
-                if ($this->productoModel->checkIfProdExists($idProd, $nombreProd)) {
-                    echo json_encode(['success' => false, 'message' => 'El producto ya existe.']);
+                if ($this->materiaPrimaModel->checkIfMatPrimaExists($nombre)) {
+                    echo json_encode(['success' => false, 'message' => 'La materia prima ya existe.']);
                     return;
                 }
 
-                $result = $this->productoModel->createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd);
+                $result = $this->materiaPrimaModel->createMatPrima($nombre, $valorUnitario, $fechVenc, $cantExist, $presentacion, $descripcion);
                 if ($result) {
                     // Si es exitoso, responde con un JSON de éxito.
-                    echo json_encode(['success' => true, 'message' => 'Producto creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Materia prima creada exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el producto.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear la materia prima.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
@@ -115,7 +103,7 @@ class ProductosController
             exit();
         } else {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/producto/create.php';
+            require_once __DIR__ . '/../views/materiaPrima/create.php';
         }
     }
 
@@ -123,13 +111,13 @@ class ProductosController
     {
         $this->checkAdminAccess();
 
-        $producto = $this->productoModel->obtenerProductoPorId($id);
-        if ($producto) {
+        $materiaPrima = $this->materiaPrimaModel->getMatPrimaById($id);
+        if ($materiaPrima) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/producto/update.php';
+            require_once __DIR__ . '/../views/materiaPrima/update.php';
         } else {
-            $_SESSION['error_message'] = 'Producto no encontrado.';
-            header('Location: ' . \config\APP_URL . 'productos');
+            $_SESSION['error_message'] = 'Materia prima no encontrada.';
+            header('Location: ' . \config\APP_URL . 'materiasPrimas');
             exit();
         }
     }
@@ -139,20 +127,21 @@ class ProductosController
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProd = $_POST['Id_Prod'];
-            $nombreProd = $_POST['name_prod'];
-            $valorUnitProd = $_POST['valor_unit_prod'];
-            $cantExistProd = $_POST['cant_exist_prod'];
-            $fechVencProd = $_POST['fech_venc_prod'];
-            $tipoProd = $_POST['tipo_prod'];
-            $estadoProd = $_POST['estado_producto'];
+            $id = $_POST['id'];
+            $nombre = $_POST['nombre'];
+            $valorUnit = $_POST['valorUnit'];
+            $fechVenc = $_POST['fechVenc'];
+            $cantExist = $_POST['cantExist'];
+            $presentacion = $_POST['presentacion'];
+            $descripcion = $_POST['descripcion'];
+            $estado = $_POST['estado'];
             try {
-                $result = $this->productoModel->updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd);
+                $result = $this->materiaPrimaModel->updateMatPrima($id, $nombre, $valorUnit, $fechVenc, $cantExist, $presentacion, $descripcion, $estado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Producto actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Materia prima actualizada exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el producto.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la materia prima.']);
                     exit();
                 }
             } catch (\Exception $e) {
@@ -178,19 +167,19 @@ class ProductosController
 
         //Validar que los datos necesarios (id y estado) estén presentes.
         if (isset($data['id']) && isset($data['estado'])) {
-            $idProd = $data['id'];
-            $estadoProd = $data['estado'];
+            $id = $data['id'];
+            $estado = $data['estado'];
 
             try {
                 //Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->productoModel->updateProdState($idProd, $estadoProd);
+                $result = $this->materiaPrimaModel->updateMatPrimaState($id, $estado);
 
                 //Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del prodcuto actualizado.']);
+                    echo json_encode(['success' => true, 'message' => 'Estado de la materia prima actualizada.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del prodcuto.']);
+                    echo json_encode(['error' => 'No se pudo actualizar el estado de la materia prima.']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -217,17 +206,17 @@ class ProductosController
 
         //Validar que el ID esté presente
         if (isset($data['id'])) {
-            $idProd = $data['id'];
+            $id = $data['id'];
 
             try {
                 //Llamar al modelo para eliminar el registro
-                $result = $this->productoModel->deleteProd($idProd);
+                $result = $this->materiaPrimaModel->deleteMatPrima($id);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Producto eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Materia prima eliminada con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el producto. Esta relacionado con otro(s) registros']);
+                    echo json_encode(['error' => 'No se pudo eliminar la materia prima. Esta relacionada con otro(s) registros']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -246,8 +235,8 @@ class ProductosController
         $filtros = $_GET;
 
         // Llama al modelo para obtener los datos filtrados
-        $this->usuarioModel = new \models\UsuarioModel();
-        $usuarios = $this->usuarioModel->getFilteredUsuarios($filtros);
+        $this->materiaPrimaModel = new \models\UsuarioModel();
+        $usuarios = $this->materiaPrimaModel->getFilteredUsuarios($filtros);
 
         // Generación del HTML para el PDF con los datos filtrados
         $html = '

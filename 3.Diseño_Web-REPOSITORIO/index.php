@@ -80,7 +80,7 @@ if ($vista === 'api' && isset($request[1]) && $request[1] === 'tareas') {
     exit;
 }
 
-$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'tareas', 'productos', 'ventas', 'pedidos'];
+$validViews = ['home', 'login', 'logout', 'dashboard', 'roles', 'usuarios', 'tareas', 'productos', 'ventas', 'pedidos', 'ajusteInventario', 'materiasPrimas'];
 
 if (in_array($vista, $validViews)) {
     switch ($vista) {
@@ -125,6 +125,8 @@ if (in_array($vista, $validViews)) {
         case 'tareas':
         case 'productos':
         case 'ventas':
+        case 'ajusteInventario':
+        case 'materiasPrimas':
             if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 $controllerName = ucfirst($vista) . 'Controller';
                 $fullControllerName = '\\controllers\\' . $controllerName;

@@ -5,7 +5,7 @@ namespace models;
 use \config\Connection;
 use \PDO;
 
-class ProductoModel
+class MateriaPrimaModel
 {
     private $db;
 
@@ -14,9 +14,9 @@ class ProductoModel
         $this->db = Connection::getConnection();
     }
 
-    public function getProductos() {
+    public function getMatPrimas() {
         try {
-            $sql = "CALL CONSULTAR_PRODUCTO";
+            $sql = "CALL CONSULTAR_MATERIA_PRIMA";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -26,17 +26,18 @@ class ProductoModel
         }
     }
 
-    public function listarProductos()
+    public function listarMateriasPrimas()
     {
         $sql = "SELECT 
-                    ID_PRODUCTO, 
-                    NOMBRE_PRODUCTO, 
-                    VALOR_UNITARIO_PRODUCTO, 
-                    CANT_EXIST_PRODUCTO, 
-                    FECHA_VENCIMIENTO_PRODUCTO,
-                    TIPO_PRODUCTO,
-                    ESTADO_PRODUCTO
-                FROM PRODUCTO";
+                    ID_MATERIA_PRIMA, 
+                    NOMBRE_MATERIA_PRIMA, 
+                    FECHA_VENCIMIENTO_MATERIA_PRIMA, 
+                    CANTIDAD_EXIST_MATERIA_PRIMA, 
+                    PRESENTACION_MATERIA_PRIMA,
+                    DESCRIPCION_MATERIA_PRIMA,
+                    ID_USUARIO_FK_MATERIA_PRIMA,
+                    ESTADO_MATERIA_PRIMA
+                FROM MATERIA_PRIMA";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
@@ -46,21 +47,22 @@ class ProductoModel
     /**
      * Obtener un producto por su ID
      */
-    public function obtenerProductoPorId($id) {
-        $sql = "SELECT 
-                P.ID_PRODUCTO,
-                P.NOMBRE_PRODUCTO,
-                P.VALOR_UNITARIO_PRODUCTO,
-                P.CANT_EXIST_PRODUCTO,
-                P.FECHA_VENCIMIENTO_PRODUCTO,
-                P.TIPO_PRODUCTO,
-                P.ID_USUARIO_FK_PRODUCTO,
+    public function getMatPrimaById($id) {
+        $sql = "SELECT
+                M.ID_MATERIA_PRIMA,
+                M.NOMBRE_MATERIA_PRIMA,
+                M.VALOR_UNITARIO_MAT_PRIMA,
+                M.FECHA_VENCIMIENTO_MATERIA_PRIMA,
+                M.CANTIDAD_EXIST_MATERIA_PRIMA,
+                M.PRESENTACION_MATERIA_PRIMA,
+                M.DESCRIPCION_MATERIA_PRIMA,
+                M.ID_USUARIO_FK_MATERIA_PRIMA,
                 U.NOMBRE AS USUARIO_REGISTRO,
-                P.ESTADO_PRODUCTO
-            FROM PRODUCTO P
-            INNER JOIN USUARIO U ON P.ID_USUARIO_FK_PRODUCTO = U.ID_USUARIO
-            WHERE P.ID_PRODUCTO = :id
-            ORDER BY P.ID_PRODUCTO";
+                M.ESTADO_MATERIA_PRIMA
+            FROM MATERIA_PRIMA M
+            INNER JOIN USUARIO U ON M.ID_USUARIO_FK_MATERIA_PRIMA = U.ID_USUARIO
+            WHERE M.ID_MATERIA_PRIMA = :id
+            ORDER BY M.ID_MATERIA_PRIMA";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -69,50 +71,49 @@ class ProductoModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getCantProdExistentes() {
+    public function getCantMatPrimaExistentes() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM PRODUCTO";
+            $sql = "SELECT COUNT(*) AS total FROM MATERIA_PRIMA";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantProdExistentes: " . $e->getMessage());
+            error_log("Error en la función getCantMatPrimaExistentes: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCantProdActivos() {
+    public function getCantMatPrimaActivos() {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM PRODUCTO WHERE ESTADO_PRODUCTO = 1";
+            $sql = "SELECT COUNT(*) AS total FROM MATERIA_PRIMA WHERE ESTADO_MATERIA_PRIMA = 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCantRolesActivos: " . $e->getMessage());
+            error_log("Error en la función getCantMatPrimaActivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function getCanProdInactivos()
+    public function getCanMatPrimaInactivos()
     {
         try {
-            $sql = "SELECT COUNT(*) AS total FROM PRODUCTO WHERE ESTADO_PRODUCTO = 0";
+            $sql = "SELECT COUNT(*) AS total FROM MATERIA_PRIMA WHERE ESTADO_MATERIA_PRIMA = 0";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchColumn();
         } catch (\PDOException $e) {
-            error_log("Error en la función getCanProdInactivos: " . $e->getMessage());
+            error_log("Error en la función getCanMatPrimaInactivos: " . $e->getMessage());
             return 0;
         }
     }
 
-    public function checkIfProdExists($idProd, $nombreProd)
+    public function checkIfMatPrimaExists($nombre)
     {
         try {
-            $sql = "SELECT COUNT(*) FROM PRODUCTO WHERE ID_PRODUCTO = :id_prod OR NOMBRE_PRODUCTO = :nombre_prod";
+            $sql = "SELECT COUNT(*) FROM MATERIA_PRIMA WHERE NOMBRE_MATERIA_PRIMA = :nombre";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
+            $stmt->bindParam(':nombre', $nombre, \PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetchColumn() > 0;
         } catch (\PDOException $e) {
@@ -121,39 +122,40 @@ class ProductoModel
         }
     }
 
-    public function createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd)
+    public function createMatPrima($nombre, $valorUnitario, $fechVenc, $cantExist, $presentacion, $descripcion)
     {
         try {
-            $sql = "CALL INSERTAR_PRODUCTO(:id_prod, :nombre_prod, :valor_unit_prod, :cant_exist_prod, :fech_venc_prod, :tipo_prod, :usuario_FK, :prod_estado)";
+            $sql = "CALL INSERTAR_MATERIA_PRIMA(:nombre, :valorUnitario, :fechVenc, :cantExist, :presentacion, :descripcion, :usuario_fk, :estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':valor_unit_prod', $valorUnitProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':cant_exist_prod', $cantExistProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':fech_venc_prod', $fechVencProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':tipo_prod', $tipoProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':usuario_FK', $_SESSION['userId'], \PDO::PARAM_INT);
-            $stmt->bindValue(':prod_estado', 1, \PDO::PARAM_INT);
+            $stmt->bindParam(':nombre', $nombre, \PDO::PARAM_STR);
+            $stmt->bindParam(':valorUnitario', $valorUnitario, \PDO::PARAM_INT);
+            $stmt->bindParam(':fechVenc', $fechVenc, \PDO::PARAM_STR);
+            $stmt->bindParam(':cantExist', $cantExist, \PDO::PARAM_INT);
+            $stmt->bindParam(':presentacion', $presentacion, \PDO::PARAM_STR);
+            $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
+            $stmt->bindParam(':usuario_fk', $_SESSION['userId'], \PDO::PARAM_INT);
+            $stmt->bindValue(':estado', 1, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función createUsuario: " . $e->getMessage());
+            error_log("Error en la función createMatPrima: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd)
+    public function updateMatPrima($id, $nombre, $valorUnit, $fechVenc, $cantExist, $presentacion, $descripcion, $estado)
     {
         try {
-            $sql = "CALL ACTUALIZAR_PRODUCTO(:id_prod, :nombre_prod, :valor_unit_prod, :cant_exist_prod, :fech_venc_prod, :tipo_prod, :usuario_fk, :prod_estado)";
+            $sql = "CALL ACTUALIZAR_MATERIA_PRIMA(:id, :nombre, :valorUnit, :fechVenc, :cantExist, :presentacion, :descripcion, :usuario_fk, :estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':valor_unit_prod', $valorUnitProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':cant_exist_prod', $cantExistProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':fech_venc_prod', $fechVencProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':tipo_prod', $tipoProd, \PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            $stmt->bindParam(':nombre', $nombre, \PDO::PARAM_STR);
+            $stmt->bindParam(':valorUnit', $valorUnit, \PDO::PARAM_INT);
+            $stmt->bindParam(':fechVenc', $fechVenc, \PDO::PARAM_STR);
+            $stmt->bindParam(':cantExist', $cantExist, \PDO::PARAM_INT);
+            $stmt->bindParam(':presentacion', $presentacion, \PDO::PARAM_STR);
+            $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
             $stmt->bindParam(':usuario_fk', $_SESSION['userId'], \PDO::PARAM_INT);
-            $stmt->bindValue(':prod_estado', $estadoProd, \PDO::PARAM_INT);
+            $stmt->bindValue(':estado', $estado, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
             error_log("Error en la función updateUsuario: " . $e->getMessage());
@@ -161,16 +163,16 @@ class ProductoModel
         }
     }
 
-    public function updateProdState($idProd, $estadoProd)
+    public function updateMatPrimaState($id, $estado)
     {
         try {
             // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE PRODUCTO SET ESTADO_PRODUCTO = :estado WHERE ID_PRODUCTO = :id";
+            $sql = "UPDATE MATERIA_PRIMA SET ESTADO_MATERIA_PRIMA = :estado WHERE ID_MATERIA_PRIMA = :id";
             $stmt = $this->db->prepare($sql);
 
             // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idProd, \PDO::PARAM_INT);
+            $stmt->bindParam(':estado', $estado, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -178,20 +180,20 @@ class ProductoModel
             return $stmt->rowCount() > 0;
         } catch (\PDOException $e) {
             // Registrar el error en el log de XAMPP.
-            error_log("Error al actualizar estado del rol: " . $e->getMessage());
+            error_log("Error al actualizar estado de la materia prima: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteProd($idProd)
+    public function deleteMatPrima($id)
     {
         try {
-            $sql = "CALL ELIMINAR_PRODUCTO(:id_rol)";
+            $sql = "CALL ELIMINAR_MATERIA_PRIMA(:id)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idProd, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función deleteProd: " . $e->getMessage());
+            error_log("Error en la función deleteMatPrima: " . $e->getMessage());
             return null;
         }
     }

@@ -1,11 +1,11 @@
-document.getElementById('update-cliente-form').addEventListener('submit', function (e) {
+document.getElementById('update-matPrima-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const form = this;
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Se actualizarán los datos de este cliente.',
+        text: 'Se actualizarán los datos de esta materia prima.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -16,7 +16,7 @@ document.getElementById('update-cliente-form').addEventListener('submit', functi
         if (result.isConfirmed) {
             const formData = new FormData(form);
 
-            fetch(APP_URL + 'clientes/update', {
+            fetch(APP_URL + 'materiasPrimas/update', {
                 method: 'POST',
                 body: formData
             })
@@ -33,7 +33,7 @@ document.getElementById('update-cliente-form').addEventListener('submit', functi
                         title: '¡Éxito!',
                         text: data.message
                     }).then(() => {
-                        window.location.href = APP_URL + 'clientes';
+                        window.location.href = APP_URL + 'materiasPrimas';
                     });
                 } else {
                     Swal.fire({

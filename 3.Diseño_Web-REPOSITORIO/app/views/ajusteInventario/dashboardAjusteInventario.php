@@ -167,12 +167,12 @@
     <!-- JS para CRUD -->
     <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script><!-- GRAFICAS -->
     <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/confirmState.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/confirmDelete.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/confirmState.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/confirmDelete.js"></script>
 
     <!-- JS para busquedas personalizadas (y PDF) -->
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/busquedaFiltro.js"></script>
-    <script src="<?php echo \config\APP_URL; ?>public/js/producto/PDFgenerateFilter.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/busquedaFiltro.js"></script>
+    <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/PDFgenerateFilter.js"></script>
 </body>
 
 </html>

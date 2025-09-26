@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const tabla = document.getElementById("tablaProductos");
+  const tabla = document.getElementById("tablaAjustesInv");
   if (!tabla) {
-    console.error("No se encontró la tabla con el ID 'tablaProductos'.");
+    console.error("No se encontró la tabla con el ID 'tablaAjustesInv'.");
     return;
   }
   const filas = tabla.querySelectorAll("tbody tr");

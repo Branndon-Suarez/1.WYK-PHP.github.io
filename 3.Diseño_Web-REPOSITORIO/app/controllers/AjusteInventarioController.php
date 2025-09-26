@@ -76,24 +76,18 @@ class AjusteInventarioController
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProd = $_POST['id_prod'];
-            $nombreProd = $_POST['name_prod'];
-            $valorUnitProd = $_POST['valor_unit_prod'];
-            $cantExistProd = $_POST['cant_exist_prod'];
-            $fechVencProd = $_POST['fech_venc_prod'];
-            $tipoProd = $_POST['tipo_prod'];
+            $fecha = $_POST['fecha'];
+            $tipo = $_POST['tipo'];
+            $cantAjustada = $_POST['cantAjustada'];
+            $descripcion = $_POST['descripcion'];
+            $productoFK = $_POST['productoFK'];
             try {
-                if ($this->ajusteInvModel->checkIfProdExists($idProd, $nombreProd)) {
-                    echo json_encode(['success' => false, 'message' => 'El producto ya existe.']);
-                    return;
-                }
-
-                $result = $this->ajusteInvModel->createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd);
+                $result = $this->ajusteInvModel->createAjustesInv($fecha, $tipo, $cantAjustada, $descripcion, $productoFK);
                 if ($result) {
                     // Si es exitoso, responde con un JSON de éxito.
-                    echo json_encode(['success' => true, 'message' => 'Producto creado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Ajuste de inventario creado exitosamente.']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al crear el producto.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al crear el ajuste de inventario.']);
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
@@ -109,13 +103,13 @@ class AjusteInventarioController
     {
         $this->checkAdminAccess();
 
-        $producto = $this->ajusteInvModel->obtenerProductoPorId($id);
-        if ($producto) {
+        $ajusteInv = $this->ajusteInvModel->getAjustesInvById($id);
+        if ($ajusteInv) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/producto/update.php';
+            require_once __DIR__ . '/../views/ajusteInventario/update.php';
         } else {
-            $_SESSION['error_message'] = 'Producto no encontrado.';
-            header('Location: ' . \config\APP_URL . 'productos');
+            $_SESSION['error_message'] = 'Registro de ajuste no encontrado.';
+            header('Location: ' . \config\APP_URL . 'ajusteInventario');
             exit();
         }
     }
@@ -125,66 +119,25 @@ class AjusteInventarioController
         $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idProd = $_POST['Id_Prod'];
-            $nombreProd = $_POST['name_prod'];
-            $valorUnitProd = $_POST['valor_unit_prod'];
-            $cantExistProd = $_POST['cant_exist_prod'];
-            $fechVencProd = $_POST['fech_venc_prod'];
-            $tipoProd = $_POST['tipo_prod'];
-            $estadoProd = $_POST['estado_producto'];
+            $id = $_POST['Id'];
+            $fecha = $_POST['fecha'];
+            $tipo = $_POST['tipo'];
+            $cantAjustada = $_POST['cantAjustada'];
+            $descripcion = $_POST['descripcion'];
+            $productoFK = $_POST['productoFK'];
             try {
-                $result = $this->ajusteInvModel->updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd);
+                $result = $this->ajusteInvModel->updateAjustesInv($id, $fecha, $tipo, $cantAjustada, $descripcion, $productoFK);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Producto actualizado exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Ajuste actualizado exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el producto.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar el ajuste.']);
                     exit();
                 }
             } catch (\Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
                 exit();
             }
-        }
-    }
-
-    public function updateState()
-    {
-        $this->checkAdminAccess();
-
-        //Verificar que la petición sea POST y que el contenido sea JSON.
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['CONTENT_TYPE']) || $_SERVER['CONTENT_TYPE'] !== 'application/json') {
-            http_response_code(405);
-            echo json_encode(['error' => 'Método no permitido o tipo de contenido incorrecto.']);
-            return;
-        }
-
-        //Decodificar el JSON del cuerpo de la petición.
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        //Validar que los datos necesarios (id y estado) estén presentes.
-        if (isset($data['id']) && isset($data['estado'])) {
-            $idProd = $data['id'];
-            $estadoProd = $data['estado'];
-
-            try {
-                //Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->ajusteInvModel->updateProdState($idProd, $estadoProd);
-
-                //Enviar una respuesta JSON al cliente (el JavaScript).
-                if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Estado del prodcuto actualizado.']);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo actualizar el estado del prodcuto.']);
-                }
-            } catch (\Exception $e) {
-                http_response_code(500);
-                echo json_encode(['error' => 'Error en el servidor: ' . $e->getMessage()]);
-            }
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'Datos incompletos.']);
         }
     }
 
@@ -203,17 +156,17 @@ class AjusteInventarioController
 
         //Validar que el ID esté presente
         if (isset($data['id'])) {
-            $idProd = $data['id'];
+            $id = $data['id'];
 
             try {
                 //Llamar al modelo para eliminar el registro
-                $result = $this->ajusteInvModel->deleteProd($idProd);
+                $result = $this->ajusteInvModel->deleteAjustesInv($id);
 
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Producto eliminado con éxito.']);
+                    echo json_encode(['success' => true, 'message' => 'Ajuste de inventario eliminado con éxito.']);
                 } else {
                     http_response_code(500);
-                    echo json_encode(['error' => 'No se pudo eliminar el producto. Esta relacionado con otro(s) registros']);
+                    echo json_encode(['error' => 'No se pudo eliminar el ajuste de inventario. Esta relacionado con otro(s) registros']);
                 }
             } catch (\Exception $e) {
                 http_response_code(500);
@@ -232,8 +185,7 @@ class AjusteInventarioController
         $filtros = $_GET;
 
         // Llama al modelo para obtener los datos filtrados
-        $this->ajusteInvModel = new \models\UsuarioModel();
-        $usuarios = $this->ajusteInvModel->getFilteredUsuarios($filtros);
+        $usuarios = $this->ajusteInvModel->getFilteredAjustesInv($filtros);
 
         // Generación del HTML para el PDF con los datos filtrados
         $html = '

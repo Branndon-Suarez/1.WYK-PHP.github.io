@@ -1,11 +1,11 @@
-document.getElementById('update-producto-form').addEventListener('submit', function (e) {
+document.getElementById('update-ajusteInventario-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const form = this;
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Se actualizarán los datos de este producto.',
+        text: 'Se actualizarán los datos de este ajuste de inventario.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -16,7 +16,7 @@ document.getElementById('update-producto-form').addEventListener('submit', funct
         if (result.isConfirmed) {
             const formData = new FormData(form);
 
-            fetch(APP_URL + 'productos/update', {
+            fetch(APP_URL + 'ajusteInventario/update', {
                 method: 'POST',
                 body: formData
             })
@@ -33,7 +33,7 @@ document.getElementById('update-producto-form').addEventListener('submit', funct
                         title: '¡Éxito!',
                         text: data.message
                     }).then(() => {
-                        window.location.href = APP_URL + 'productos';
+                        window.location.href = APP_URL + 'ajusteInventario';
                     });
                 } else {
                     Swal.fire({

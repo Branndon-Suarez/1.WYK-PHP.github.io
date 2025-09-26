@@ -48,7 +48,7 @@
         <div class="campo">
           <label for="descripcion">Descripción</label>
           <div class="contenedor-input">
-            <input type="number" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" required>
+            <input type="text" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" required>
             <div class="resalte-input"></div>
           </div>
         </div>
@@ -85,6 +85,7 @@
             <table class="table table-hover" id="tablaProductosModal">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Producto</th>
                   <th>Cantidad actual</th>
                   <th>Acción</th>
@@ -105,7 +106,6 @@
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/ajusteInventario.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
   <script src="<?php echo \config\APP_URL; ?>public/js/ajusteInventario/confirmCreate.js"></script>

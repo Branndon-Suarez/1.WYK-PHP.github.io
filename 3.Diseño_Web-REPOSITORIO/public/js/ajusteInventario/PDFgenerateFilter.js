@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chipsActivos.forEach(chip => {
                 const accordionBody = chip.closest(".accordion-body");
                 const colIndex = accordionBody.querySelector(".filtro-columna").dataset.col;
-                const columnaNombre = document.querySelector(`#tablaProductos thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
+                const columnaNombre = document.querySelector(`#tablaAjustesInv thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
                 const normalizedColumnaNombre = normalizeString(columnaNombre);
 
                 if (!chipFilters[normalizedColumnaNombre]) {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             rangoInputs.forEach(input => {
                 if (input.value) {
                     const colIndex = input.dataset.col;
-                    const columnaNombre = document.querySelector(`#tablaProductos thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
+                    const columnaNombre = document.querySelector(`#tablaAjustesInv thead th:nth-child(${parseInt(colIndex, 10) + 1})`).textContent.trim();
                     const normalizedColumnaNombre = normalizeString(columnaNombre);
 
                     if (input.id.includes("fecha-inicio")) {
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (filtroDiaCompleto && filtroDiaCompleto.checked) {
                 params.append('diaCompleto', 'true');
             }
-
 
             // --- 4. Redireccionar con la URL final ---
             const queryString = params.toString();

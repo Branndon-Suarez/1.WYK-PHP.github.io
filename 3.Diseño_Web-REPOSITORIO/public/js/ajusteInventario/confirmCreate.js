@@ -1,9 +1,9 @@
-document.getElementById('create-producto-form').addEventListener('submit', function (e) {
+document.getElementById('create-ajusteInventario-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
 
-    fetch(APP_URL + 'productos/create', {
+    fetch(APP_URL + 'ajusteInventario/create', {
         method: 'POST',
         body: formData
     })
@@ -15,7 +15,7 @@ document.getElementById('create-producto-form').addEventListener('submit', funct
                     title: '¡Éxito!',
                     text: data.message
                 }).then(() => {
-                    window.location.href = APP_URL + 'productos';
+                    window.location.href = APP_URL + 'ajusteInventario';
                 });
             } else {
                 Swal.fire({

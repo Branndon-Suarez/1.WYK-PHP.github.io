@@ -38,37 +38,20 @@ class AjusteInventarioModel
         }
     }
 
-    public function checkIfProdExists($idProd, $nombreProd)
+    public function createAjustesInv($fecha, $tipo, $cantAjustada, $descripcion, $productoFK)
     {
         try {
-            $sql = "SELECT COUNT(*) FROM PRODUCTO WHERE ID_PRODUCTO = :id_prod OR NOMBRE_PRODUCTO = :nombre_prod";
+            $sql = "CALL INSERTAR_AJUSTE_INVENTARIO(:fecha, :tipo, :cantAjustada, :descripcion, :productoFK, :estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetchColumn() > 0;
-        } catch (\PDOException $e) {
-            error_log("Error en checkIfProdExists: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd)
-    {
-        try {
-            $sql = "CALL INSERTAR_PRODUCTO(:id_prod, :nombre_prod, :valor_unit_prod, :cant_exist_prod, :fech_venc_prod, :tipo_prod, :usuario_FK, :prod_estado)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':valor_unit_prod', $valorUnitProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':cant_exist_prod', $cantExistProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':fech_venc_prod', $fechVencProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':tipo_prod', $tipoProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':usuario_FK', $_SESSION['userId'], \PDO::PARAM_INT);
-            $stmt->bindValue(':prod_estado', 1, \PDO::PARAM_INT);
+            $stmt->bindParam(':fecha', $fecha, \PDO::PARAM_STR);
+            $stmt->bindParam(':tipo', $tipo, \PDO::PARAM_STR);
+            $stmt->bindParam(':cantAjustada', $cantAjustada, \PDO::PARAM_INT);
+            $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
+            $stmt->bindParam(':productoFK', $productoFK, \PDO::PARAM_INT);
+            $stmt->bindValue(':estado', 1, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función createUsuario: " . $e->getMessage());
+            error_log("Error en la función createAjustesInv: " . $e->getMessage());
             return null;
         }
     }
@@ -98,54 +81,31 @@ class AjusteInventarioModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd)
+    public function updateAjustesInv($id, $fecha, $tipo, $cantAjustada, $descripcion, $productoFK)
     {
         try {
-            $sql = "CALL ACTUALIZAR_PRODUCTO(:id_prod, :nombre_prod, :valor_unit_prod, :cant_exist_prod, :fech_venc_prod, :tipo_prod, :usuario_fk, :prod_estado)";
+            $sql = "CALL ACTUALIZAR_AJUSTE_INVENTARIO(:id, :fecha, :tipo, :cantAjustada, :descripcion, :productoFK, :usuario_fk)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_prod', $idProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_prod', $nombreProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':valor_unit_prod', $valorUnitProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':cant_exist_prod', $cantExistProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':fech_venc_prod', $fechVencProd, \PDO::PARAM_STR);
-            $stmt->bindParam(':tipo_prod', $tipoProd, \PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            $stmt->bindParam(':fecha', $fecha, \PDO::PARAM_STR);
+            $stmt->bindParam(':tipo', $tipo, \PDO::PARAM_STR);
+            $stmt->bindParam(':cantAjustada', $cantAjustada, \PDO::PARAM_INT);
+            $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
+            $stmt->bindParam(':productoFK', $productoFK, \PDO::PARAM_INT);
             $stmt->bindParam(':usuario_fk', $_SESSION['userId'], \PDO::PARAM_INT);
-            $stmt->bindValue(':prod_estado', $estadoProd, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
-            error_log("Error en la función updateUsuario: " . $e->getMessage());
+            error_log("Error en la función updateAjustesInv: " . $e->getMessage());
             return null;
         }
     }
 
-    public function updateProdState($idProd, $estadoProd)
+    public function deleteAjustesInv($id)
     {
         try {
-            // La consulta SQL con marcadores de posición.
-            $sql = "UPDATE PRODUCTO SET ESTADO_PRODUCTO = :estado WHERE ID_PRODUCTO = :id";
+            $sql = "CALL ELIMINAR_AJUSTE_INVENTARIO(:id)";
             $stmt = $this->db->prepare($sql);
-
-            // Vincular los parámetros para evitar inyección SQL.
-            $stmt->bindParam(':estado', $estadoProd, \PDO::PARAM_INT);
-            $stmt->bindParam(':id', $idProd, \PDO::PARAM_INT);
-
-            $stmt->execute();
-
-            // Verificar si se actualizó al menos una fila.
-            return $stmt->rowCount() > 0;
-        } catch (\PDOException $e) {
-            // Registrar el error en el log de XAMPP.
-            error_log("Error al actualizar estado del rol: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function deleteProd($idProd)
-    {
-        try {
-            $sql = "CALL ELIMINAR_PRODUCTO(:id_rol)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_rol', $idProd, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
             return $stmt->execute();
         } catch (\PDOException $e) {
             error_log("Error en la función deleteProd: " . $e->getMessage());
@@ -153,7 +113,7 @@ class AjusteInventarioModel
         }
     }
 
-    public function getFilteredUsuarios($filtros = [])
+    public function getFilteredAjustesInv($filtros = [])
     {
         $sql = "SELECT U.*, R.ROL AS NOMBRE_ROL FROM USUARIO U JOIN ROL R ON U.ROL_FK_USUARIO = R.ID_ROL";
         $whereClauses = [];

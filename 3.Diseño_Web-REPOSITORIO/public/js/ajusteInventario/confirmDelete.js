@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const deleteButtons = document.querySelectorAll('.delete-producto');
+    const deleteButtons = document.querySelectorAll('.delete-ajusteInventario');
     deleteButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
-            const targetButton = event.target.closest('.delete-producto');
-            const productoId = targetButton.dataset.id;
+            const targetButton = event.target.closest('.delete-ajusteInventario');
+            const ajusteInvId = targetButton.dataset.id;
             
             const result = await Swal.fire({
                 title: '¿Estás seguro?',
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (result.isConfirmed) {
-                const url = `${APP_URL}productos/delete`;
+                const url = `${APP_URL}ajusteInventario/delete`;
                 try {
                     const response = await fetch(url, {
                         method: 'POST',
@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            id: productoId
+                            id: ajusteInvId
                         })
                     });
 
                     const data = await response.json();
 
                     if (!response.ok) {
-                        Swal.fire('Error', data.error || 'No se pudo eliminar el producto porque esta conectado con otro(s) registros.', 'error');
+                        Swal.fire('Error', data.error || 'No se pudo eliminar el ajuste del inventario porque esta conectado con otro(s) registros.', 'error');
                     } else {
                         Swal.fire('¡Eliminado!', data.message, 'success')
                             .then(() => {

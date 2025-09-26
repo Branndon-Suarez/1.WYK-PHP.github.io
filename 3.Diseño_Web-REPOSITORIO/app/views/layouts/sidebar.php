@@ -94,7 +94,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>produccion">
+                        <a href="<?php echo \config\APP_URL; ?>ajusteInventario">
                             <lord-icon
                                 src="https://cdn.lordicon.com/fwkrbvja.json"
                                 trigger="hover"
@@ -106,7 +106,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>produccion">
+                        <a href="<?php echo \config\APP_URL; ?>recetas">
                             <lord-icon
                                 src="https://cdn.lordicon.com/rrbmabsx.json"
                                 trigger="morph"

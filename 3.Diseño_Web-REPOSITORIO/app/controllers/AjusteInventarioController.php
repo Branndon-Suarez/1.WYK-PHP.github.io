@@ -6,24 +6,24 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \models\ProductoModel;
+use \models\AjusteInventarioModel;
 use const \config\APP_URL;
 use \Dompdf\Dompdf;
 use \Dompdf\Options;
 
-class ProductosController
+class AjusteInventarioController
 {
-    private $productoModel;
+    private $ajusteInvModel;
 
     public function __construct()
     {
-        $this->productoModel = new ProductoModel();
+        $this->ajusteInvModel = new AjusteInventarioModel();
     }
 
     public function listar()
     {
         try {
-            $productos = $this->productoModel->listarProductos();
+            $productos = $this->ajusteInvModel->listarProductos();
 
             header('Content-Type: application/json');
             echo json_encode($productos);
@@ -50,11 +50,9 @@ class ProductosController
     {
         $this->checkAdminAccess();
 
-        $dashboardDataProductos = [
-            'productosExistentes' => $this->productoModel->getCantProdExistentes(),
-            'productosActivos' => $this->productoModel->getCantProdActivos(),
-            'productosInactivos' => $this->productoModel->getCanProdInactivos(),
-            'productos' => $this->productoModel->getProductos()
+        $dashboardDataAjustesInv = [
+            'ajustesInvExistentes' => $this->ajusteInvModel->getCantAjustesInvExistentes(),
+            'ajustesInv' => $this->ajusteInvModel->getAjustesInv()
         ];
 
         // Mensajes de sesión
@@ -70,19 +68,7 @@ class ProductosController
         $active_page = 'usuarios';
 
         require_once __DIR__ . '/../views/layouts/heads/headDashboard.php';
-        require_once __DIR__ . '/../views/producto/dashboardProducto.php';
-    }
-
-    public function getProductosAjax() {
-        $this->checkAdminAccess();
-        header('Content-Type: application/json');
-        try {
-            $productos = $this->productoModel->getProductos();
-            echo json_encode(['success' => true, 'data' => $productos]);
-        } catch (\Exception $e) {
-            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-        }
-        exit();
+        require_once __DIR__ . '/../views/ajusteInventario/dashboardAjusteInventario.php';
     }
 
     public function create()
@@ -97,12 +83,12 @@ class ProductosController
             $fechVencProd = $_POST['fech_venc_prod'];
             $tipoProd = $_POST['tipo_prod'];
             try {
-                if ($this->productoModel->checkIfProdExists($idProd, $nombreProd)) {
+                if ($this->ajusteInvModel->checkIfProdExists($idProd, $nombreProd)) {
                     echo json_encode(['success' => false, 'message' => 'El producto ya existe.']);
                     return;
                 }
 
-                $result = $this->productoModel->createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd);
+                $result = $this->ajusteInvModel->createProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd);
                 if ($result) {
                     // Si es exitoso, responde con un JSON de éxito.
                     echo json_encode(['success' => true, 'message' => 'Producto creado exitosamente.']);
@@ -115,7 +101,7 @@ class ProductosController
             exit();
         } else {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/producto/create.php';
+            require_once __DIR__ . '/../views/ajusteInventario/create.php';
         }
     }
 
@@ -123,7 +109,7 @@ class ProductosController
     {
         $this->checkAdminAccess();
 
-        $producto = $this->productoModel->obtenerProductoPorId($id);
+        $producto = $this->ajusteInvModel->obtenerProductoPorId($id);
         if ($producto) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
             require_once __DIR__ . '/../views/producto/update.php';
@@ -147,7 +133,7 @@ class ProductosController
             $tipoProd = $_POST['tipo_prod'];
             $estadoProd = $_POST['estado_producto'];
             try {
-                $result = $this->productoModel->updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd);
+                $result = $this->ajusteInvModel->updateProducto($idProd, $nombreProd, $valorUnitProd, $cantExistProd, $fechVencProd, $tipoProd, $estadoProd);
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Producto actualizado exitosamente.']);
                     exit();
@@ -183,7 +169,7 @@ class ProductosController
 
             try {
                 //Llamar al método del modelo para actualizar la base de datos.
-                $result = $this->productoModel->updateProdState($idProd, $estadoProd);
+                $result = $this->ajusteInvModel->updateProdState($idProd, $estadoProd);
 
                 //Enviar una respuesta JSON al cliente (el JavaScript).
                 if ($result) {
@@ -221,7 +207,7 @@ class ProductosController
 
             try {
                 //Llamar al modelo para eliminar el registro
-                $result = $this->productoModel->deleteProd($idProd);
+                $result = $this->ajusteInvModel->deleteProd($idProd);
 
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Producto eliminado con éxito.']);
@@ -246,8 +232,8 @@ class ProductosController
         $filtros = $_GET;
 
         // Llama al modelo para obtener los datos filtrados
-        $this->usuarioModel = new \models\UsuarioModel();
-        $usuarios = $this->usuarioModel->getFilteredUsuarios($filtros);
+        $this->ajusteInvModel = new \models\UsuarioModel();
+        $usuarios = $this->ajusteInvModel->getFilteredUsuarios($filtros);
 
         // Generación del HTML para el PDF con los datos filtrados
         $html = '

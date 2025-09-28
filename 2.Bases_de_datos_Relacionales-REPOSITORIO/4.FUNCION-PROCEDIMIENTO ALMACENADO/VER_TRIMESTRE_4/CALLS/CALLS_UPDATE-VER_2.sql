@@ -37,7 +37,7 @@ CALL ACTUALIZAR_MATERIA_PRIMA(1, 'Harina TrigoSS', 55555, '2026-01-01', 480, 'Kg
 
 -- CALL PROCEDIMIENTO ACTUALIZAR COMPRA
 -- Ejemplo: actualizar total y estado factura
-CALL ACTUALIZAR_COMPRA(1, NOW(), 'MATERIA PRIMA', 510000, 'Proveedor Harinas', 'Harimsa', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina ajustada', 2, 'PAGADA');
+CALL ACTUALIZAR_COMPRA(1, NOW(), 'MATERIA PRIMA', 0, 'Proveedor Harinas', 'Harinas 2.0', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina ajustada', 2, 'PAGADA');
 
 -- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_COMPRA_MATERIA_PRIMA
 -- Ejemplo: actualizar cantidad comprada

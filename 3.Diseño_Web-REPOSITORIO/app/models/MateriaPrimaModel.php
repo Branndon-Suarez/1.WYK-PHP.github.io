@@ -30,7 +30,8 @@ class MateriaPrimaModel
     {
         $sql = "SELECT 
                     ID_MATERIA_PRIMA, 
-                    NOMBRE_MATERIA_PRIMA, 
+                    NOMBRE_MATERIA_PRIMA,
+                    VALOR_UNITARIO_MAT_PRIMA,
                     FECHA_VENCIMIENTO_MATERIA_PRIMA, 
                     CANTIDAD_EXIST_MATERIA_PRIMA, 
                     PRESENTACION_MATERIA_PRIMA,

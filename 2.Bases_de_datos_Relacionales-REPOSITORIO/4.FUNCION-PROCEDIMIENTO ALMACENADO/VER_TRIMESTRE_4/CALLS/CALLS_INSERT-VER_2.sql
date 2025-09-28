@@ -27,10 +27,10 @@ CALL INSERTAR_PRODUCTO(103, 'Jabón Liquido', 3000, 40, '2026-05-10', 'ASEO', 2,
 CALL INSERTAR_PRODUCTO(104, 'Pan Integral', 2000, 100, '2025-12-20', 'PANADERIA', 2, 1);
 
 -- PROCEDIMIENTO INSERTAR VENTA
-CALL INSERTAR_VENTA(NOW(), 15000, 1, 'Venta mostrador', 1, 'PREPARANDO', 'PENDIENTE');
-CALL INSERTAR_VENTA(NOW(), 7000, 2, 'Producto entregado. Falta por pagar', 2, 'ENTREGADO', 'PENDIENTE');
-CALL INSERTAR_VENTA(NOW(), 12000, NULL, 'Venta rapida', 3, 'ENTREGADO', 'PAGADA');
-CALL INSERTAR_VENTA(NOW(), 20000, NULL, 'El cliente se arrepintio y se fue.', 4, 'CANCELADO', 'CANCELADA');
+CALL INSERTAR_VENTA(NOW(), 0, 1, 'Venta mostrador', 1, 'PREPARANDO', 'PENDIENTE');
+CALL INSERTAR_VENTA(NOW(), 0, 2, 'Producto entregado. Falta por pagar', 2, 'ENTREGADO', 'PENDIENTE');
+CALL INSERTAR_VENTA(NOW(), 0, NULL, 'Venta rapida', 3, 'ENTREGADO', 'PAGADA');
+CALL INSERTAR_VENTA(NOW(), 0, NULL, 'El cliente se arrepintio y se fue.', 4, 'CANCELADO', 'CANCELADA');
 
 -- PROCEDIMIENTO INSERTAR DETALLE_VENTA
 CALL INSERTAR_DETALLE_VENTA(2, 3000, 1, 101);  -- 2 panes de trigo
@@ -51,10 +51,10 @@ CALL INSERTAR_MATERIA_PRIMA('Levadura', 18000, '2025-11-15', 100, 'Kg', 'Levadur
 CALL INSERTAR_MATERIA_PRIMA('Chocolate', 30000, '2026-03-10', 200, 'Kg', 'Cacao puro', 2, 1);
 
 -- PROCEDIMIENTO INSERTAR COMPRA
-CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 500000, 'Proveedor Harinas', 'Harimsa', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina', 2, 'PAGADA');
-CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 300000, 'Proveedor Azúcar', 'Incauca', 3202345678, 'proveedor2@correo.com', 'Compra mensual azúcar', 2, 'PAGADA');
-CALL INSERTAR_COMPRA(NOW(), 'PRODUCTO TERMINADO', 200000, 'Proveedor Aseo', 'Familia', 3203456789, 'proveedor3@correo.com', 'Compra jabón líquido', 2, 'PENDIENTE');
-CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 150000, 'Proveedor Levadura', 'Levapan', 3204567890, 'proveedor4@correo.com', 'Compra semanal levadura', 2, 'PAGADA');
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 0, 'Proveedor Harinas', 'Harinas', 3201234567, 'proveedor1@correo.com', 'Compra mensual harina', 2, 'PAGADA');
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 0, 'Proveedor Azúcar', 'Incauca', 3202345678, 'proveedor2@correo.com', 'Compra mensual azúcar', 2, 'PAGADA');
+CALL INSERTAR_COMPRA(NOW(), 'PRODUCTO TERMINADO', 0, 'Proveedor Aseo', 'Familia', 3203456789, 'proveedor3@correo.com', 'Compra jabón líquido', 2, 'PENDIENTE');
+CALL INSERTAR_COMPRA(NOW(), 'MATERIA PRIMA', 0, 'Proveedor Levadura', 'Levapan', 3204567890, 'proveedor4@correo.com', 'Compra semanal levadura', 2, 'PAGADA');
 
 -- PROCEDIMIENTO INSERTAR DETALLE_COMPRA_MATERIA_PRIMA
 CALL INSERTAR_DETALLE_COMPRA_MAT_PRIMA(1, 100, 100000, 1, 1, 1);

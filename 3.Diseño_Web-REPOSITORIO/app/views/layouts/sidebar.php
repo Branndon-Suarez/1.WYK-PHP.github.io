@@ -144,7 +144,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>facturas_Ventas">
+                        <a href="<?php echo \config\APP_URL; ?>compras">
                             <lord-icon
                                 src="https://cdn.lordicon.com/uisoczqi.json"
                                 trigger="hover"
@@ -152,7 +152,7 @@
                                 colors="primary:#ffffff,secondary:#ffffff"
                                 style="width:80px;height:68px">
                             </lord-icon>
-                            Compras (Proveedores)
+                            Compras
                         </a>
                     </li>
                 </ul>

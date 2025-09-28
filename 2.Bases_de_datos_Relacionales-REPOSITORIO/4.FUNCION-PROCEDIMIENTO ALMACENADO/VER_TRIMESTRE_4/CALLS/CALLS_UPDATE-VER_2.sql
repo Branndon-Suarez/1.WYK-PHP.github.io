@@ -5,7 +5,7 @@ START TRANSACTION;
 
 -- CALL PROCEDIMIENTO ACTUALIZAR ROL
 -- Ejemplo: actualizar el estado de un rol
-CALL ACTUALIZAR_ROL(2, 'Empleado Panadería', 'EMPLEADO', 0);
+CALL ACTUALIZAR_ROL(2, 'MESERO', 'EMPLEADO', 0);
 
 -- CALL PROCEDIMIENTO ACTUALIZAR USUARIO
 -- Ejemplo: cambiar teléfono y correo de un usuario
@@ -21,7 +21,7 @@ CALL ACTUALIZAR_PRODUCTO(101, 'Pan de Trigo', 1600, 180, '2025-12-31', 'PANADERI
 
 -- CALL PROCEDIMIENTO ACTUALIZAR VENTA
 -- Ejemplo: actualizar total y estado de venta
-CALL ACTUALIZAR_VENTA(1, NOW(), 15500, 1, 'Venta mostrador corregida', 3, 'PAGADA');
+CALL ACTUALIZAR_VENTA(1, NOW(), 15500, 1, 'Venta mostrador corregida', 3, 'ENTREGADO', 'PENDIENTE');
 
 -- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_VENTA
 -- Ejemplo: actualizar cantidad de un detalle de venta

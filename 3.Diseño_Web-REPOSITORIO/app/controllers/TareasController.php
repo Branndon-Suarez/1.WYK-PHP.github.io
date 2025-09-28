@@ -76,19 +76,19 @@ class TareasController
         }
     }
 
-public function revertirTarea($id)
-{
-    if (isset($_SESSION['userId'])) {
-        $id_usuario = $_SESSION['userId'];
-        if ($this->tareaModel->revertirTarea($id, $id_usuario)) {
-            echo json_encode(['success' => true]);
+    public function revertirTarea($id)
+    {
+        if (isset($_SESSION['userId'])) {
+            $id_usuario = $_SESSION['userId'];
+            if ($this->tareaModel->revertirTarea($id, $id_usuario)) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al deshacer la acción o tarea no asignada a este usuario.']);
+            }
         } else {
-            echo json_encode(['success' => false, 'message' => 'Error al deshacer la acción o tarea no asignada a este usuario.']);
+            echo json_encode(['success' => false, 'message' => 'Sesión no iniciada.']);
         }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Sesión no iniciada.']);
     }
-}
     /* ---------------------------------------- LISTADO TAREAS A EMPLEADOS ---------------------------------------- */
 
     public function create()

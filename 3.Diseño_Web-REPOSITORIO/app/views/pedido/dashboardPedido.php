@@ -10,15 +10,12 @@ if (!isset($_SESSION['userId'])) {
 
 <body data-theme="light">
     <div class="app">
-        <!-- Sidebar -->
         <?php require_once __DIR__ . '/../layouts/sidebar.php'; ?>
-        <!-- Icono de tareas de empleados -->
         <?php
         if (isset($_SESSION['rolClasificacion']) && $_SESSION['rolClasificacion'] === 'EMPLEADO') {
             require_once __DIR__ . '/../layouts/floatingIcon.php';
         }
         ?>
-        <!-- Lista de tareas para empleados -->
         <div class="tasks-panel" id="tasksPanel">
             <div class="tasks-header">
                 <h2 class="tasks-title">Mis Tareas</h2>
@@ -32,36 +29,17 @@ if (!isset($_SESSION['userId'])) {
         </div>
 
         <div class="main-content">
-            <div class="header">
-                <div>
-                    <div class="s">Buenos días,
-                        <span class="n"><?php echo $_SESSION['userName']; ?></span>
-                    </div>
-                    <div class="subtitle">Ten un buen día en el trabajo</div>
-                </div>
-                <div class="header-actions">
-                    <button class="action-btn" id="themeToggle" title="Cambiar tema">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="action-btn" id="notificationsBtn" title="Notificaciones">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </button>
-                    <div class="user-info">
-                        <div class="user-avatar" id="userAvatar">JD</div>
-                        <span><?php echo $_SESSION['userName']; ?></span>
-                    </div>
-                </div>
-            </div>
+            <button type="button" class="volver" onclick="history.back()">
+            <i data-feather="arrow-left"></i> Volver
+            </button>
 
             <main class="pedido-container">
                 <h2 class="titulo-pedido">🧾 Nuevo Pedido</h2>
-                <!-- Datos de la venta -->
                 <section class="form-grid">
                     <div class="form-group">
                         <label for="fechaVenta">Fecha y Hora</label>
                         <input type="datetime-local" id="fechaVenta" name="fechaVenta"
-                            value="<?= date('Y-m-d\TH:i') ?>">
+                            value="">
                     </div>
 
                     <div class="form-group">
@@ -70,12 +48,30 @@ if (!isset($_SESSION['userId'])) {
                     </div>
 
                     <div class="form-group">
-                        <label for="estadoVenta">Estado del Pedido</label>
-                        <select id="estadoVenta" name="estadoVenta">
-                            <option value="PENDIENTE" selected>PENDIENTE</option>
-                            <option value="ENTREGADA">ENTREGADA</option>
+                        <label for="estadoPedido">Estado del Pedido</label>
+                        <select id="estadoPedido" name="estadoPedido">
+                            <option select value="PENDIENTE" selected>PENDIENTE</option>
+                        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR') {
+                        ?>
+                            <option value="PREPARANDO">PREPARANDO</option>
+                            <option value="ENTREGADO">ENTREGADO</option>
+                        <?php
+                        }
+                        ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estadoPago">Estado del Pago</label>
+                        <select id="estadoPago" name="estadoPago">
+                            <option seelct value="PENDIENTE" selected>PENDIENTE</option>
+                        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR') {
+                        ?>
                             <option value="PAGADA">PAGADA</option>
                             <option value="CANCELADA">CANCELADA</option>
+                        <?php
+                        }
+                        ?>
                         </select>
                     </div>
 
@@ -85,7 +81,6 @@ if (!isset($_SESSION['userId'])) {
                     </div>
                 </section>
 
-                <!-- Productos -->
                 <section class="productos-card">
                     <div class="productos-header">
                         <h3>Productos del Pedido</h3>
@@ -113,7 +108,6 @@ if (!isset($_SESSION['userId'])) {
                                 </tr>
                             </thead>
                             <tbody id="tablaProductos">
-                                <!-- filas dinámicas -->
                             </tbody>
                         </table>
                     </div>
@@ -124,13 +118,11 @@ if (!isset($_SESSION['userId'])) {
                     </div>
                 </section>
 
-                <!-- Botón aceptar -->
                 <div class="btn-guardar-container">
                     <button id="btnGuardarPedido" class="btn-verde">✅ Aceptar Pedido</button>
                 </div>
             </main>
 
-            <!-- Modal productos (inicialmente hidden) -->
             <div id="modalProductos" class="modal hidden" aria-hidden="true">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -160,7 +152,6 @@ if (!isset($_SESSION['userId'])) {
                                     </tr>
                                 </thead>
                                 <tbody id="listaProductos">
-                                    <!-- se llenará con JS al abrir modal -->
                                 </tbody>
                             </table>
                         </div>
@@ -169,14 +160,11 @@ if (!isset($_SESSION['userId'])) {
             </div>
         </div>
 
-        <!-- JS para CRUD -->
         <script src="<?= \config\APP_URL ?>public/js/pedido/pedidosMesero.js" defer></script>
         <script src="<?php echo \config\APP_URL; ?>public/js/sidebar.js"></script>
         <script src="<?php echo \config\APP_URL; ?>public/js/dashboard.js"></script>
 
-        <!-- LIBRERIAS -->
         <script src="<?php echo \config\APP_URL; ?>public/js/sweetalert2.all.min.js"></script>
-        <!-- <script src="https://unpkg.com/feather-icons"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"
             integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA="

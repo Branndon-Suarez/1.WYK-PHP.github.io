@@ -132,7 +132,7 @@
                 </button>
                 <ul class="submenu">
                     <li>
-                        <a href="<?php echo \config\APP_URL; ?>facturas_Ventas">
+                        <a href="<?php echo \config\APP_URL; ?>ventas">
                             <lord-icon
                                 src="https://cdn.lordicon.com/bsdkzyjd.json"
                                 trigger="hover"
@@ -169,14 +169,9 @@
                     </lord-icon>
                 </a>
             </li>
-        <?php
-        }
-        ?>
-        <div class="spacer"></div>
 
-        <?php if ($_SESSION['rol'] == 'ADMINISTRADOR' || $_SESSION['rol'] == 'MESERO') {
-        ?>
-            <!-- PARTE DE MESERO -->
+            <div class="spacer"></div>
+
             <li title="Pedidos">
                 <a href="<?php echo \config\APP_URL; ?>pedidos" class="nav-btn" aria-label="Pedidos">
                     <img src="<?php echo \config\APP_URL ?>public/images/sidebar/pedidos.png" alt="Pedidos" width="50rem 50rem´x">
@@ -185,6 +180,24 @@
         <?php
         }
         ?>
+
+        <?php if ($_SESSION['rol'] == 'MESERO') {
+        ?>
+            <li title="Pedidos">
+                <a href="<?php echo \config\APP_URL; ?>ventas" class="nav-btn" aria-label="Pedidos">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/bsdkzyjd.json"
+                        trigger="hover"
+                        state="hover-spending"
+                        colors="primary:#ffffff,secondary:#ffffff"
+                        style="width:60px;height:60px">
+                    </lord-icon>
+                </a>
+            </li>
+        <?php
+        }
+        ?>
+
         <li title="Cerrar sesión">
             <a href="<?php echo \config\APP_URL; ?>logout" class="nav-btn" aria-label="Cerrar sesión">
                 <lord-icon

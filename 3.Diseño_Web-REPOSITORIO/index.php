@@ -88,6 +88,12 @@ if (in_array($vista, $validViews)) {
             require_once __DIR__ . '/app/views/layouts/heads/headLogin.php';
             require_once __DIR__ . '/app/views/users/userLogin/login.php';
             break;
+        case 'logout':
+            session_unset();
+            session_destroy();
+            header('Location: ' . \config\APP_URL . 'login');
+            exit();
+            break;
         case 'home':
             require_once __DIR__ . '/app/views/layouts/heads/headHome.php';
             require_once __DIR__ . '/app/views/layouts/headers/headerHome.php';
@@ -95,30 +101,38 @@ if (in_array($vista, $validViews)) {
             break;
         /* Para mostrar el apartado de tareas existentes en la interfaz de inicio dashboard y pedidos */
         case 'dashboard':
-        case 'pedidos':
             if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
                 require_once __DIR__ . '/app/controllers/TareasController.php';
                 $tareaController = new \controllers\TareasController();
                 $tareas = $tareaController->getTareasParaVista();
 
-                if ($vista === 'dashboard') {
-                    require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
-                    require_once __DIR__ . '/app/views/dashboard/dashboard.php';
-                } elseif ($vista === 'pedidos') {
-                    require_once __DIR__ . '/app/views/layouts/heads/headPedidosMesero.php';
-                    require_once __DIR__ . '/app/views/pedido/dashboardPedido.php';
-                }
+                require_once __DIR__ . '/app/views/layouts/heads/headDashboard-inicio.php';
+                require_once __DIR__ . '/app/views/dashboard/dashboard.php';
             } else {
-                header('Location: ' . \config\APP_URL . 'login');
+                header('Location: ' . \config\APP_URL . 'logout');
                 exit();
             }
             break;
-        case 'logout':
-            session_start();
-            session_unset();
-            session_destroy();
-            header('Location: ' . \config\APP_URL . 'login');
-            exit();
+        case 'pedidos':
+            if (isset($_SESSION['userId']) && isset($_SESSION['userName']) && isset($_SESSION['rol'])) {
+                $rol = $_SESSION['rol'] ?? '';
+
+                if ($rol === 'ADMINISTRADOR' || $rol === 'MESERO') {
+                    require_once __DIR__ . '/app/controllers/TareasController.php';
+                    $tareaController = new \controllers\TareasController();
+                    $tareas = $tareaController->getTareasParaVista();
+
+                    require_once __DIR__ . '/app/views/layouts/heads/headPedidosMesero.php';
+                    require_once __DIR__ . '/app/views/pedido/dashboardPedido.php';
+                } else {
+                    $_SESSION['error_message'] = 'Acceso denegado: No tienes permiso para ver Pedidos.';
+                    header('Location: ' . \config\APP_URL . 'dashboard');
+                    exit();
+                }
+            } else {
+                header('Location: ' . \config\APP_URL . 'logout');
+                exit();
+            }
             break;
         case 'roles':
         case 'usuarios':

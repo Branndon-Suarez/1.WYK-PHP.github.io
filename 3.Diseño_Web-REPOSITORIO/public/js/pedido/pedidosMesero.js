@@ -14,7 +14,23 @@ const btnAddProducto = document.getElementById("btnAddProducto");
 const btnCerrarModal = document.getElementById("btnCerrarModal");
 const btnGuardarPedido = document.getElementById("btnGuardarPedido");
 
+const fechaVentaInput = document.getElementById("fechaVenta"); // NUEVO: Obtener el input de fecha
+
 if (!APP_URL) console.warn("APP_URL no está definida. Revisa la vista PHP.");
+
+// ------------------ INICIALIZACIÓN ------------------
+// Establecer la fecha y hora actual al cargar
+document.addEventListener("DOMContentLoaded", () => {
+    if (!fechaVentaInput.value) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        fechaVentaInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+});
 
 // ------------------ TABLA (productos seleccionados) ------------------
 function actualizarTabla() {
@@ -139,7 +155,7 @@ function renderizarProductos(filtro = "") {
     if (filtrados.length === 0) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.colSpan = 4; // Cambiado a 4 para incluir la nueva columna
+        td.colSpan = 4;
         td.textContent = "No hay productos";
         tr.appendChild(td);
         listaProductos.appendChild(tr);
@@ -221,14 +237,14 @@ async function cargarProductos() {
             id: item.id_producto ?? item.ID_PRODUCTO ?? null,
             nombre: item.nombre_producto ?? item.NOMBRE_PRODUCTO ?? '',
             precio: Number(item.valor_unitario_producto ?? item.VALOR_UNITARIO_PRODUCTO ?? 0),
-            // NUEVO: Mapear la cantidad existente
+            // Mapear la cantidad existente
             existencia: Number(item.cant_exist_producto ?? item.CANT_EXIST_PRODUCTO ?? 0)
         }));
 
         renderizarProductos();
     } catch (err) {
         console.error("Error cargando productos:", err);
-        listaProductos.innerHTML = `<tr><td colspan="4">Error cargando productos</td></tr>`; // Cambiado a 4
+        listaProductos.innerHTML = `<tr><td colspan="4">Error cargando productos</td></tr>`;
     }
 }
 
@@ -236,7 +252,7 @@ async function cargarProductos() {
 function agregarProducto(p) {
     const existente = productosSeleccionados.find(x => String(x.id) === String(p.id));
     if (existente) {
-        // NUEVO: Validar que no se exceda la existencia
+        // Validar que no se exceda la existencia
         if (existente.cantidad >= p.existencia) {
             Swal.fire({
                 icon: 'warning',
@@ -261,23 +277,14 @@ function agregarProducto(p) {
 }
 
 // ------------------ GUARDAR PEDIDO ------------------
-btnGuardarPedido.addEventListener("click", () => { // Hacemos la función síncrona inicialmente
+btnGuardarPedido.addEventListener("click", () => {
     const fecha = document.getElementById("fechaVenta").value;
-    const mesa = document.getElementById("numeroMesa").value;
-    const estado = document.getElementById("estadoVenta").value;
+    const mesa = document.getElementById("numeroMesa").value || null;
+    const estadoPedido = document.getElementById("estadoPedido").value;
+    const estadoPago = document.getElementById("estadoPago").value;
     const descripcion = document.getElementById("descripcion").value || '';
     const usuarioId = (typeof USER_ID !== 'undefined') ? USER_ID : null;
 
-    if (!mesa) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Campo Requerido',
-            text: 'Por favor ingresa el número de mesa.',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
-    }
     if (productosSeleccionados.length === 0) {
         Swal.fire({
             icon: 'warning',
@@ -299,7 +306,7 @@ btnGuardarPedido.addEventListener("click", () => { // Hacemos la función síncr
         return;
     }
 
-    // NUEVO: Diálogo de confirmación antes de guardar
+    // Diálogo de confirmación antes de guardar
     Swal.fire({
         title: '¿Deseas finalizar la venta?',
         text: "Una vez aceptada, el pedido será registrado y el inventario actualizado.",
@@ -322,7 +329,8 @@ btnGuardarPedido.addEventListener("click", () => { // Hacemos la función síncr
             const payload = {
                 fecha,
                 mesa,
-                estado,
+                estadoPedido,
+                estadoPago,
                 descripcion,
                 usuarioId,
                 productos: productosParaEnviar,

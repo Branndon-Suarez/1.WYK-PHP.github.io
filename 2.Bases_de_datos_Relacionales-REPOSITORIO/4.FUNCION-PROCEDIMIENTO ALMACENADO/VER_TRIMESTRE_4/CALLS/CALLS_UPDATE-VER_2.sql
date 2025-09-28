@@ -47,10 +47,6 @@ CALL ACTUALIZAR_DETALLE_COMPRA_MATERIA_PRIMA(1, 110, 110000, 1, 1, 1);
 -- Ejemplo: actualizar cantidad comprada de producto
 CALL ACTUALIZAR_DETALLE_COMPRA_PRODUCTO(1, 12, 36000, 1, 101, 1);
 
--- CALL PROCEDIMIENTO ACTUALIZAR RECETA
--- Ejemplo: actualizar cantidad requerida de materia prima
-CALL ACTUALIZAR_RECETA(1, 101, 1, 0.6, 'Kg');
-
 -- CALL PROCEDIMIENTO ACTUALIZAR PRODUCCION
 -- Ejemplo: actualizar cantidad de producción
 CALL ACTUALIZAR_PRODUCCION(1, 'Producción Pan Trigo', 120, 'Elaboración diaria pan actualizada', 101, 2, 1);

@@ -105,18 +105,6 @@
                             Ajustes
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo \config\APP_URL; ?>recetas">
-                            <lord-icon
-                                src="https://cdn.lordicon.com/rrbmabsx.json"
-                                trigger="morph"
-                                state="morph-open"
-                                colors="primary:#ffffff,secondary:#ffffff"
-                                style="width:50px;height:50px">
-                            </lord-icon>
-                            Recetas
-                        </a>
-                    </li>
                 </ul>
             </li>
 
@@ -159,7 +147,7 @@
             </li>
 
             <li title="Producción">
-                <a href="<?php echo \config\APP_URL; ?>produccion" class="nav-btn" aria-label="Pedidos">
+                <a href="<?php echo \config\APP_URL; ?>produccion" class="nav-btn" aria-label="Produccion">
                     <lord-icon
                         src="https://cdn.lordicon.com/asyunleq.json"
                         trigger="hover"

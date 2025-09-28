@@ -45,6 +45,19 @@ class VentaModel
         }
     }
 
+    public function getVentasCajero()
+    {
+        try {
+            $sql = "CALL CONSULTAR_VENTA_CAJERO()";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log("Error en la función getVentasCajero: " . $e->getMessage());
+            return [];
+        }
+    }
+
     public function getCantVentasExistentes()
     {
         try {
@@ -203,14 +216,13 @@ class VentaModel
     public function updateVenta($idVenta, $fecha, $total, $numMesa, $descripcion, $estadoPedido, $estadoVenta)
     {
         try {
-            $sql = "CALL ACTUALIZAR_VENTA(:idVenta, :fecha, :total, :numMesa, :descripcion, :usuarioFK, :estadoPedido, :estadoVenta)";
+            $sql = "CALL ACTUALIZAR_VENTA(:idVenta, :fecha, :total, :numMesa, :descripcion, :estadoPedido, :estadoVenta)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':idVenta', $idVenta, \PDO::PARAM_INT);
             $stmt->bindParam(':fecha', $fecha, \PDO::PARAM_STR);
             $stmt->bindParam(':total', $total, \PDO::PARAM_INT);
             $stmt->bindParam(':numMesa', $numMesa, \PDO::PARAM_INT);
             $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
-            $stmt->bindParam(':usuarioFK', $_SESSION['userId'], \PDO::PARAM_INT);
             $stmt->bindParam(':estadoPedido', $estadoPedido, \PDO::PARAM_STR);
             $stmt->bindValue(':estadoVenta', $estadoVenta, \PDO::PARAM_STR);
             return $stmt->execute();

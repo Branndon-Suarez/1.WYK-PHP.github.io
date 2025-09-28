@@ -181,7 +181,7 @@
         }
         ?>
 
-        <?php if ($_SESSION['rol'] == 'MESERO') {
+        <?php if ($_SESSION['rol'] == 'MESERO' || $_SESSION['rol'] == 'CAJERO') {
         ?>
             <li title="Pedidos">
                 <a href="<?php echo \config\APP_URL; ?>ventas" class="nav-btn" aria-label="Pedidos">

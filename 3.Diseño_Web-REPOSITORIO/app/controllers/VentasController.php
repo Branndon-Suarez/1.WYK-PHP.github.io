@@ -15,29 +15,18 @@ class VentasController
 {
     private $ventaModel;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->ventaModel = new VentaModel();
     }
 
-    private function checkAdminAccess()
-    {
-        if (!isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] !== 'ADMINISTRADOR') {
-            $_SESSION['error_message'] = 'Acceso denegado. Se requiere el rol de Administrador.';
-            header('Location: ' . APP_URL . 'dashboard');
-            exit();
-        }
-    }
-
-    private function checkAdminOrMeseroAccess()
-    {
+    private function checkAdminOrMeseroOrCajeroAccess() {
         $rol = $_SESSION['rol'] ?? '';
         $rolClasificacion = $_SESSION['rolClasificacion'] ?? '';
 
-        if ($rolClasificacion === 'ADMINISTRADOR' || $rol === 'MESERO') {
+        if ($rolClasificacion === 'ADMINISTRADOR' || $rol === 'MESERO' || $rol === 'CAJERO') {
             return;
         }
-        $_SESSION['error_message'] = 'Acceso denegado. Se requiere el rol de Administrador o Mesero.';
+        $_SESSION['error_message'] = 'Acceso denegado. Se requiere el rol de Administrador, Mesero o cajero.';
         header('Location: ' . APP_URL . 'dashboard');
         exit();
     }
@@ -56,7 +45,14 @@ class VentasController
             require_once __DIR__ . '/../controllers/TareasController.php';
             $tareaController = new TareasController();
             $tareas = $tareaController->getTareasParaVista();
+
             $ventas = $this->ventaModel->getVentasMesero($idUserMesero);
+        } elseif ($rol === 'CAJERO') {
+            require_once __DIR__ . '/../controllers/TareasController.php';
+            $tareaController = new TareasController();
+            $tareas = $tareaController->getTareasParaVista();
+
+            $ventas = $this->ventaModel->getVentasCajero();
         }
 
         $dashboardDataVentas = [
@@ -91,6 +87,7 @@ class VentasController
 
     public function getDetalleVentaAjax()
     {
+        $this->checkAdminOrMeseroOrCajeroAccess();
         // 1. Verificar si es una solicitud AJAX (GET)
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !isset($_GET['id'])) {
             http_response_code(405);
@@ -121,12 +118,16 @@ class VentasController
 
 
     public function viewEdit($id) {
-        $this->checkAdminOrMeseroAccess();
+        $this->checkAdminOrMeseroOrCajeroAccess();
 
         $rol = $_SESSION['rol'] ?? '';
         $tareas = [];
 
         if ($rol === 'MESERO') {
+            require_once __DIR__ . '/../controllers/TareasController.php';
+            $tareaController = new TareasController();
+            $tareas = $tareaController->getTareasParaVista();
+        } elseif ($rol === 'CAJERO') {
             require_once __DIR__ . '/../controllers/TareasController.php';
             $tareaController = new TareasController();
             $tareas = $tareaController->getTareasParaVista();
@@ -145,7 +146,7 @@ class VentasController
 
     public function update()
     {
-        $this->checkAdminOrMeseroAccess();
+        $this->checkAdminOrMeseroOrCajeroAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idVenta = $_POST['idVenta'];

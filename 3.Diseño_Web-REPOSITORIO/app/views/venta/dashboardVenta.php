@@ -13,7 +13,7 @@
     $tareas = $dashboardDataVentas['tareas'] ?? [];
     $rol = $_SESSION['rol'] ?? '';
 
-    if ($rol === 'MESERO') {
+    if ($rol === 'MESERO' || $rol === 'CAJERO') {
       require_once __DIR__ . '/../layouts/floatingIcon.php';
     }
     ?>
@@ -118,7 +118,12 @@
                     <th>N° Mesa</th>
                     <th>Descripción</th>
                     <th>Registrado por</th>
+                    <?php if ($_SESSION['rol'] !== 'CAJERO') {
+                    ?>
                     <th>Estado Pedido</th>
+                    <?php
+                    }
+                    ?>
                     <th>Estado Venta</th>
                     <th colspan="3" style="text-align:center">Acciones</th>
                   </tr>
@@ -134,7 +139,13 @@
                       <td> <?php echo ($venta['NUMERO_MESA'] === null) ? 'No se usó' : htmlspecialchars($venta['NUMERO_MESA']); ?></td>
                       <td> <?php echo htmlspecialchars($venta['DESCRIPCION']); ?></td>
                       <td> <?php echo htmlspecialchars($venta['USUARIO_VENTA']); ?></td>
-                      <td> <?php echo htmlspecialchars($venta['ESTADO_PEDIDO']); ?></td>
+                        <?php if ($_SESSION['rol'] !== 'CAJERO') {
+                        ?>
+                          <td>
+                          <?php echo htmlspecialchars($venta['ESTADO_PEDIDO']); ?>
+                          </td>
+                        <?php
+                        }?>
                       <td> <?php echo htmlspecialchars($venta['ESTADO_PAGO']); ?></td>
                       <td>
                         <a href="<?php echo \config\APP_URL . 'ventas/viewEdit/' . htmlspecialchars($venta['ID_VENTA']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
@@ -146,21 +157,6 @@
                           </lord-icon>
                         </a>
                       </td>
-                      <?php if ($_SESSION['rol'] == 'ADMINISTRADOR') {
-                      ?>
-                        <td><button data-id="<?= $venta['ID_VENTA'] ?>" class='btn btn-sm btn-danger delete-venta'>
-                            <lord-icon
-                              src="https://cdn.lordicon.com/oqeixref.json"
-                              trigger="morph"
-                              state="morph-trash-full"
-                              colors="primary:#ffffff"
-                              style="width:30px;height:30px">
-                            </lord-icon>
-                          </button>
-                        </td>
-                      <?php
-                      }
-                      ?>
                       <td>
                         <button
                           type="button"
@@ -177,7 +173,7 @@
                 } else {
                   ?>
                   <tr>
-                    <td colspan='5' style="text-align:center;">No hay registros de ventas disponibles.</td>
+                    <td colspan='8' style="text-align:center;">No hay registros de ventas disponibles.</td>
                   </tr>
                 <?php
                 }

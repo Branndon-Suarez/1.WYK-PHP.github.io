@@ -223,54 +223,45 @@ class ComprasController
         }
     }
     /* ----------------------------------- PARTE DE LA COMPRA ----------------------------------- */
+
     public function viewEdit($id)
     {
-        $this->checkAdminOrMeseroOrCajeroAccess();
+       $this->checkAdminAccess();
 
-        $rol = $_SESSION['rol'] ?? '';
-        $tareas = [];
-
-        if ($rol === 'MESERO') {
-            require_once __DIR__ . '/../controllers/TareasController.php';
-            $tareaController = new TareasController();
-            $tareas = $tareaController->getTareasParaVista();
-        } elseif ($rol === 'CAJERO') {
-            require_once __DIR__ . '/../controllers/TareasController.php';
-            $tareaController = new TareasController();
-            $tareas = $tareaController->getTareasParaVista();
-        }
-
-        $venta = $this->ventaModel->getVentaById($id);
-        if ($venta) {
+        $compra = $this->compraModel->getCompraById($id);
+        if ($compra) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/venta/update.php';
+            require_once __DIR__ . '/../views/compra/update.php';
         } else {
-            $_SESSION['error_message'] = 'Venta no encontrada.';
-            header('Location: ' . \config\APP_URL . 'ventas');
+            $_SESSION['error_message'] = 'Compra no encontrada.';
+            header('Location: ' . \config\APP_URL . 'compras');
             exit();
         }
     }
 
     public function update()
     {
-        $this->checkAdminOrMeseroOrCajeroAccess();
+        $this->checkAdminAccess();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idVenta = $_POST['idVenta'];
+            $idCompra = $_POST['idCompra'];
             $fecha = $_POST['fecha'];
+            $tipo = $_POST['tipo'];
             $total = $_POST['total'];
-            $numMesa = $_POST['numMesa'];
+            $proveedor = $_POST['proveedor'];
+            $marca = $_POST['marca'];
+            $tel = $_POST['tel'];
+            $email = $_POST['email'];
             $descripcion = $_POST['descripcion'];
-            $estadoPedido = $_POST['estadoPedido'];
-            $estadoVenta = $_POST['estadoVenta'];
+            $estado = $_POST['estado'];
 
             try {
-                $result = $this->ventaModel->updateVenta($idVenta, $fecha, $total, $numMesa, $descripcion, $estadoPedido, $estadoVenta);
+                $result = $this->compraModel->updateVenta($idCompra, $fecha, $tipo, $total, $proveedor, $marca, $tel, $email, $descripcion, $estado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Venta actualizada exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Compra actualizada exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la venta.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la compra.']);
                     exit();
                 }
             } catch (\Exception $e) {

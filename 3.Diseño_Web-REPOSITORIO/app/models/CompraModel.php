@@ -248,46 +248,55 @@ public function createCompra($data)
 }
     /* ----------------------------------- PARTE DE LA COMPRA ----------------------------------- */
 
-    public function getVentaById($idVenta)
+    public function getCompraById($idCompra)
     {
         try {
             $sql = "SELECT
-                    V.ID_VENTA,
-                    V.FECHA_HORA_VENTA,
-                    V.TOTAL_VENTA,
-                    V.NUMERO_MESA,
-                    V.DESCRIPCION,
-                    V.ID_USUARIO_FK_VENTA,
-                    U.NOMBRE AS USUARIO_VENTA,
-                    V.ESTADO_PEDIDO,
-                    V.ESTADO_PAGO
-                FROM VENTA V
-                INNER JOIN USUARIO U ON V.ID_USUARIO_FK_VENTA = U.ID_USUARIO
-                WHERE V.ID_VENTA = :id_Venta
-                ORDER BY V.ID_VENTA
-            ";
+                        C.ID_COMPRA,
+                        C.FECHA_HORA_COMPRA,
+                        C.TIPO,
+                        C.TOTAL_COMPRA,
+                        C.NOMBRE_PROVEEDOR,
+                        C.MARCA,
+                        C.TEL_PROVEEDOR,
+                        C.EMAIL_PROVEEDOR,
+                        C.DESCRIPCION_COMPRA,
+                        C.ID_USUARIO_FK_COMPRA,
+                        U.NOMBRE AS USUARIO_REGISTRO,
+                        C.ESTADO_FACTURA_COMPRA
+                    FROM COMPRA C
+                    INNER JOIN USUARIO U ON C.ID_USUARIO_FK_COMPRA = U.ID_USUARIO
+                    WHERE C.ID_COMPRA = :idCompra
+                    ORDER BY C.ID_COMPRA
+                ";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_Venta', $idVenta, \PDO::PARAM_INT);
+            // ... (resto del código es correcto)
+            $stmt->bindParam(':idCompra', $idCompra, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            error_log("Error en la función getVentaById: " . $e->getMessage());
+            // Nota: También corregí el mensaje de error para que sea "getCompraById" en lugar de "getVentaById"
+            error_log("Error en la función getCompraById: " . $e->getMessage()); 
             return null;
         }
     }
 
-    public function updateVenta($idVenta, $fecha, $total, $numMesa, $descripcion, $estadoPedido, $estadoVenta)
+    public function updateVenta($idCompra, $fecha, $tipo, $total, $proveedor, $marca, $tel, $email, $descripcion, $estado)
     {
         try {
-            $sql = "CALL ACTUALIZAR_VENTA(:idVenta, :fecha, :total, :numMesa, :descripcion, :estadoPedido, :estadoVenta)";
+            $sql = "CALL ACTUALIZAR_COMPRA(:idCompra, :fecha, :tipo, :total, :proveedor, :marca, :tel, :email, :descripcion, :usuarioFK, :estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':idVenta', $idVenta, \PDO::PARAM_INT);
+            $stmt->bindParam(':idCompra', $idCompra, \PDO::PARAM_INT);
             $stmt->bindParam(':fecha', $fecha, \PDO::PARAM_STR);
+            $stmt->bindParam(':tipo', $tipo, \PDO::PARAM_STR);
             $stmt->bindParam(':total', $total, \PDO::PARAM_INT);
-            $stmt->bindParam(':numMesa', $numMesa, \PDO::PARAM_INT);
+            $stmt->bindParam(':proveedor', $proveedor, \PDO::PARAM_STR);
+            $stmt->bindParam(':marca', $marca, \PDO::PARAM_STR);
+            $stmt->bindParam(':tel', $tel, \PDO::PARAM_INT);
+            $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
             $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
-            $stmt->bindParam(':estadoPedido', $estadoPedido, \PDO::PARAM_STR);
-            $stmt->bindValue(':estadoVenta', $estadoVenta, \PDO::PARAM_STR);
+            $stmt->bindParam(':usuarioFK', $_SESSION['userId'], \PDO::PARAM_INT);
+            $stmt->bindValue(':estado', $estado, \PDO::PARAM_STR);
             return $stmt->execute();
         } catch (\PDOException $e) {
             error_log("Error en la función updateVenta: " . $e->getMessage());

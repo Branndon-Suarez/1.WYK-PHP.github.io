@@ -122,17 +122,6 @@ BEGIN
 END $
 
 -- ----------------------------------------------------------
--- 📚 TRIGGER INSERTAR RECETA
--- ----------------------------------------------------------
-CREATE TRIGGER TRIGGER_INSERTAR_RECETA
-AFTER INSERT ON RECETA
-FOR EACH ROW
-BEGIN
-    INSERT INTO T_INSERTAR_RECETA (ACCION_INSERT_RECETA,FECHA_EJECUTO_INSERT_RECETA)
-    VALUES ('SE INSERTO CORRECTAMENTE EN RECETA', NOW());
-END $
-
--- ----------------------------------------------------------
 -- 🏭 TRIGGER INSERTAR PRODUCCION
 -- ----------------------------------------------------------
 CREATE TRIGGER TRIGGER_INSERTAR_PRODUCCION

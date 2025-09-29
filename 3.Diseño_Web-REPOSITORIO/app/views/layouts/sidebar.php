@@ -169,6 +169,23 @@
         }
         ?>
 
+        <?php if ($_SESSION['rol'] == 'COCINERO') {
+        ?>
+            <li title="Producción">
+                <a href="<?php echo \config\APP_URL; ?>produccion" class="nav-btn" aria-label="Produccion">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/asyunleq.json"
+                        trigger="hover"
+                        state="hover-cog-4"
+                        colors="primary:#ffffff"
+                        style="width:40px;height:40px">
+                    </lord-icon>
+                </a>
+            </li>
+        <?php
+        }
+        ?>
+
         <?php if ($_SESSION['rol'] == 'MESERO' || $_SESSION['rol'] == 'CAJERO') {
         ?>
             <li title="Pedidos">

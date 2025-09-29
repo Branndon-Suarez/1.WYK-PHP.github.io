@@ -174,7 +174,7 @@
                       <td> <?php echo htmlspecialchars($produccion['USUARIO_REGISTRO']); ?></td>
                       <td> <?php echo htmlspecialchars($produccion['ESTADO_PRODUCCION']); ?></td>
                       <td>
-                        <a href="<?php echo \config\APP_URL . 'compras/viewEdit/' . htmlspecialchars($produccion['ID_PRODUCCION']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
+                        <a href="<?php echo \config\APP_URL . 'produccion/viewEdit/' . htmlspecialchars($produccion['ID_PRODUCCION']); ?>" class='btn btn-sm btn-primary btn-actualizar'>
                           <lord-icon
                             src="https://cdn.lordicon.com/ibckyoan.json"
                             trigger="hover"

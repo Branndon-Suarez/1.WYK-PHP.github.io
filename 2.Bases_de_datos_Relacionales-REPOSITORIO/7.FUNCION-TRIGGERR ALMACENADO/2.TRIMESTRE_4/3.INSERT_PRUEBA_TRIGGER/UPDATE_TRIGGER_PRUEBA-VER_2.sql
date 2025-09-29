@@ -89,14 +89,14 @@ WHERE ID_DET_COMPRA_PROD=301;
 -- ----------------------------------------------------------
 UPDATE PRODUCCION
 SET NOMBRE_PRODUCCION='Producción Especial Pan', CANT_PRODUCCION=120,
-    DESCRIPCION_PRODUCCION='Pan fresco integral del día', ESTADO_PRODUCCION=0
+    DESCRIPCION_PRODUCCION='Pan fresco integral del día', ESTADO_PRODUCCION = 'FINALIZADA'
 WHERE ID_PRODUCCION=1;
 
 -- ----------------------------------------------------------
 -- 📝 UPDATE DETALLE_PRODUCCION
 -- ----------------------------------------------------------
 UPDATE DETALLE_PRODUCCION
-SET CANTIDAD_REQUERIDA=25, CANTIDAD_USADA=22
+SET CANTIDAD_REQUERIDA=25
 WHERE ID_DETALLE_PRODUCCION=1;
 
 COMMIT;

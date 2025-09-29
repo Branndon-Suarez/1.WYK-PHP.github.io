@@ -31,20 +31,9 @@ class ProduccionController
         $this->materiaPrimaModel = $this->produccionModel; // Reutilizamos para no crear una instancia nueva si no es necesario.
     }
 
-    private function checkAdminAccess()
-    {
-        if (!isset($_SESSION['rolClasificacion']) || $_SESSION['rolClasificacion'] !== 'ADMINISTRADOR') {
-            $_SESSION['error_message'] = 'Acceso denegado. No tienes permisos de administrador.';
-            header('Location: ' . APP_URL . 'dashboard');
-            exit();
-        }
-    }
-
     // Las funciones reports() y getDetalleProduccionAjax() se mantienen igual.
     public function reports()
     {
-        $this->checkAdminAccess();
-
         $dashboardDataProduccion = [
             'produccionesExistentes' => $this->produccionModel->getCantProduccionesExistentes(),
             'produccionesPendientes' => $this->produccionModel->getCantProduccionesPendientes(),
@@ -70,8 +59,6 @@ class ProduccionController
 
     public function getDetalleProduccionAjax()
     {
-        $this->checkAdminAccess();
-
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !isset($_GET['id'])) {
             http_response_code(405);
             echo json_encode(['success' => false, 'message' => 'Método no permitido o ID de producción faltante.']);
@@ -217,42 +204,35 @@ class ProduccionController
 
     public function viewEdit($id)
     {
-        $this->checkAdminAccess();
-
-        $compra = $this->compraModel->getCompraById($id);
-        if ($compra) {
+        $produccion = $this->produccionModel->getProduccionById($id);
+        if ($produccion) {
             require_once __DIR__ . '/../views/layouts/heads/headForm.php';
-            require_once __DIR__ . '/../views/compra/update.php';
+            require_once __DIR__ . '/../views/produccion/update.php';
         } else {
-            $_SESSION['error_message'] = 'Compra no encontrada.';
-            header('Location: ' . \config\APP_URL . 'compras');
+            $_SESSION['error_message'] = 'Produccion no encontrada.';
+            header('Location: ' . \config\APP_URL . 'produccion');
             exit();
         }
     }
 
     public function update()
     {
-        $this->checkAdminAccess();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idCompra = $_POST['idCompra'];
-            $fecha = $_POST['fecha'];
-            $tipo = $_POST['tipo'];
-            $total = $_POST['total'];
-            $proveedor = $_POST['proveedor'];
-            $marca = $_POST['marca'];
-            $tel = $_POST['tel'];
-            $email = $_POST['email'];
+            $idProduccion = $_POST['idProduccion'];
+            $nombre = $_POST['nombre'];
+            $cantidad = $_POST['cantidad'];
             $descripcion = $_POST['descripcion'];
+            $prodFK = $_POST['prodFK'];
+            $usuarioFK = $_POST['usuarioFK'];
             $estado = $_POST['estado'];
 
             try {
-                $result = $this->compraModel->updateVenta($idCompra, $fecha, $tipo, $total, $proveedor, $marca, $tel, $email, $descripcion, $estado);
+                $result = $this->produccionModel->updateProduccion($idProduccion, $nombre, $cantidad, $descripcion, $prodFK, $usuarioFK, $estado);
                 if ($result) {
-                    echo json_encode(['success' => true, 'message' => 'Compra actualizada exitosamente.']);
+                    echo json_encode(['success' => true, 'message' => 'Producción actualizada exitosamente.']);
                     exit();
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la compra.']);
+                    echo json_encode(['success' => false, 'message' => 'Error al actualizar la producción.']);
                     exit();
                 }
             } catch (\Exception $e) {

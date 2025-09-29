@@ -211,30 +211,28 @@ class ProduccionModel
     }
     /* ----------------------------------- PARTE DE CREAR PRODUCCION ----------------------------------- */
 
-    public function getCompraById($idCompra)
+    public function getProduccionById($idProduccion)
     {
         try {
             $sql = "SELECT
-                        C.ID_COMPRA,
-                        C.FECHA_HORA_COMPRA,
-                        C.TIPO,
-                        C.TOTAL_COMPRA,
-                        C.NOMBRE_PROVEEDOR,
-                        C.MARCA,
-                        C.TEL_PROVEEDOR,
-                        C.EMAIL_PROVEEDOR,
-                        C.DESCRIPCION_COMPRA,
-                        C.ID_USUARIO_FK_COMPRA,
-                        U.NOMBRE AS USUARIO_REGISTRO,
-                        C.ESTADO_FACTURA_COMPRA
-                    FROM COMPRA C
-                    INNER JOIN USUARIO U ON C.ID_USUARIO_FK_COMPRA = U.ID_USUARIO
-                    WHERE C.ID_COMPRA = :idCompra
-                    ORDER BY C.ID_COMPRA
+                    P.ID_PRODUCCION,
+                    P.NOMBRE_PRODUCCION,
+                    P.CANT_PRODUCCION,
+                    P.DESCRIPCION_PRODUCCION,
+                    P.ID_PRODUCTO_FK_PRODUCCION,
+                    PR.NOMBRE_PRODUCTO,
+                    P.ID_USUARIO_FK_PRODUCCION,
+                    U.NOMBRE AS USUARIO_REGISTRO,
+                    P.ESTADO_PRODUCCION
+                FROM PRODUCCION P
+                INNER JOIN PRODUCTO PR ON P.ID_PRODUCTO_FK_PRODUCCION = PR.ID_PRODUCTO
+                INNER JOIN USUARIO U ON P.ID_USUARIO_FK_PRODUCCION = U.ID_USUARIO
+                WHERE P.ID_PRODUCCION = :idProduccion
+                ORDER BY P.ID_PRODUCCION
                 ";
             $stmt = $this->db->prepare($sql);
             // ... (resto del código es correcto)
-            $stmt->bindParam(':idCompra', $idCompra, \PDO::PARAM_INT);
+            $stmt->bindParam(':idProduccion', $idProduccion, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
@@ -244,22 +242,18 @@ class ProduccionModel
         }
     }
 
-    public function updateVenta($idCompra, $fecha, $tipo, $total, $proveedor, $marca, $tel, $email, $descripcion, $estado)
+    public function updateProduccion($idProduccion, $nombre, $cantidad, $descripcion, $prodFK, $usuarioFK, $estado)
     {
         try {
-            $sql = "CALL ACTUALIZAR_COMPRA(:idCompra, :fecha, :tipo, :total, :proveedor, :marca, :tel, :email, :descripcion, :usuarioFK, :estado)";
+            $sql = "CALL ACTUALIZAR_PRODUCCION(:idProduccion, :nombre, :cantidad, :descripcion, :prodFK, :usuarioFK, :estado)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':idCompra', $idCompra, \PDO::PARAM_INT);
-            $stmt->bindParam(':fecha', $fecha, \PDO::PARAM_STR);
-            $stmt->bindParam(':tipo', $tipo, \PDO::PARAM_STR);
-            $stmt->bindParam(':total', $total, \PDO::PARAM_INT);
-            $stmt->bindParam(':proveedor', $proveedor, \PDO::PARAM_STR);
-            $stmt->bindParam(':marca', $marca, \PDO::PARAM_STR);
-            $stmt->bindParam(':tel', $tel, \PDO::PARAM_INT);
-            $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
+            $stmt->bindParam(':idProduccion', $idProduccion, \PDO::PARAM_INT);
+            $stmt->bindParam(':nombre', $nombre, \PDO::PARAM_STR);
+            $stmt->bindParam(':cantidad', $cantidad, \PDO::PARAM_STR);
             $stmt->bindParam(':descripcion', $descripcion, \PDO::PARAM_STR);
-            $stmt->bindParam(':usuarioFK', $_SESSION['userId'], \PDO::PARAM_INT);
-            $stmt->bindValue(':estado', $estado, \PDO::PARAM_STR);
+            $stmt->bindParam(':prodFK', $prodFK, \PDO::PARAM_STR);
+            $stmt->bindParam(':usuarioFK', $usuarioFK, \PDO::PARAM_STR);
+            $stmt->bindParam(':estado', $estado, \PDO::PARAM_STR);
             return $stmt->execute();
         } catch (\PDOException $e) {
             error_log("Error en la función updateVenta: " . $e->getMessage());

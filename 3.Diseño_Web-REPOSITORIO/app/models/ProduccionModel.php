@@ -119,16 +119,15 @@ class ProduccionModel
         }
     }
 
-    /* ----------------------------------- PARTE DE PRODUCCION ----------------------------------- */
+    /* ----------------------------------- PARTE DE CREAR PRODUCCION ----------------------------------- */
     // --- Métodos de Listado para el Modal ---
-
     public function listarMateriasPrimasActivas()
     {
         try {
-            $sql = "SELECT 
-                        ID_MATERIA_PRIMA, 
-                        NOMBRE_MATERIA_PRIMA, 
-                        CANTIDAD_EXIST_MATERIA_PRIMA, 
+            $sql = "SELECT
+                        ID_MATERIA_PRIMA,
+                        NOMBRE_MATERIA_PRIMA,
+                        CANTIDAD_EXIST_MATERIA_PRIMA,
                         PRESENTACION_MATERIA_PRIMA
                     FROM MATERIA_PRIMA
                     WHERE ESTADO_MATERIA_PRIMA = 1
@@ -174,7 +173,6 @@ class ProduccionModel
             $stmtProd->bindParam(':descripcion', $data['descripcion']);
             $stmtProd->bindParam(':id_producto', $data['idProducto'], PDO::PARAM_INT);
             $stmtProd->bindParam(':id_usuario', $data['usuarioId'], PDO::PARAM_INT);
-            // Eliminada la línea: $stmtProd->bindParam(':fecha_produccion', $data['fechaProduccion']);
             $stmtProd->execute();
 
             $idProduccion = $this->db->lastInsertId();
@@ -183,14 +181,13 @@ class ProduccionModel
                 throw new \Exception("No se pudo obtener el ID de la nueva producción.");
             }
 
-            // 2. Insertar los detalles de la Materia Prima requerida (El resto es igual)
             $sqlDetalle = "INSERT INTO DETALLE_PRODUCCION (
-            ID_PRODUCCION_FK_DET_PRODUC, 
-            ID_MATERIA_PRIMA_FK_DET_PRODUC, 
+            ID_PRODUCCION_FK_DET_PRODUC,
+            ID_MATERIA_PRIMA_FK_DET_PRODUC,
             CANTIDAD_REQUERIDA
         ) VALUES (
-            :id_produccion, 
-            :id_materia_prima, 
+            :id_produccion,
+            :id_materia_prima,
             :cantidad_requerida
         )";
 
@@ -212,7 +209,7 @@ class ProduccionModel
             throw $e;
         }
     }
-    /* ----------------------------------- PARTE DE PRODUCCION ----------------------------------- */
+    /* ----------------------------------- PARTE DE CREAR PRODUCCION ----------------------------------- */
 
     public function getCompraById($idCompra)
     {

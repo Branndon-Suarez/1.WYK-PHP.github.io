@@ -49,11 +49,11 @@ CALL ACTUALIZAR_DETALLE_COMPRA_PRODUCTO(1, 12, 36000, 1, 101, 1);
 
 -- CALL PROCEDIMIENTO ACTUALIZAR PRODUCCION
 -- Ejemplo: actualizar cantidad de producción
-CALL ACTUALIZAR_PRODUCCION(1, 'Producción Pan Trigo', 120, 'Elaboración diaria pan actualizada', 101, 2, 1);
+CALL ACTUALIZAR_PRODUCCION(1, 'Producción Pan Trigo', 120, 'Elaboración diaria pan actualizada', 101, 2, 'CANCELADA');
 
 -- CALL PROCEDIMIENTO ACTUALIZAR DETALLE_PRODUCCION
 -- Ejemplo: actualizar cantidad usada en producción
-CALL ACTUALIZAR_DETALLE_PRODUCCION(1, 1, 1, 55, 55);
+CALL ACTUALIZAR_DETALLE_PRODUCCION(1, 1, 1, 55);
 
 COMMIT;
 SELECT 'Todos los CALL ACTUALIZAR ejecutados correctamente. COMMIT realizado.' AS Mensaje;

@@ -69,31 +69,31 @@ CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(3, 8, 24000, 3, 103, 1);
 CALL INSERTAR_DETALLE_COMPRA_PRODUCTO(4, 20, 60000, 4, 104, 1);
 
 -- PROCEDIMIENTO INSERTAR PRODUCCION
-CALL INSERTAR_PRODUCCION('Producción Pan Trigo', 100, 'Elaboración diaria pan', 101, 2, 1);
-CALL INSERTAR_PRODUCCION('Producción Pastel Chocolate', 50, 'Elaboración semanal pastel', 102, 2, 1);
-CALL INSERTAR_PRODUCCION('Producción Pan Integral', 80, 'Producción alterna', 104, 2, 1);
-CALL INSERTAR_PRODUCCION('Producción Jabón Liquido', 20, 'Producción especial', 103, 2, 1);
+CALL INSERTAR_PRODUCCION('Producción Pan Trigo', 100, 'Elaboración diaria pan', 101, 2, 'PENDIENTE');
+CALL INSERTAR_PRODUCCION('Producción Pastel Chocolate', 50, 'Elaboración semanal pastel', 102, 2, 'EN_PROCESO');
+CALL INSERTAR_PRODUCCION('Producción Pan Integral', 80, 'Producción alterna', 104, 2, 'FINALIZADA');
+CALL INSERTAR_PRODUCCION('Producción Jabón Liquido', 20, 'Producción especial', 103, 2, 'CANCELADA');
 
 -- PROCEDIMIENTO INSERTAR DETALLE_PRODUCCION
-CALL INSERTAR_DETALLE_PRODUCCION(1, 1, 50, 50);   -- Harina pan trigo
-CALL INSERTAR_DETALLE_PRODUCCION(1, 2, 20, 20);   -- Azúcar pan trigo
-CALL INSERTAR_DETALLE_PRODUCCION(1, 3, 10, 10);   -- Levadura pan trigo
-CALL INSERTAR_DETALLE_PRODUCCION(1, 4, 5, 5);     -- Chocolate pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 1, 50);   -- Harina pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 2, 20);   -- Azúcar pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 3, 10);   -- Levadura pan trigo
+CALL INSERTAR_DETALLE_PRODUCCION(1, 4, 5);     -- Chocolate pan trigo
 
-CALL INSERTAR_DETALLE_PRODUCCION(2, 1, 30, 30);   -- Harina pastel
-CALL INSERTAR_DETALLE_PRODUCCION(2, 2, 15, 15);   -- Azúcar pastel
-CALL INSERTAR_DETALLE_PRODUCCION(2, 3, 5, 5);     -- Levadura pastel
-CALL INSERTAR_DETALLE_PRODUCCION(2, 4, 20, 20);   -- Chocolate pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 1, 30);   -- Harina pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 2, 15);   -- Azúcar pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 3, 5);     -- Levadura pastel
+CALL INSERTAR_DETALLE_PRODUCCION(2, 4, 20);   -- Chocolate pastel
 
-CALL INSERTAR_DETALLE_PRODUCCION(3, 1, 40, 40);   -- Harina integral
-CALL INSERTAR_DETALLE_PRODUCCION(3, 2, 10, 10);   -- Azúcar integral
-CALL INSERTAR_DETALLE_PRODUCCION(3, 3, 8, 8);     -- Levadura integral
-CALL INSERTAR_DETALLE_PRODUCCION(3, 4, 2, 2);     -- Chocolate integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 1, 40);   -- Harina integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 2, 10);   -- Azúcar integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 3, 8);     -- Levadura integral
+CALL INSERTAR_DETALLE_PRODUCCION(3, 4, 2);     -- Chocolate integral
 
-CALL INSERTAR_DETALLE_PRODUCCION(4, 1, 20, 20);   -- Harina jabón (ejemplo)
-CALL INSERTAR_DETALLE_PRODUCCION(4, 2, 5, 5);     -- Azúcar jabón
-CALL INSERTAR_DETALLE_PRODUCCION(4, 3, 3, 3);     -- Levadura jabón
-CALL INSERTAR_DETALLE_PRODUCCION(4, 4, 1, 1);     -- Chocolate jabón
+CALL INSERTAR_DETALLE_PRODUCCION(4, 1, 20);   -- Harina jabón (ejemplo)
+CALL INSERTAR_DETALLE_PRODUCCION(4, 2, 5);     -- Azúcar jabón
+CALL INSERTAR_DETALLE_PRODUCCION(4, 3, 3);     -- Levadura jabón
+CALL INSERTAR_DETALLE_PRODUCCION(4, 4, 1);     -- Chocolate jabón
 
 COMMIT;
 SELECT 'Todos los CALL INSERTAR ejecutados correctamente. COMMIT realizado.' AS Mensaje;

@@ -105,8 +105,8 @@ class ProduccionModel
                     mp.PRESENTACION_MATERIA_PRIMA AS UNIDAD_MEDIDA,
                     'Materia Prima' as TIPO_ITEM
                 FROM DETALLE_PRODUCCION dp
-                JOIN MATERIA_PRIMA mp ON dp.ID_MATERIA_PRIMA = mp.ID_MATERIA_PRIMA
-                WHERE dp.ID_PRODUCCION = :idProduccion";
+                JOIN MATERIA_PRIMA mp ON dp.ID_MATERIA_PRIMA_FK_DET_PRODUC = mp.ID_MATERIA_PRIMA
+                WHERE dp.ID_PRODUCCION_FK_DET_PRODUC  = :idProduccion";
 
             $stmtDetalle = $this->db->prepare($sqlDetalle);
             $stmtDetalle->bindParam(':idProduccion', $idProduccion, \PDO::PARAM_INT);
@@ -119,107 +119,100 @@ class ProduccionModel
         }
     }
 
-    /* ----------------------------------- PARTE DE LA COMPRA ----------------------------------- */
+    /* ----------------------------------- PARTE DE PRODUCCION ----------------------------------- */
     // --- Métodos de Listado para el Modal ---
 
-    public function obtenerMateriaPrima()
-    {
-        $sql = "SELECT ID_MATERIA_PRIMA, NOMBRE_MAT_PRIMA, COSTO_UNITARIO_MAT_PRIMA, CANT_EXIST_MAT_PRIMA FROM MATERIA_PRIMA";
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function createCompra($data)
+    public function listarMateriasPrimasActivas()
     {
         try {
-            $this->db->beginTransaction();
+            $sql = "SELECT 
+                        ID_MATERIA_PRIMA, 
+                        NOMBRE_MATERIA_PRIMA, 
+                        CANTIDAD_EXIST_MATERIA_PRIMA, 
+                        PRESENTACION_MATERIA_PRIMA
+                    FROM MATERIA_PRIMA
+                    WHERE ESTADO_MATERIA_PRIMA = 1
+                    ORDER BY NOMBRE_MATERIA_PRIMA ASC";
 
-            // 1. Insertar en la tabla 'COMPRA'
-            // 💡 CORRECCIÓN CRUCIAL: Se eliminó ID_PROVEEDOR_FK_COMPRA
-            // y se agregaron NOMBRE_PROVEEDOR, MARCA, TEL_PROVEEDOR, EMAIL_PROVEEDOR.
-            // Además, se corrigieron DESCRIPCION_COMPRA y ESTADO_FACTURA_COMPRA.
-            $sqlCompra = "INSERT INTO COMPRA (
-                            FECHA_HORA_COMPRA, TIPO, TOTAL_COMPRA, 
-                            NOMBRE_PROVEEDOR, MARCA, TEL_PROVEEDOR, EMAIL_PROVEEDOR, 
-                            DESCRIPCION_COMPRA, ID_USUARIO_FK_COMPRA, ESTADO_FACTURA_COMPRA
-                        ) 
-                        VALUES (
-                            :fecha_hora, :tipo, :totalCompra, 
-                            :nombre_proveedor, :marca, :tel_proveedor, :email_proveedor, 
-                            :descripcion, :id_usuario, :estado_compra
-                        )";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
 
-            $stmtCompra = $this->db->prepare($sqlCompra);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log("Error en ProduccionModel::listarMateriasPrimasActivas: " . $e->getMessage());
+            return [];
+        }
+    }
 
-            $stmtCompra->bindValue(':fecha_hora', $data['fecha']);
-            $stmtCompra->bindValue(':tipo', $data['tipo']);
-            $stmtCompra->bindValue(':totalCompra', intval($data['totalCompra']));
+    public function createProduccion($data)
+    {
+        $nombreProduccion = $data['nombreProduccion'] ?? "Producción - " . date("Y-m-d");
 
-            // 💡 NUEVOS BINDINGS para los datos del proveedor
-            $stmtCompra->bindValue(':nombre_proveedor', $data['nombreProveedor']);
-            $stmtCompra->bindValue(':marca', $data['marca']);
-            $stmtCompra->bindValue(':tel_proveedor', $data['telProveedor']);
-            $stmtCompra->bindValue(':email_proveedor', $data['emailProveedor']);
+        $this->db->beginTransaction();
 
-            // 💡 BINDINGS para las columnas corregidas y usuario
-            $stmtCompra->bindValue(':descripcion', $data['descripcion']);
-            $stmtCompra->bindValue(':id_usuario', $data['usuarioId']);
-            $stmtCompra->bindValue(':estado_compra', $data['estadoCompra']);
+        try {
+            // 1. Insertar la cabecera de la Producción
+            $sqlProd = "INSERT INTO PRODUCCION (
+            NOMBRE_PRODUCCION, 
+            CANT_PRODUCCION, 
+            DESCRIPCION_PRODUCCION, 
+            ID_PRODUCTO_FK_PRODUCCION, 
+            ID_USUARIO_FK_PRODUCCION, 
+            ESTADO_PRODUCCION
+        ) VALUES (
+            :nombre, 
+            :cantidad, 
+            :descripcion, 
+            :id_producto, 
+            :id_usuario, 
+            'PENDIENTE'
+        )";
 
-            $stmtCompra->execute();
+            $stmtProd = $this->db->prepare($sqlProd);
+            $stmtProd->bindParam(':nombre', $nombreProduccion);
+            $stmtProd->bindParam(':cantidad', $data['cantidadProducida'], PDO::PARAM_INT);
+            $stmtProd->bindParam(':descripcion', $data['descripcion']);
+            $stmtProd->bindParam(':id_producto', $data['idProducto'], PDO::PARAM_INT);
+            $stmtProd->bindParam(':id_usuario', $data['usuarioId'], PDO::PARAM_INT);
+            // Eliminada la línea: $stmtProd->bindParam(':fecha_produccion', $data['fechaProduccion']);
+            $stmtProd->execute();
 
-            $idCompra = $this->db->lastInsertId();
+            $idProduccion = $this->db->lastInsertId();
 
-            if (!$idCompra) {
-                throw new \Exception("Error al insertar la compra en la base de datos.");
+            if (!$idProduccion) {
+                throw new \Exception("No se pudo obtener el ID de la nueva producción.");
             }
 
-            // 2. Insertar los detalles (ESTA PARTE NO CAMBIA)
-            $tipo = $data['tipo'];
+            // 2. Insertar los detalles de la Materia Prima requerida (El resto es igual)
+            $sqlDetalle = "INSERT INTO DETALLE_PRODUCCION (
+            ID_PRODUCCION_FK_DET_PRODUC, 
+            ID_MATERIA_PRIMA_FK_DET_PRODUC, 
+            CANTIDAD_REQUERIDA
+        ) VALUES (
+            :id_produccion, 
+            :id_materia_prima, 
+            :cantidad_requerida
+        )";
 
-            /*descometnar esto a futuro si necesito depurar un error y mostrarlo en xammp error_log(print_r($data['items'], true));
-        die('<pre>' . print_r($data['items'], true) . '</pre>');  */
+            $stmtDetalle = $this->db->prepare($sqlDetalle);
 
-            if ($tipo === 'MATERIA PRIMA') {
-                $stmtDetalle = $this->db->prepare("INSERT INTO DETALLE_COMPRA_MATERIA_PRIMA (
-                CANTIDAD_MAT_PRIMA_COMPRADA,
-                SUB_TOTAL_MAT_PRIMA_COMPRADA,
-                ID_COMPRA_FK_DET_COMPRA_MAT_PRIMA,
-                ID_MAT_PRIMA_FK_DET_COMPRA_MAT_PRIMA,
-                ESTADO_DET_COMPRA_MAT_PRIMA)
-                VALUES (:cantidad, :sub_total, :id_compra, :id_item, 1)");
-            } else { // 'PRODUCTO TERMINADO'
-                $stmtDetalle = $this->db->prepare("INSERT INTO DETALLE_COMPRA_PRODUCTO (
-                CANTIDAD_PROD_COMPRADO,
-                SUB_TOTAL_PROD_COMPRADO,
-                ID_COMPRA_FK_DET_COMPRA_PROD,
-                ID_PROD_FK_DET_COMPRA_PROD,
-                ESTADO_DET_COMPRA_PROD)
-                VALUES (:cantidad, :sub_total, :id_compra, :id_item, 1)");
-            }
-
-            foreach ($data['items'] as $item) {
-                $cantidad = intval($item['cantidad']);
-                $precio_unitario = intval($item['precio_unitario']);
-                $subTotal = $cantidad * $precio_unitario;
-
-                $stmtDetalle->bindValue(':cantidad', $cantidad);
-                $stmtDetalle->bindValue(':sub_total', $subTotal);
-                $stmtDetalle->bindValue(':id_compra', $idCompra);
-                $stmtDetalle->bindValue(':id_item', $item['id']);
+            foreach ($data['detalles'] as $detalle) {
+                $stmtDetalle->bindParam(':id_produccion', $idProduccion, PDO::PARAM_INT);
+                $stmtDetalle->bindParam(':id_materia_prima', $detalle['id_materia_prima'], PDO::PARAM_INT);
+                $stmtDetalle->bindValue(':cantidad_requerida', $detalle['cantidad_requerida']);
                 $stmtDetalle->execute();
             }
 
             // 3. Confirmar la transacción
             $this->db->commit();
-
-            return $idCompra;
+            return $idProduccion;
         } catch (\Exception $e) {
             $this->db->rollBack();
+            error_log("Error en la función createProduccion (Transacción): " . $e->getMessage());
             throw $e;
         }
     }
-    /* ----------------------------------- PARTE DE LA COMPRA ----------------------------------- */
+    /* ----------------------------------- PARTE DE PRODUCCION ----------------------------------- */
 
     public function getCompraById($idCompra)
     {

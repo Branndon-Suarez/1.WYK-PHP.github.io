@@ -138,7 +138,7 @@
                                 trigger="hover"
                                 state="hover-spending"
                                 colors="primary:#ffffff,secondary:#ffffff"
-                                style="width:80px;height:68px">
+                                style="width:60px;height:60px">
                             </lord-icon>
                             Compras
                         </a>

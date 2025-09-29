@@ -43,9 +43,6 @@ class ProductoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Obtener un producto por su ID
-     */
     public function obtenerProductoPorId($id) {
         $sql = "SELECT 
                 P.ID_PRODUCTO,

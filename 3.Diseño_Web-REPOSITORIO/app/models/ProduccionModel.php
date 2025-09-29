@@ -100,13 +100,13 @@ class ProduccionModel
     {
         try {
             $sqlDetalle = "SELECT
-                            mp.NOMBRE_MATERIA_PRIMA AS NOMBRE_ITEM,
-                            dp.CANTIDAD_REQUERIDA AS CANTIDAD,
-                            mp.UNIDAD_MEDIDA_MAT_PRIMA AS UNIDAD_MEDIDA,
-                            'Materia Prima' as TIPO_ITEM
-                       FROM DETALLE_PRODUCCION dp
-                       JOIN MATERIA_PRIMA mp ON dp.ID_MATERIA_PRIMA = mp.ID_MATERIA_PRIMA
-                       WHERE dp.ID_PRODUCCION = :idProduccion";
+                    mp.NOMBRE_MATERIA_PRIMA AS NOMBRE_ITEM,
+                    dp.CANTIDAD_REQUERIDA AS CANTIDAD,
+                    mp.PRESENTACION_MATERIA_PRIMA AS UNIDAD_MEDIDA,
+                    'Materia Prima' as TIPO_ITEM
+                FROM DETALLE_PRODUCCION dp
+                JOIN MATERIA_PRIMA mp ON dp.ID_MATERIA_PRIMA = mp.ID_MATERIA_PRIMA
+                WHERE dp.ID_PRODUCCION = :idProduccion";
 
             $stmtDetalle = $this->db->prepare($sqlDetalle);
             $stmtDetalle->bindParam(':idProduccion', $idProduccion, \PDO::PARAM_INT);

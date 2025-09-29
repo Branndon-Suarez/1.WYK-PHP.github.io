@@ -14,12 +14,12 @@ use \Dompdf\Options;
 
 class ProduccionController
 {
-    private $compraModel;
+    private $produccionModel; // ✅ Corregido
     private $productoModel;
 
     public function __construct()
     {
-        $this->compraModel = new ProduccionModel();
+        $this->produccionModel = new ProduccionModel(); // ✅ Corregido
         $this->productoModel = new ProductoModel();
     }
 
@@ -37,12 +37,12 @@ class ProduccionController
         $this->checkAdminAccess();
 
         $dashboardDataProduccion = [
-            'produccionesExistentes' => $this->compraModel->getCantProduccionesExistentes(),
-            'produccionesPendientes' => $this->compraModel->getCantProduccionesPendientes(),
-            'produccionesProceso' => $this->compraModel->getCantProduccionesProceso(),
-            'produccionesFinalizadas' => $this->compraModel->getCantProduccionesFinalizadas(),
-            'produccionesCanceladas' => $this->compraModel->getCantProduccionesCanceladas(),
-            'producciones' => $this->compraModel->getProducciones()
+            'produccionesExistentes' => $this->produccionModel->getCantProduccionesExistentes(),
+            'produccionesPendientes' => $this->produccionModel->getCantProduccionesPendientes(),
+            'produccionesProceso' => $this->produccionModel->getCantProduccionesProceso(),
+            'produccionesFinalizadas' => $this->produccionModel->getCantProduccionesFinalizadas(),
+            'produccionesCanceladas' => $this->produccionModel->getCantProduccionesCanceladas(),
+            'producciones' => $this->produccionModel->getProducciones()
         ];
 
         // Mensajes de sesión
@@ -68,7 +68,7 @@ class ProduccionController
         // 1. Verificar si es una solicitud AJAX (GET)
         if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !isset($_GET['id'])) {
             http_response_code(405);
-            echo json_encode(['success' => false, 'message' => 'Método no permitido o ID de producción faltante.']); 
+            echo json_encode(['success' => false, 'message' => 'Método no permitido o ID de producción faltante.']);
             exit();
         }
 
@@ -77,24 +77,24 @@ class ProduccionController
         $idProduccion = $_GET['id'];
 
         try {
-            // 2. Obtener el detalle de la produccion
-            $detalle = $this->compraModel->getDetalleProduccionById($idProduccion); 
+            // 2. Obtener el detalle de la produccion (Llama al modelo con la consulta SQL corregida)
+            $detalle = $this->produccionModel->getDetalleProduccionById($idProduccion);
 
             if ($detalle !== false) {
+                // El modelo devuelve un array de filas (o un array vacío si no hay detalle)
                 echo json_encode(['success' => true, 'detalle' => $detalle]);
             } else {
+                // El modelo devolvió 'false', indicando un error de DB (a pesar de la corrección)
                 http_response_code(404);
-                // Corregido: Referencia a Producción
-                echo json_encode(['success' => false, 'message' => 'Detalle de producción no encontrado.']); 
+                echo json_encode(['success' => false, 'message' => 'Detalle de producción no encontrado (Error en la consulta).']);
             }
         } catch (\Exception $e) {
+            // Captura cualquier otro error de PHP/servidor
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Error en el servidor: ' . $e->getMessage()]);
         }
         exit();
     }
-
-    /* ----------------------------------- PARTE DE LA COMPRA ----------------------------------- */
 
     /* ----------------------------------- LISTADO PARA AJAX ----------------------------------- */
 
@@ -204,7 +204,7 @@ class ProduccionController
 
     public function viewEdit($id)
     {
-       $this->checkAdminAccess();
+        $this->checkAdminAccess();
 
         $compra = $this->compraModel->getCompraById($id);
         if ($compra) {

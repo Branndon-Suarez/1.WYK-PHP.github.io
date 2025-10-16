@@ -1,11 +1,11 @@
-document.getElementById('update-compra-form').addEventListener('submit', function (e) {
+document.getElementById('update-produccion-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const form = this;
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'Se actualizarán los datos de esta compra.',
+        text: 'Se actualizarán los datos de esta produccion.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -16,7 +16,7 @@ document.getElementById('update-compra-form').addEventListener('submit', functio
         if (result.isConfirmed) {
             const formData = new FormData(form);
 
-            fetch(APP_URL + 'compras/update', {
+            fetch(APP_URL + 'produccion/update', {
                 method: 'POST',
                 body: formData
             })
@@ -33,7 +33,7 @@ document.getElementById('update-compra-form').addEventListener('submit', functio
                         title: '¡Éxito!',
                         text: data.message
                     }).then(() => {
-                        window.location.href = APP_URL + 'compras';
+                        window.location.href = APP_URL + 'produccion';
                     });
                 } else {
                     Swal.fire({

@@ -1,18 +1,18 @@
 USE PROYECTO_WYK;
 
 START TRANSACTION;
-
+-- Se comenta esto porque se va a ejecutar desde spring boot solo ROLES y USUARIOS
 -- PROCEDIMIENTO INSERTAR ROL
-CALL INSERTAR_ROL('ADMINISTRADOR', 'ADMINISTRADOR', 1);
-CALL INSERTAR_ROL('MESERO', 'EMPLEADO', 1);
-CALL INSERTAR_ROL('CAJERO', 'EMPLEADO', 1);
-CALL INSERTAR_ROL('COCINERO', 'EMPLEADO', 1);
+-- CALL INSERTAR_ROL('ADMINISTRADOR', 'ADMINISTRADOR', 1);
+-- CALL INSERTAR_ROL('MESERO', 'EMPLEADO', 1);
+-- CALL INSERTAR_ROL('CAJERO', 'EMPLEADO', 1);
+-- CALL INSERTAR_ROL('COCINERO', 'EMPLEADO', 1);
 
 -- PROCEDIMIENTO INSERTAR USUARIO
-CALL INSERTAR_USUARIO(1001, 'Juan Perez', 'pass123', 3101234567, 'juan@correo.com', NOW(), 1, 1);
-CALL INSERTAR_USUARIO(1002, 'Maria Lopez', 'pass456', 3112345678, 'maria@correo.com', NOW(), 2, 1);
-CALL INSERTAR_USUARIO(1003, 'Carlos Ruiz', 'pass789', 3123456789, 'carlos@correo.com', NOW(), 3, 1);
-CALL INSERTAR_USUARIO(1004, 'Ana Torres', 'pass000', 3134567890, 'ana@correo.com', NOW(), 4, 1);
+-- CALL INSERTAR_USUARIO(1001, 'Juan Perez', 'pass123', 3101234567, 'juan@correo.com', NOW(), 1, 1);
+-- CALL INSERTAR_USUARIO(1002, 'Maria Lopez', 'pass456', 3112345678, 'maria@correo.com', NOW(), 2, 1);
+-- CALL INSERTAR_USUARIO(1003, 'Carlos Ruiz', 'pass789', 3123456789, 'carlos@correo.com', NOW(), 3, 1);
+-- CALL INSERTAR_USUARIO(1004, 'Ana Torres', 'pass000', 3134567890, 'ana@correo.com', NOW(), 4, 1);
 
 -- PROCEDIMIENTO INSERTAR TAREA
 CALL INSERTAR_TAREA('Revisar inventario', 'Inventario', 'Control de materias primas', 2, 'ALTA', 'PENDIENTE', 2, 1);
